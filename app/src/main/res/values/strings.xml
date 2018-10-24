@@ -16,10 +16,19 @@
     <string name="chat">Chat</string>
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--BottomNavigationView actions titles-->
 
+    <!--list_item_corp_stream.xml strings-->
+    <string name="hint_name_name">Name Name</string>
+    <string name="hint_corp">Corp</string>
+    <string name="medium_circle">⚫</string>
+    <string name="hint_time_hint">5:15</string>
+    <string name="label_replied_to_a_chat_with">replied to a chat with</string>
+    <string name="hint_reply_target">you</string>
+    <string name="hint_text_message">Text message</string>
+    <string name="content_description_profile_picture">Profile picture</string>
+    <string name="content_description_message_picture">Message picture</string>
+    <string name="content_description_reply_button">Reply button</string>
+    <string name="label_start_a_private_chat">Start a private chat</string>
 
 </resources>

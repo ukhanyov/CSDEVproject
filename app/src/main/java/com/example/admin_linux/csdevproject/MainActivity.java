@@ -41,6 +41,22 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // TODO: CorpStream gridView Recycler view
+        // TODO: CorpStream set toolbar name
+        // TODO: Chat make toolbar search
+        // TODO: Chat make toolbar search separate cancel button (when search is active)
+        // TODO: Chat make profile placeholder
+        // TODO: Chat make settings cog
+        // TODO: Favorites make toolbar name
+        // TODO: Favorites make tabs
+        // TODO: Favorites mock mechanism to add tabs
+        // TODO: Search make toolbar search field (with cancel button)
+        // TODO: Search mock image spin in top part of the fragment
+        // TODO: Search make recyclerView with nested recyclers
+        // TODO: Search make nested recyclers to recycle grids
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
