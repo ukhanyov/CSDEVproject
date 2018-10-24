@@ -1,10 +1,13 @@
 package com.example.admin_linux.csdevproject;
 
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,16 +18,26 @@ import android.view.animation.AnimationUtils;
 
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements
+        View.OnClickListener,
+        BottomNavigationView.OnNavigationItemSelectedListener,
+        CropStreamFragment.OnFragmentInteractionListener,
+        ChatFragment.OnFragmentInteractionListener,
+        FavoritesFragment.OnFragmentInteractionListener,
+        SearchFragment.OnFragmentInteractionListener {
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    // Fragment stuff
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +63,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab4 = mBinding.fab4;
         // Animations init
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
         // Click listeners for FAB
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
+
+        // Start activity with CropStreamFragment
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        CropStreamFragment fragmentCropStream = new CropStreamFragment();
+        fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
+        switch (id) {
             case R.id.fab:
                 animateFAB();
                 break;
@@ -89,9 +110,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void animateFAB(){
+    public void animateFAB() {
 
-        if(isFabOpen){
+        if (isFabOpen) {
 
             // TODO: Add wait for previous FAB to open
 
@@ -129,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mBinding.tvFavTitle2.setVisibility(View.VISIBLE);
             mBinding.tvFavTitle3.setVisibility(View.VISIBLE);
             mBinding.tvFavTitle4.setVisibility(View.VISIBLE);
-            Log.d(LOG_TAG,"open");
+            Log.d(LOG_TAG, "open");
         }
     }
 
@@ -137,22 +158,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
-
+                fragmentTransaction = fragmentManager.beginTransaction();
+                CropStreamFragment fragmentCropStream = new CropStreamFragment();
+                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
 
             case R.id.action_chat:
-
+                fragmentTransaction = fragmentManager.beginTransaction();
+                ChatFragment fragmentChat = new ChatFragment();
+                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentChat);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
 
             case R.id.action_favorites:
-
+                fragmentTransaction = fragmentManager.beginTransaction();
+                FavoritesFragment fragmentFavorites = new FavoritesFragment();
+                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentFavorites);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
 
             case R.id.action_search:
-
+                fragmentTransaction = fragmentManager.beginTransaction();
+                SearchFragment fragmentSearch = new SearchFragment();
+                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentSearch);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
 
         }
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
