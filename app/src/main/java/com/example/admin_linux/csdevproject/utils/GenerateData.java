@@ -3,12 +3,18 @@ package com.example.admin_linux.csdevproject.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CorpStreamMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class GenerateData {
@@ -33,29 +39,29 @@ public class GenerateData {
         int i = r.nextInt(6); // Bound is exclusive
         switch (i) {
             case 0:
-                Bitmap bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_1);
-                return ImageHelper.compressToByteArray(bitmap1);
+                //Bitmap bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_1);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_1));
 
             case 1:
-                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_2);
-                return ImageHelper.compressToByteArray(bitmap2);
+                //Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_2);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_2));
 
             case 2:
-                Bitmap bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_3);
-                return ImageHelper.compressToByteArray(bitmap3);
+                //Bitmap bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_3);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_3));
 
             case 3:
-                Bitmap bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_4);
-                return ImageHelper.compressToByteArray(bitmap4);
+                //Bitmap bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_4);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_4));
 
             case 4:
-                Bitmap bitmap5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_5);
-                return ImageHelper.compressToByteArray(bitmap5);
+                //Bitmap bitmap5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_5);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_5));
 
 
             default:
-                Bitmap bitmap6 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_default);
-                return ImageHelper.compressToByteArray(bitmap6);
+                //Bitmap bitmap6 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_default);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_default));
         }
     }
 
@@ -184,24 +190,24 @@ public class GenerateData {
         int i = r.nextInt(8); // Bound is exclusive
         switch (i) {
             case 0:
-                Bitmap bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_1);
-                return ImageHelper.compressToByteArray(bitmap1);
+                //Bitmap bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_1);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_1));
 
             case 1:
-                Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_2);
-                return ImageHelper.compressToByteArray(bitmap2);
+                //Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_2);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_2));
 
             case 2:
-                Bitmap bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_3);
-                return ImageHelper.compressToByteArray(bitmap3);
+                //Bitmap bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_3);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_3));
 
             case 3:
-                Bitmap bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_4);
-                return ImageHelper.compressToByteArray(bitmap4);
+                //Bitmap bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_4);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_4));
 
             case 4:
-                Bitmap bitmap5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_5);
-                return ImageHelper.compressToByteArray(bitmap5);
+                //Bitmap bitmap5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_5);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_5));
 
             case 5:
                 return null;
@@ -212,10 +218,24 @@ public class GenerateData {
             case 7:
                 return null;
 
-
             default:
-                Bitmap bitmap6 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_default);
-                return ImageHelper.compressToByteArray(bitmap6);
+                //Bitmap bitmap6 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_default);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_default));
         }
+    }
+
+    private static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(Objects.requireNonNull(drawable))).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(Objects.requireNonNull(drawable).getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }
