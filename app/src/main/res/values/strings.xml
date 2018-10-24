@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">CSDEVproject</string>
     <string name="action_settings">Settings</string>
+    <string name="fab_hint">FAB hint</string>
+    <string name="note">Note</string>
+    <string name="photo">Photo</string>
+    <string name="activity">Activity</string>
+    <string name="conversation">Conversation</string>
 </resources>

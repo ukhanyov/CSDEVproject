@@ -10,6 +10,8 @@
     <color name="colorFAB2">#22e220</color>
     <color name="colorFAB3">#1dd41a</color>
     <color name="colorFAB4">#1eb71a</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
 
     <!--FAB colors-->
 

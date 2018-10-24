@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void animateFAB(){
 
         if(isFabOpen){
+
+            // TODO: Add wait for previous FAB to open
+
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close);
             fab2.startAnimation(fab_close);
@@ -94,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab3.setClickable(false);
             fab4.setClickable(false);
             isFabOpen = false;
+
+            mBinding.tvFavTitle1.setVisibility(View.INVISIBLE);
+            mBinding.tvFavTitle2.setVisibility(View.INVISIBLE);
+            mBinding.tvFavTitle3.setVisibility(View.INVISIBLE);
+            mBinding.tvFavTitle4.setVisibility(View.INVISIBLE);
             Log.d(LOG_TAG, "close");
         } else {
             fab.startAnimation(rotate_forward);
@@ -107,6 +115,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab3.setClickable(true);
             fab4.setClickable(true);
             isFabOpen = true;
+
+            mBinding.tvFavTitle1.setVisibility(View.VISIBLE);
+            mBinding.tvFavTitle2.setVisibility(View.VISIBLE);
+            mBinding.tvFavTitle3.setVisibility(View.VISIBLE);
+            mBinding.tvFavTitle4.setVisibility(View.VISIBLE);
             Log.d(LOG_TAG,"open");
         }
     }
