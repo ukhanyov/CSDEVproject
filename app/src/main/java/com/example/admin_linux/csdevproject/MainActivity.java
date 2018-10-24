@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
+    private TextView tvTitleFab1, tvTitleFab2, tvTitleFab3, tvTitleFab4;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -32,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Toolbar
         Toolbar toolbar = mBinding.toolbar;
         setSupportActionBar(toolbar);
+
+        tvTitleFab1 = mBinding.tvFavTitle1;
+        tvTitleFab2 = mBinding.tvFavTitle2;
+        tvTitleFab3 = mBinding.tvFavTitle3;
+        tvTitleFab4 = mBinding.tvFavTitle4;
 
         // FAB init
         fab = mBinding.fab;
