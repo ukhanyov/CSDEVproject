@@ -6,4 +6,8 @@
     <string name="photo">Photo</string>
     <string name="activity">Activity</string>
     <string name="conversation">Conversation</string>
+    <string name="cropstream">Cropstream</string>
+    <string name="chat">Chat</string>
+    <string name="favorites">Favorites</string>
+    <string name="search">Search</string>
 </resources>
