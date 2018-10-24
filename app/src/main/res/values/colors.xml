@@ -5,17 +5,13 @@
     <color name="colorAccent">#D81B60</color>
 
     <!--FAB colors-->
-    <color name="colorFAB1">#24ff20</color>
+    <color name="colorFAB1">#808080</color>
     <color name="colorFAB2">#22e220</color>
     <color name="colorFAB3">#1dd41a</color>
     <color name="colorFAB4">#1eb71a</color>
-    <color name="black">#000000</color>
-    <color name="white">#ffffff</color>
     <!--FAB colors-->
 
-    <!--Image button colors-->
-    <color name="dark_green">#00574B</color>
-    <!--Image button colors-->
-
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
 
 </resources>

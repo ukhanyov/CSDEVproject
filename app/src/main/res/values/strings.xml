@@ -1,13 +1,22 @@
 <resources>
     <string name="app_name">CSDEVproject</string>
     <string name="action_settings">Settings</string>
+
     <string name="fab_hint">FAB hint</string>
+
+    <!--FAB titles-->
     <string name="note">Note</string>
     <string name="photo">Photo</string>
     <string name="activity">Activity</string>
     <string name="conversation">Conversation</string>
+    <!--FAB titles-->
+
+    <!--BottomNavigationView actions titles-->
     <string name="cropstream">Cropstream</string>
     <string name="chat">Chat</string>
     <string name="favorites">Favorites</string>
     <string name="search">Search</string>
+    <!--BottomNavigationView actions titles-->
+
+
 </resources>
