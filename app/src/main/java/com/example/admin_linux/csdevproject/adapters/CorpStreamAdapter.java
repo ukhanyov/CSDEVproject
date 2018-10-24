@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.admin_linux.csdevproject.CorpStreamMessage;
+import com.example.admin_linux.csdevproject.data.CorpStreamMessage;
 import com.example.admin_linux.csdevproject.R;
 
 import java.util.List;
@@ -70,7 +70,7 @@ public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.Co
         ImageView ivMessagePicture;
 
 
-        public CorpStreamViewHolder(@NonNull View itemView) {
+        CorpStreamViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ivProfilePicture = itemView.findViewById(R.id.list_item_iv_profile_picture);
