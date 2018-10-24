@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.data.CorpStreamMessage;
 import com.example.admin_linux.csdevproject.R;
+import com.example.admin_linux.csdevproject.utils.ImageHelper;
 
 import java.util.List;
 
@@ -33,14 +34,17 @@ public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.Co
     @Override
     public void onBindViewHolder(@NonNull CorpStreamViewHolder holder, int i) {
         if (mList != null) {
+
+            CorpStreamMessage current = mList.get(i);
+
             // Bind views
-            holder.ivProfilePicture = null;
-            holder.tvProfileName = null;
-            holder.tvProfileCorp = null;
-            holder.tvMessageDestination = null;
-            holder.tvMessageText = null;
-            holder.tvMessageTime = null;
-            holder.ivMessagePicture = null;
+            holder.ivProfilePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getProfilePicture()));
+            holder.tvProfileName.setText(current.getProfileName());
+            if(current.getProfileCorpName() != null) holder.tvProfileCorp.setText(current.getProfileCorpName());
+            holder.tvMessageDestination.setText(current.getMessageDestination());
+            holder.tvMessageText.setText(current.getMessageText());
+            holder.tvMessageTime.setText(current.getMessageTime());
+            if(current.getMessagePicture() != null)holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");

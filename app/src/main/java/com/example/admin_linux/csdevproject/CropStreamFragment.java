@@ -69,12 +69,13 @@ public class CropStreamFragment extends Fragment {
 
         // 3. create an adapter
         CorpStreamAdapter mAdapter = new CorpStreamAdapter(rootView.getContext());
-
+        mAdapter.setCorpStreamMessages(list);
         // 4. set adapter
         recyclerView.setAdapter(mAdapter);
 
         // 5. set item animator to DefaultAnimator
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         return rootView;
     }
 
