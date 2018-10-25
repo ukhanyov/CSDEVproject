@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.example.admin_linux.csdevproject.R;
+import com.example.admin_linux.csdevproject.data.ChatItem;
 import com.example.admin_linux.csdevproject.data.CorpStreamMessage;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class GenerateData {
+
     public static List<CorpStreamMessage> generateMessages(Context context) {
         List<CorpStreamMessage> list = new ArrayList<>();
         for(int i = 0; i < 50; i++){
@@ -29,6 +31,19 @@ public class GenerateData {
                     randomMessageText(),
                     randomMessageTime(),
                     randomMessagePicture(context)
+            ));
+        }
+        return list;
+    }
+
+    public static List<ChatItem> generateChatItems(Context context){
+        List<ChatItem> list = new ArrayList<>();
+        for(int i = 0; i < 50; i++){
+            list.add(new ChatItem(
+                    randomChatItemProfilePicture(context),
+                    randomChatItemProfileName(),
+                    randomChatItemProfileText(),
+                    randomChatItemProfileTime()
             ));
         }
         return list;
@@ -237,5 +252,108 @@ public class GenerateData {
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    private static String randomChatItemProfilePicture(Context context){
+        Random r = new Random();
+        int i = r.nextInt(6); // Bound is exclusive
+        switch (i) {
+            case 0:
+                //Bitmap bitmap1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_1);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_1));
+
+            case 1:
+                //Bitmap bitmap2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_2);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_2));
+
+            case 2:
+                //Bitmap bitmap3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_3);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_3));
+
+            case 3:
+                //Bitmap bitmap4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_4);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_4));
+
+            case 4:
+                //Bitmap bitmap5 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_user_5);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_user_5));
+
+
+            default:
+                //Bitmap bitmap6 = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_dummy_default);
+                return ImageHelper.compressToByteArray(getBitmapFromVectorDrawable(context, R.drawable.ic_dummy_default));
+        }
+    }
+
+    private static String randomChatItemProfileName(){
+        Random r = new Random();
+        int i = r.nextInt(6); // Bound is exclusive
+        switch (i) {
+            case 0:
+                return "Name One";
+
+            case 1:
+                return "Name Two";
+
+            case 2:
+                return "Name Three";
+
+            case 3:
+                return "Name Four";
+
+            case 4:
+                return "Name Five";
+
+            default:
+                return "Name Default";
+        }
+    }
+
+    private static String randomChatItemProfileText(){
+        Random r = new Random();
+        int i = r.nextInt(6); // Bound is exclusive
+        switch (i) {
+            case 0:
+                return "Message Text.";
+
+            case 1:
+                return "Message Text. Message Text.";
+
+            case 2:
+                return "Message Text. Message Text. Message Text. Message Text.";
+
+            case 3:
+                return "Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text.";
+
+            case 4:
+                return "Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text. Message Text.";
+
+            default:
+                return "Message Default";
+        }
+    }
+
+    private static String randomChatItemProfileTime(){
+        Random r = new Random();
+        int i = r.nextInt(6); // Bound is exclusive
+        switch (i) {
+            case 0:
+                return "01/01/11";
+
+            case 1:
+                return "02/02/12";
+
+            case 2:
+                return "03/03/13";
+
+            case 3:
+                return "04/04/14";
+
+            case 4:
+                return "05/05/15";
+
+            default:
+                return "10/25/18";
+        }
     }
 }

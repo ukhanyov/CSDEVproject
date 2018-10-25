@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity implements
 
         // TODO: Chat make toolbar search
         // TODO: Chat make toolbar search separate cancel button (when search is active)
+
         // TODO: Chat make profile placeholder
+
         // TODO: Chat make settings cog
         // TODO: Favorites make toolbar name
         // TODO: Favorites make tabs
