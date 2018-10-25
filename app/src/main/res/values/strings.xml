@@ -18,7 +18,7 @@
     <string name="search">Search</string>
     <!--BottomNavigationView actions titles-->
 
-    <!--list_item_corp_stream.xml strings-->
+    <!--list_item_crop_stream.xml strings-->
     <string name="hint_name_name">Name Name</string>
     <string name="hint_corp">Corp</string>
     <string name="medium_circle">⚫</string>
@@ -30,7 +30,7 @@
     <string name="content_description_message_picture">Message picture</string>
     <string name="content_description_reply_button">Reply button</string>
     <string name="label_start_a_private_chat">Start a private chat</string>
-    <!--list_item_corp_stream.xml strings-->
+    <!--list_item_crop_stream.xml strings-->
 
     <!--Toolbar layout strings-->
     <string name="hint_toolbar_title">Toolbar Title</string>

@@ -27,7 +27,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     @NonNull
     @Override
     public CorpStreamViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = mInflater.inflate(R.layout.list_item_corp_stream, viewGroup, false);
+        View itemView = mInflater.inflate(R.layout.list_item_crop_stream, viewGroup, false);
         return new CorpStreamViewHolder(itemView);
     }
 

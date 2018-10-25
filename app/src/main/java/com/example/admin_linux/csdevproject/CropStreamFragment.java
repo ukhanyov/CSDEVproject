@@ -60,6 +60,8 @@ public class CropStreamFragment extends Fragment {
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
 
+
+
         CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
         mAdapter.setCorpStreamMessages(list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

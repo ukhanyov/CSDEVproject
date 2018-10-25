@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject.network.pojo;
+package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,53 +11,53 @@ public class FeedEventItemModelPerson {
 
     @SerializedName("PersonFirstName")
     @Expose
-    private int personFirstName;
+    private String personFirstName;
 
     @SerializedName("PersonLastName")
     @Expose
-    private int personLastName;
+    private String personLastName;
 
     @SerializedName("PersonFullName")
     @Expose
-    private int personFullName;
+    private String personFullName;
 
     @SerializedName("IsFavorite")
     @Expose
-    private int isFavorite;
+    private boolean isFavorite;
 
     @SerializedName("OrganizationName")
     @Expose
-    private int organizationName;
+    private String organizationName;
 
     @SerializedName("IconPath")
     @Expose
-    private int iconPath;
+    private String iconPath;
 
     public int getPersonIs() {
         return personIs;
     }
 
-    public int getPersonFirstName() {
+    public String getPersonFirstName() {
         return personFirstName;
     }
 
-    public int getPersonLastName() {
+    public String getPersonLastName() {
         return personLastName;
     }
 
-    public int getPersonFullName() {
+    public String getPersonFullName() {
         return personFullName;
     }
 
-    public int getIsFavorite() {
+    public boolean getIsFavorite() {
         return isFavorite;
     }
 
-    public int getOrganizationName() {
+    public String getOrganizationName() {
         return organizationName;
     }
 
-    public int getIconPath() {
+    public String getIconPath() {
         return iconPath;
     }
 }

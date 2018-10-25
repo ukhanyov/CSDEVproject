@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject.network.pojo;
+package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

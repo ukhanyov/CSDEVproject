@@ -15,10 +15,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
+import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
+import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
+import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
+import com.example.admin_linux.csdevproject.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -90,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
 
+        fetchData();
+
         // Start activity with CropStreamFragment
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -98,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         // Toolbar title
-        mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
-        mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+        mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+        mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -184,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_chat:
@@ -195,8 +210,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_chat));
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_chat));
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_favorites:
@@ -206,8 +221,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_favorites));
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_favorites));
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_search:
@@ -217,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_search));
-                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_search));
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
         }
@@ -227,6 +242,45 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    private void fetchData() {
+
+        List<CropStreamMessage> listArray = new ArrayList<>();
+
+        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
+                Constants.BEARER,
+                Constants.PERSON_ID,
+                Constants.MAX_EVENT_COUNT);
+
+        parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
+                ApiResultOfFeedEventsModel pj = response.body();
+
+                List<FeedEventItemModel> list = pj.getFeedEventsModel().getFeedEventItemModels();
+//                for (FeedEventItemModel item : Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels()) {
+//                    listArray.add(new CropStreamMessage(
+//                            null, // Picture
+//                            item.getPerson().getPersonFullName(), // Name
+//                            item.getPerson().getOrganizationName(), // Corp name
+//                            null, // Message destination
+//                            item.getDisplayText(), // MessageText
+//                            null, // MessageTime
+//                            null //MessagePicture
+//                    ));
+//                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
+                Log.d("Error: ", t.getMessage());
+                Toast.makeText(MainActivity.this, "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
 

@@ -9,7 +9,7 @@
         android:gravity="center"
         android:hint="@string/hint_toolbar_title"
         android:textAlignment="gravity"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"
         tools:showIn="@layout/layout_toolbar" />
 </layout>
