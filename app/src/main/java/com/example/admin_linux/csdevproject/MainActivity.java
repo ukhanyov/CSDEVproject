@@ -18,6 +18,8 @@ import android.view.animation.AnimationUtils;
 
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         BottomNavigationView.OnNavigationItemSelectedListener,
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // TODO: CorpStream set toolbar name
         // TODO: Chat make toolbar search
         // TODO: Chat make toolbar search separate cancel button (when search is active)
         // TODO: Chat make profile placeholder
@@ -61,9 +62,9 @@ public class MainActivity extends AppCompatActivity implements
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Toolbar
-        Toolbar toolbar = mBinding.toolbar;
+        Toolbar toolbar = mBinding.layoutToolbar.toolbar;
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getString(R.string.cropstream));
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // Bottom navigation
         BottomNavigationView bottomNavigationView = mBinding.bottomNavigation;
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+        // Toolbar title
+        mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_corpstream));
     }
 
     @Override
@@ -178,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_corpstream));
                 break;
 
             case R.id.action_chat:
@@ -186,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentChat);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_chat));
                 break;
 
             case R.id.action_favorites:
@@ -194,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentFavorites);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_favorites));
                 break;
 
             case R.id.action_search:
@@ -202,6 +211,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentSearch);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_search));
                 break;
 
         }

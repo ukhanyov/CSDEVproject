@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,26 +56,17 @@ public class CropStreamFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_corp_stream, container, false);
-        // 1. get a reference to recyclerView
+
+        // Generate dummy data
+        List<CorpStreamMessage> list = GenerateData.generateMessages(rootView.getContext());
+
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
 
-        // 2. set layoutManger
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        // this is data fro recycler view
-        List<CorpStreamMessage> list = new ArrayList<>();
-        list =   GenerateData.generateMessages(rootView.getContext());
-
-        // 3. create an adapter
         CorpStreamAdapter mAdapter = new CorpStreamAdapter(rootView.getContext());
         mAdapter.setCorpStreamMessages(list);
-        // 4. set adapter
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAdapter);
-
-        // 5. set item animator to DefaultAnimator
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         return rootView;
     }

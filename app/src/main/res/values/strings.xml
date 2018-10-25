@@ -30,5 +30,17 @@
     <string name="content_description_message_picture">Message picture</string>
     <string name="content_description_reply_button">Reply button</string>
     <string name="label_start_a_private_chat">Start a private chat</string>
+    <!--list_item_corp_stream.xml strings-->
+
+    <!--Toolbar layout strings-->
+    <string name="hint_toolbar_title">Toolbar Title</string>
+    <!--Toolbar layout strings-->
+
+    <!--Toolbar titles strings-->
+    <string name="title_corpstream">Corpstream</string>
+    <string name="title_chat">Chat</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_search">Search</string>
+    <!--Toolbar titles strings-->
 
 </resources>
