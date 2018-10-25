@@ -2,7 +2,6 @@ package com.example.admin_linux.csdevproject.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -11,7 +10,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.ChatItem;
-import com.example.admin_linux.csdevproject.data.CorpStreamMessage;
+import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +19,10 @@ import java.util.Random;
 
 public class GenerateData {
 
-    public static List<CorpStreamMessage> generateMessages(Context context) {
-        List<CorpStreamMessage> list = new ArrayList<>();
+    public static List<CropStreamMessage> generateMessages(Context context) {
+        List<CropStreamMessage> list = new ArrayList<>();
         for(int i = 0; i < 50; i++){
-            list.add(new CorpStreamMessage(
+            list.add(new CropStreamMessage(
                     randomProfilePicture(context),
                     randomProfileName(),
                     randomProfileCorpName(),

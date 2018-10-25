@@ -44,6 +44,12 @@
     <string name="hint_chat_date">10/20/18</string>
     <string name="hint_chat_name">Name Name</string>
     <string name="label_chat_more_than"><![CDATA[>]]></string>
+    <string name="content_description_search_for">Search for</string>
+    <string name="content_description_cancel_search">Cancel search</string>
+    <string name="content_description_settings">Settings</string>
+    <string name="hint_search">Search</string>
+    <string name="hint_profile_name">Profile Name</string>
+    <string name="content_description_toolbar_chat_profile_picture">Profile picture</string>
     <!--Toolbar titles strings-->
 
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/tv_toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:hint="@string/hint_toolbar_title"
+        android:textAlignment="gravity"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        tools:showIn="@layout/layout_toolbar" />
+</layout>

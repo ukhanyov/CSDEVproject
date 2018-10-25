@@ -3,7 +3,7 @@ package com.example.admin_linux.csdevproject.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class CorpStreamMessage implements Parcelable {
+public class CropStreamMessage implements Parcelable {
 
     private String mProfilePicture;
     private String mProfileName;
@@ -13,7 +13,7 @@ public class CorpStreamMessage implements Parcelable {
     private String mMessageTime;
     private String mMessagePicture;
 
-    public CorpStreamMessage(
+    public CropStreamMessage(
             String profilePicture,
             String profileName,
             String profileCorpName,
@@ -88,7 +88,7 @@ public class CorpStreamMessage implements Parcelable {
     }
 
     // Parcelling part
-    public CorpStreamMessage(Parcel in) {
+    public CropStreamMessage(Parcel in) {
         String[] data = new String[7];
         in.readStringArray(data);
 
@@ -120,12 +120,12 @@ public class CorpStreamMessage implements Parcelable {
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public CorpStreamMessage createFromParcel(Parcel in) {
-            return new CorpStreamMessage(in);
+        public CropStreamMessage createFromParcel(Parcel in) {
+            return new CropStreamMessage(in);
         }
 
-        public CorpStreamMessage[] newArray(int size) {
-            return new CorpStreamMessage[size];
+        public CropStreamMessage[] newArray(int size) {
+            return new CropStreamMessage[size];
         }
     };
 }

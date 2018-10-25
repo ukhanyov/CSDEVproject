@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.admin_linux.csdevproject.data.CorpStreamMessage;
+import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.utils.ImageHelper;
 
 import java.util.List;
 
-public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.CorpStreamViewHolder> {
+public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<CorpStreamMessage> mList;
+    private List<CropStreamMessage> mList;
 
-    public CorpStreamAdapter(Context context) {
+    public CropStreamAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
@@ -35,7 +35,7 @@ public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.Co
     public void onBindViewHolder(@NonNull CorpStreamViewHolder holder, int i) {
         if (mList != null) {
 
-            CorpStreamMessage current = mList.get(i);
+            CropStreamMessage current = mList.get(i);
 
             // TODO: Look into performance
 
@@ -59,7 +59,7 @@ public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.Co
         else return 0;
     }
 
-    public void setCorpStreamMessages(List<CorpStreamMessage> list) {
+    public void setCorpStreamMessages(List<CropStreamMessage> list) {
         this.mList = list;
         notifyDataSetChanged();
     }

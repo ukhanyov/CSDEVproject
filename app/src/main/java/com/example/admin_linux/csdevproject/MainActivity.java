@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements
         // TODO: Chat make toolbar search separate cancel button (when search is active)
 
         // TODO: Chat make settings cog
+        // TODO: Chat add settings screen
         // TODO: Favorites make toolbar name
         // TODO: Favorites make tabs
         // TODO: Favorites mock mechanism to add tabs
@@ -97,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         // Toolbar title
-        mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+        mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+        mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -182,7 +184,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_chat:
@@ -192,7 +195,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_chat));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_chat));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_favorites:
@@ -202,7 +206,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_favorites));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_favorites));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_search:
@@ -212,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.tvToolbarTitle.setText(getString(R.string.title_search));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setText(getString(R.string.title_search));
+                mBinding.layoutToolbar.contentCorpStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
         }
@@ -221,6 +227,10 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    private void clearViewsFromToolbar(){
 
     }
 }
