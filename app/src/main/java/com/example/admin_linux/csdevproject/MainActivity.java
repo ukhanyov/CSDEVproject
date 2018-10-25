@@ -3,6 +3,7 @@ package com.example.admin_linux.csdevproject;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.FeedEvent;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements
     // Fragment stuff
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
+    private List<CropStreamMessage> feedList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +107,9 @@ public class MainActivity extends AppCompatActivity implements
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
 
+        feedList = new ArrayList<>();
         fetchData();
 
-        // Start activity with CropStreamFragment
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        CropStreamFragment fragmentCropStream = new CropStreamFragment();
-        fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -260,18 +258,29 @@ public class MainActivity extends AppCompatActivity implements
             public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
                 ApiResultOfFeedEventsModel pj = response.body();
 
-                List<FeedEventItemModel> list = pj.getFeedEventsModel().getFeedEventItemModels();
-//                for (FeedEventItemModel item : Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels()) {
-//                    listArray.add(new CropStreamMessage(
-//                            null, // Picture
-//                            item.getPerson().getPersonFullName(), // Name
-//                            item.getPerson().getOrganizationName(), // Corp name
-//                            null, // Message destination
-//                            item.getDisplayText(), // MessageText
-//                            null, // MessageTime
-//                            null //MessagePicture
-//                    ));
-//                }
+                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
+                for(FeedEventItemModel item : list){
+                    feedList.add(new CropStreamMessage(
+                            item.getPerson().getIconPath(),
+                            item.getPerson().getPersonFullName(),
+                            item.getPerson().getOrganizationName(),
+                            "you",
+                            "",
+                            item.getOnDate(),
+                            ""));
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("array", (ArrayList<? extends Parcelable>) feedList);
+
+                // Start activity with CropStreamFragment
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                CropStreamFragment fragmentCropStream = new CropStreamFragment();
+                fragmentCropStream.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
 
             @Override

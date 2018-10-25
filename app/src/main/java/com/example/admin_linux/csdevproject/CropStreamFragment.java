@@ -16,6 +16,7 @@ import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.GenerateData;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class CropStreamFragment extends Fragment {
@@ -55,17 +56,14 @@ public class CropStreamFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
 
-        // Generate dummy data
-        List<CropStreamMessage> list = GenerateData.generateMessages(rootView.getContext());
+        List<CropStreamMessage> dataArray = Objects.requireNonNull(getArguments()).getParcelableArrayList("array");
+        final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
+        mAdapter.setCorpStreamMessages(dataArray);
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
-
-
-
-        CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
-        mAdapter.setCorpStreamMessages(list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         return rootView;
     }

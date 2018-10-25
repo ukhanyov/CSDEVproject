@@ -54,7 +54,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
         android:gravity="center"
-        android:text="."
+        android:text="@string/dot"
         android:textAlignment="gravity"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
@@ -94,13 +94,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="8dp"
         android:hint="@string/hint_reply_target"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_text_message"
         app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_replied_to_label"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_name" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/list_item_tv_text_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -129,6 +129,7 @@
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_text_message" />
 
     <ImageButton
+        android:visibility="gone"
         android:id="@+id/list_item_ib_start_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -142,6 +143,7 @@
         app:srcCompat="@drawable/ic_chat_bubble_outline_green" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/list_item_tv_start_shat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

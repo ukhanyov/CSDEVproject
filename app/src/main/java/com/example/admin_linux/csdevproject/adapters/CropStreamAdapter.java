@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.utils.ImageHelper;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
@@ -37,19 +40,37 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             CropStreamMessage current = mList.get(i);
 
-            // TODO: Look into performance
-
             // Bind views
-            holder.ivProfilePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getProfilePicture()));
-            holder.tvProfileName.setText(current.getProfileName());
-            if(current.getProfileCorpName() != null) holder.tvProfileCorp.setText(current.getProfileCorpName());
+            holder.ivProfilePicture.setBackground(loadImageFromWebOperations(current.getProfilePicture()));
+
+            if(current.getProfileCorpName() != null) {
+                holder.tvProfileCorp.setText(current.getProfileCorpName());
+                holder.tvProfileName.setVisibility(View.GONE);
+            }
+            else {
+                holder.tvProfileName.setText(current.getProfileName());
+                holder.tvProfileName.setVisibility(View.VISIBLE);
+            }
+
             holder.tvMessageDestination.setText(current.getMessageDestination());
+
             holder.tvMessageText.setText(current.getMessageText());
+
             holder.tvMessageTime.setText(current.getMessageTime());
+
             if(current.getMessagePicture() != null) holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
+        }
+    }
+
+    public static Drawable loadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            return Drawable.createFromStream(is, null);
+        } catch (Exception e) {
+            return null;
         }
     }
 

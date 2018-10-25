@@ -9,7 +9,7 @@ public class Constants {
     public static final int PERSON_ID = 3446;
 
     public static final int LAST_SERVER_TIME_MINUTES = 10;
-    public static final int MAX_EVENT_COUNT = 10;
+    public static final int MAX_EVENT_COUNT = 100;
     public static final String START_DATE_UTC = "10/01/2018"; //TODO : change this
     public static final int ORGANIZATION_ID = 0;
     public static final int USER_ID = 1;

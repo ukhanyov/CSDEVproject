@@ -136,9 +136,9 @@ public class FeedEventItemModel {
 //        return catalogEntryItemTemplateId;
 //    }
 
-//    public FeedEventItemModelSDateTimeOffset getOnDate() {
-//        return onDate;
-//    }
+    public String getOnDate() {
+        return onDate;
+    }
 
 //    public FeedEventItemModelFeedEventTypeTypes getFeedType() {
 //        return feedType;
@@ -170,5 +170,14 @@ public class FeedEventItemModel {
 
     public boolean isConversationFirstMessage() {
         return conversationFirstMessage;
+    }
+
+    public String returnInvolvedPersons(List<FeedEventItemModelFeedEventPersonModel> list){
+        StringBuilder sb = new StringBuilder();
+        for(FeedEventItemModelFeedEventPersonModel person : list){
+            sb.append(person.getPersonFullName());
+            sb.append(", ");
+        }
+        return null;
     }
 }

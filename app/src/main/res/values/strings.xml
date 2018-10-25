@@ -50,6 +50,7 @@
     <string name="hint_search">Search</string>
     <string name="hint_profile_name">Profile Name</string>
     <string name="content_description_toolbar_chat_profile_picture">Profile picture</string>
+    <string name="dot">⦁</string>
     <!--Toolbar titles strings-->
 
 </resources>
