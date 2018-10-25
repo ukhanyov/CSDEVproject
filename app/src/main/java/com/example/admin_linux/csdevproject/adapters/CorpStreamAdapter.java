@@ -37,6 +37,8 @@ public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.Co
 
             CorpStreamMessage current = mList.get(i);
 
+            // TODO: Look into performance
+
             // Bind views
             holder.ivProfilePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getProfilePicture()));
             holder.tvProfileName.setText(current.getProfileName());
@@ -44,7 +46,7 @@ public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.Co
             holder.tvMessageDestination.setText(current.getMessageDestination());
             holder.tvMessageText.setText(current.getMessageText());
             holder.tvMessageTime.setText(current.getMessageTime());
-            if(current.getMessagePicture() != null)holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
+            if(current.getMessagePicture() != null) holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
@@ -63,7 +65,7 @@ public class CorpStreamAdapter extends RecyclerView.Adapter<CorpStreamAdapter.Co
     }
 
 
-    public class CorpStreamViewHolder extends RecyclerView.ViewHolder {
+    class CorpStreamViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfilePicture;
         TextView tvProfileName;
