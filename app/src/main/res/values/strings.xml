@@ -41,6 +41,9 @@
     <string name="title_chat">Chat</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_search">Search</string>
+    <string name="hint_chat_date">10/20/18</string>
+    <string name="hint_chat_name">Name Name</string>
+    <string name="label_chat_more_than"><![CDATA[>]]></string>
     <!--Toolbar titles strings-->
 
 </resources>
