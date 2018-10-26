@@ -3,20 +3,33 @@ package com.example.admin_linux.csdevproject;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
+import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
+import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
+import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.GenerateData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class CropStreamFragment extends Fragment {
@@ -56,14 +69,12 @@ public class CropStreamFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
 
-        List<CropStreamMessage> dataArray = Objects.requireNonNull(getArguments()).getParcelableArrayList("array");
+        //List<CropStreamMessage> dataArray = Objects.requireNonNull(getArguments()).getParcelableArrayList("array");
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
-        mAdapter.setCorpStreamMessages(dataArray);
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        fetchData(rootView.getContext(), recyclerView, mAdapter);
 
         return rootView;
     }
@@ -89,6 +100,47 @@ public class CropStreamFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void fetchData(Context context, RecyclerView recyclerView, CropStreamAdapter mAdapter) {
+
+        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
+                Constants.BEARER,
+                Constants.PERSON_ID,
+                Constants.MAX_EVENT_COUNT);
+
+        parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
+                ApiResultOfFeedEventsModel pj = response.body();
+                List<CropStreamMessage> listArray = new ArrayList<>();
+                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
+                for(FeedEventItemModel item : list) {
+                    listArray.add(new CropStreamMessage(
+                            item.getPerson().getIconPath(),
+                            item.getPerson().getPersonFullName(),
+                            item.getPerson().getOrganizationName(),
+                            "you",
+                            "",
+                            item.getOnDate(),
+                            ""));
+                }
+
+                // Setup list of data to an rv
+                mAdapter.setCorpStreamMessages(listArray);
+                recyclerView.setAdapter(mAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
+                Log.d("Error: ", t.getMessage());
+                Toast.makeText(getContext(), "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
 
     public interface OnFragmentInteractionListener {

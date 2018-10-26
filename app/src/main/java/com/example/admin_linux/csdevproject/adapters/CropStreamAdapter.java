@@ -1,9 +1,9 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +12,10 @@ import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.R;
+import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.ImageHelper;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,11 +49,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .into(holder.ivProfilePicture);
 
-            if(current.getProfileCorpName() != null) {
+            if (current.getProfileCorpName() != null) {
                 holder.tvProfileCorp.setText(current.getProfileCorpName());
                 holder.tvProfileName.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.tvProfileName.setText(current.getProfileName());
                 holder.tvProfileName.setVisibility(View.VISIBLE);
             }
@@ -63,9 +61,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             holder.tvMessageText.setText(current.getMessageText());
 
-            holder.tvMessageTime.setText(current.getMessageTime());
+            holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
 
-            if(current.getMessagePicture() != null) holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
+
+            if (current.getMessagePicture() != null)
+                holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");

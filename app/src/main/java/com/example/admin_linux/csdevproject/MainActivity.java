@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
-    private List<CropStreamMessage> feedList;
+    //private List<CropStreamMessage> feedList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +107,16 @@ public class MainActivity extends AppCompatActivity implements
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
 
-        feedList = new ArrayList<>();
-        fetchData();
+        //feedList = new ArrayList<>();
+        //fetchData();
+
+        // Start activity with CropStreamFragment
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        CropStreamFragment fragmentCropStream = new CropStreamFragment();
+        fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
@@ -240,54 +248,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    private void fetchData() {
-
-        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
-                Constants.BEARER,
-                Constants.PERSON_ID,
-                Constants.MAX_EVENT_COUNT);
-
-        parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
-            @Override
-            public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
-                ApiResultOfFeedEventsModel pj = response.body();
-        List<CropStreamMessage> listArray = new ArrayList<>();
-                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
-                for(FeedEventItemModel item : list){
-                    feedList.add(new CropStreamMessage(
-                            item.getPerson().getIconPath(),
-                            item.getPerson().getPersonFullName(),
-                            item.getPerson().getOrganizationName(),
-                            "you",
-                            "",
-                            item.getOnDate(),
-                            ""));
-                }
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("array", (ArrayList<? extends Parcelable>) feedList);
-
-                // Start activity with CropStreamFragment
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                CropStreamFragment fragmentCropStream = new CropStreamFragment();
-                fragmentCropStream.setArguments(bundle);
-                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
-                Log.d("Error: ", t.getMessage());
-                Toast.makeText(MainActivity.this, "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
     }
 
