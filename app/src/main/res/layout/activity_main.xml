@@ -166,7 +166,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:itemBackground="@color/white"
-            app:itemIconTint="@color/grey"
             app:itemTextColor="@color/grey"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"

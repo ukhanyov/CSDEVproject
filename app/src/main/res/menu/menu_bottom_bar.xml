@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_cropstream"
         android:enabled="true"
-        android:icon="@drawable/ic_one"
+        android:icon="@drawable/ic_crop_stream"
         android:title="@string/cropstream"
         app:showAsAction="ifRoom|withText" />
 

@@ -3,13 +3,9 @@ package com.example.admin_linux.csdevproject.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class CropStreamMessage implements Parcelable {
 
-    private String mProfilePicture;
+    private String mPicture;
     private String mProfileName;
     private String mProfileCorpName;
     private String mMessageText;
@@ -30,7 +26,7 @@ public class CropStreamMessage implements Parcelable {
             String involvedPersonsNames,
             String personsCorp) {
 
-        this.mProfilePicture = profilePicture;
+        this.mPicture = profilePicture;
         this.mProfileName = profileName;
         this.mProfileCorpName = profileCorpName;
         this.mMessageText = messageText;
@@ -42,11 +38,11 @@ public class CropStreamMessage implements Parcelable {
     }
 
     public String getProfilePicture() {
-        return mProfilePicture;
+        return mPicture;
     }
 
     public void setProfilePicture(String mProfilePicture) {
-        this.mProfilePicture = mProfilePicture;
+        this.mPicture = mProfilePicture;
     }
 
     public String getProfileName() {
@@ -118,7 +114,7 @@ public class CropStreamMessage implements Parcelable {
         String[] data = new String[9];
         in.readStringArray(data);
 
-        this.mProfilePicture = data[0];
+        this.mPicture = data[0];
         this.mProfileName = data[1];
         this.mProfileCorpName = data[2];
         this.mMessageText = data[3];
@@ -138,7 +134,7 @@ public class CropStreamMessage implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[]{
-                this.mProfilePicture,
+                this.mPicture,
                 this.mProfileName,
                 this.mProfileCorpName,
                 this.mMessageText,

@@ -140,11 +140,18 @@ public class CropStreamFragment extends Fragment {
                     }
 
                     String corpName;
-                    if(item.getOrganization() != null) corpName = item.getOrganization().getOrganizationName();
-                    else corpName = null;
+                    String pictureUrl;
+                    if(item.getOrganization() != null) {
+                        corpName = item.getOrganization().getOrganizationName();
+                        pictureUrl = item.getOrganization().getImageUrl();
+                    }
+                    else {
+                        corpName = null;
+                        pictureUrl = item.getPerson().getIconPath();
+                    }
 
                     listArray.add(new CropStreamMessage(
-                            item.getPerson().getIconPath(),
+                            pictureUrl,
                             item.getPerson().getPersonFullName(),
                             corpName,
                             "",
