@@ -3,7 +3,6 @@ package com.example.admin_linux.csdevproject.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,15 +56,17 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 holder.tvProfileName.setVisibility(View.VISIBLE);
             }
 
-            holder.tvMessageDestination.setText(current.getMessageDestination());
+            holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
 
             holder.tvMessageText.setText(current.getMessageText());
 
             holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
 
+            if (current.getMessagePicture() != null) holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
 
-            if (current.getMessagePicture() != null)
-                holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
+            if(current.getConversationFirstMessage()) holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
+            else holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
+
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
@@ -89,10 +90,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         ImageView ivProfilePicture;
         TextView tvProfileName;
         TextView tvProfileCorp;
-        TextView tvMessageDestination;
+        TextView tvInvolvedPersons;
         TextView tvMessageText;
         TextView tvMessageTime;
         ImageView ivMessagePicture;
+        TextView tvTypeOfConversation;
 
 
         CorpStreamViewHolder(@NonNull View itemView) {
@@ -101,10 +103,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             ivProfilePicture = itemView.findViewById(R.id.list_item_iv_profile_picture);
             tvProfileName = itemView.findViewById(R.id.list_item_tv_profile_name);
             tvProfileCorp = itemView.findViewById(R.id.list_item_tv_profile_company);
-            tvMessageDestination = itemView.findViewById(R.id.list_item_tv_profile_replied_to_target_of_reply);
+            tvInvolvedPersons = itemView.findViewById(R.id.list_item_tv_profile_replied_to_target_of_reply);
             tvMessageText = itemView.findViewById(R.id.list_item_tv_text_message);
             tvMessageTime = itemView.findViewById(R.id.list_item_tv_profile_time);
             ivMessagePicture = itemView.findViewById(R.id.list_item_iv_message_image);
+            tvTypeOfConversation = itemView.findViewById(R.id.list_item_tv_profile_replied_to_label);
         }
     }
 }

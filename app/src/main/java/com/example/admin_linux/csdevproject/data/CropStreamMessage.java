@@ -3,32 +3,39 @@ package com.example.admin_linux.csdevproject.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class CropStreamMessage implements Parcelable {
 
     private String mProfilePicture;
     private String mProfileName;
     private String mProfileCorpName;
-    private String mMessageDestination;
     private String mMessageText;
     private String mMessageTime;
     private String mMessagePicture;
+    private boolean mConversationFirstMessage;
+    private String mInvolvedPersonsNames;
 
     public CropStreamMessage(
             String profilePicture,
             String profileName,
             String profileCorpName,
-            String messageDestination,
             String messageText,
             String messageTime,
-            String messagePicture) {
+            String messagePicture,
+            boolean conversationFirstMessage,
+            String involvedPersonsNames) {
 
         this.mProfilePicture = profilePicture;
         this.mProfileName = profileName;
         this.mProfileCorpName = profileCorpName;
-        this.mMessageDestination = messageDestination;
         this.mMessageText = messageText;
         this.mMessageTime = messageTime;
         this.mMessagePicture = messagePicture;
+        this.mConversationFirstMessage = conversationFirstMessage;
+        this.mInvolvedPersonsNames = involvedPersonsNames;
     }
 
     public String getProfilePicture() {
@@ -55,14 +62,6 @@ public class CropStreamMessage implements Parcelable {
         this.mProfileCorpName = mProfileCorpName;
     }
 
-    public String getMessageDestination() {
-        return mMessageDestination;
-    }
-
-    public void setMessageDestination(String mMessageDestination) {
-        this.mMessageDestination = mMessageDestination;
-    }
-
     public String getMessageText() {
         return mMessageText;
     }
@@ -87,18 +86,36 @@ public class CropStreamMessage implements Parcelable {
         this.mMessagePicture = mMessagePicture;
     }
 
+    public boolean getConversationFirstMessage() {
+        return mConversationFirstMessage;
+    }
+
+    public void setConversationFirstMessage(boolean mConversationFirstMessage) {
+        this.mConversationFirstMessage = mConversationFirstMessage;
+    }
+
+    public String getInvolvedPersonsNames() {
+        return mInvolvedPersonsNames;
+    }
+
+    public void setInvolvedPersonsNames(String mInvolvedPersonsNames) {
+        this.mInvolvedPersonsNames = mInvolvedPersonsNames;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[7];
+        String[] data = new String[8];
         in.readStringArray(data);
 
         this.mProfilePicture = data[0];
         this.mProfileName = data[1];
         this.mProfileCorpName = data[2];
-        this.mMessageDestination = data[3];
-        this.mMessageText = data[4];
-        this.mMessageTime = data[5];
-        this.mMessagePicture = data[6];
+        this.mMessageText = data[3];
+        this.mMessageTime = data[4];
+        this.mMessagePicture = data[5];
+        this.mConversationFirstMessage = Boolean.getBoolean(data[6]);
+        this.mInvolvedPersonsNames = data[7];
+
     }
 
     @Override
@@ -112,10 +129,11 @@ public class CropStreamMessage implements Parcelable {
                 this.mProfilePicture,
                 this.mProfileName,
                 this.mProfileCorpName,
-                this.mMessageDestination,
                 this.mMessageText,
                 this.mMessageTime,
-                this.mMessagePicture
+                this.mMessagePicture,
+                String.valueOf(this.mConversationFirstMessage),
+                this.mInvolvedPersonsNames
         });
     }
 

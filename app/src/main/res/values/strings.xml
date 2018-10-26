@@ -51,6 +51,8 @@
     <string name="hint_profile_name">Profile Name</string>
     <string name="content_description_toolbar_chat_profile_picture">Profile picture</string>
     <string name="dot">⦁</string>
+    <string name="started_chat_with">started a chat with</string>
+    <string name="replied_to_chat_with">replied to a chat with</string>
     <!--Toolbar titles strings-->
 
 </resources>

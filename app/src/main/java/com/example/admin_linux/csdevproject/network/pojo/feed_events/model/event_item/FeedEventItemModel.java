@@ -1,10 +1,9 @@
 package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item;
 
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelFeedEventPersonModel;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelFeedImage;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelOrganization;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelPerson;
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelSDateTimeOffset;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -70,7 +69,7 @@ public class FeedEventItemModel {
 
     @SerializedName("InvolvedPersons")
     @Expose
-    private List<FeedEventItemModelFeedEventPersonModel> involvedPersons;
+    private List<FEIMInvolvedPerson> involvedPersons;
 
 //    @SerializedName("Comments")
 //    @Expose
@@ -148,7 +147,7 @@ public class FeedEventItemModel {
 //        return activityCropShortInfo;
 //    }
 
-    public List<FeedEventItemModelFeedEventPersonModel> getInvolvedPersons() {
+    public List<FEIMInvolvedPerson> getInvolvedPersons() {
         return involvedPersons;
     }
 
@@ -172,9 +171,9 @@ public class FeedEventItemModel {
         return conversationFirstMessage;
     }
 
-    public String returnInvolvedPersons(List<FeedEventItemModelFeedEventPersonModel> list){
+    public String returnInvolvedPersons(List<FEIMInvolvedPerson> list){
         StringBuilder sb = new StringBuilder();
-        for(FeedEventItemModelFeedEventPersonModel person : list){
+        for(FEIMInvolvedPerson person : list){
             sb.append(person.getPersonFullName());
             sb.append(", ");
         }

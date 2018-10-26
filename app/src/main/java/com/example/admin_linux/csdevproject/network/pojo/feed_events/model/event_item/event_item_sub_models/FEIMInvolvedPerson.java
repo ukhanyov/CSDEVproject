@@ -3,7 +3,7 @@ package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.even
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FeedEventItemModelFeedEventPersonModel {
+public class FEIMInvolvedPerson {
 
     @SerializedName("PersonId")
     @Expose

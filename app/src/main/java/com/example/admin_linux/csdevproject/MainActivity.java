@@ -3,7 +3,6 @@ package com.example.admin_linux.csdevproject;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -16,24 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Toast;
 
-import com.example.admin_linux.csdevproject.data.CropStreamMessage;
-import com.example.admin_linux.csdevproject.data.FeedEvent;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
-import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
-import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
-import com.example.admin_linux.csdevproject.utils.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,

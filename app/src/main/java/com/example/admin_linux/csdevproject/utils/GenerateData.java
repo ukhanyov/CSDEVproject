@@ -19,21 +19,21 @@ import java.util.Random;
 
 public class GenerateData {
 
-    public static List<CropStreamMessage> generateMessages(Context context) {
-        List<CropStreamMessage> list = new ArrayList<>();
-        for(int i = 0; i < 50; i++){
-            list.add(new CropStreamMessage(
-                    randomProfilePicture(context),
-                    randomProfileName(),
-                    randomProfileCorpName(),
-                    randomMessageDestination(),
-                    randomMessageText(),
-                    randomMessageTime(),
-                    randomMessagePicture(context)
-            ));
-        }
-        return list;
-    }
+//    public static List<CropStreamMessage> generateMessages(Context context) {
+//        List<CropStreamMessage> list = new ArrayList<>();
+//        for(int i = 0; i < 50; i++){
+//            list.add(new CropStreamMessage(
+//                    randomProfilePicture(context),
+//                    randomProfileName(),
+//                    randomProfileCorpName(),
+//                    randomMessageDestination(),
+//                    randomMessageText(),
+//                    randomMessageTime(),
+//                    randomMessagePicture(context)
+//            ));
+//        }
+//        return list;
+//    }
 
     public static List<ChatItem> generateChatItems(Context context){
         List<ChatItem> list = new ArrayList<>();

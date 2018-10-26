@@ -49,11 +49,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="@string/dot"
+        android:text="."
         android:textAlignment="gravity"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
@@ -87,14 +86,19 @@
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_name" />
 
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/list_item_tv_profile_replied_to_target_of_reply"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
         android:hint="@string/hint_reply_target"
+        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_text_message"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_replied_to_label"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_name" />
 

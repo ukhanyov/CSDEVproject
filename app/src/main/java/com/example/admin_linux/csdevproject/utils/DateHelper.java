@@ -7,7 +7,10 @@ import java.util.Calendar;
 public class DateHelper {
     public static String normalizeDate(String inputDate){
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", java.util.Locale.getDefault());
+        // Original, but crashes on phone
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", java.util.Locale.getDefault());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", java.util.Locale.getDefault());
         try {
             calendar.setTime(sdf.parse(inputDate));
 

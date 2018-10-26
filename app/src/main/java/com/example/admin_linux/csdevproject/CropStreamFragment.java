@@ -3,7 +3,6 @@ package com.example.admin_linux.csdevproject;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,10 +17,10 @@ import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
-import com.example.admin_linux.csdevproject.utils.GenerateData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,14 +116,39 @@ public class CropStreamFragment extends Fragment {
                 List<CropStreamMessage> listArray = new ArrayList<>();
                 List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
                 for(FeedEventItemModel item : list) {
+
+                    List<FEIMInvolvedPerson> involvedPeople = new ArrayList<>();
+                    involvedPeople = item.getInvolvedPersons();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    int iterator = 0;
+                    if(involvedPeople != null){
+                        for(FEIMInvolvedPerson person : involvedPeople){
+                            if(person.getPersonId() == Constants.PERSON_ID){
+                                stringBuilder.append("you");
+                            }else {
+                                stringBuilder.append(person.getPersonFullName());
+                            }
+                            iterator++;
+                            if(iterator < involvedPeople.size() - 2){
+                                stringBuilder.append(", ");
+                            }else {
+                                break;
+                            }
+                        }
+                    } else {
+                        stringBuilder.append("you");
+                    }
+
                     listArray.add(new CropStreamMessage(
                             item.getPerson().getIconPath(),
                             item.getPerson().getPersonFullName(),
                             item.getPerson().getOrganizationName(),
-                            "you",
                             "",
                             item.getOnDate(),
-                            ""));
+                            "",
+                            item.isConversationFirstMessage(),
+                            stringBuilder.toString()
+                    ));
                 }
 
                 // Setup list of data to an rv
