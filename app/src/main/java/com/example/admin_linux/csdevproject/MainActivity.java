@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Bottom navigation
         BottomNavigationView bottomNavigationView = mBinding.bottomNavigation;
-
+        bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         // FAB init
