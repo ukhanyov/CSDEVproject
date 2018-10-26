@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/content_description_profile_picture"
@@ -19,6 +19,7 @@
         app:srcCompat="@drawable/ic_one" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,14 +27,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
         android:hint="@string/hint_name_name"
-        android:textColor="@color/black"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_label"
         app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_company"
         app:layout_constraintStart_toEndOf="@+id/list_item_iv_profile_picture"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_profile_company"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,6 +48,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TextViewDot"
         android:id="@+id/list_item_tv_profile_point_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,19 +56,18 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="."
+        android:text="@string/simple_dot"
         android:textAlignment="gravity"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
         app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_company"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_profile_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
         android:hint="@string/hint_time_hint"
@@ -77,35 +77,37 @@
 
     <TextView
         android:id="@+id/list_item_tv_profile_replied_to_label"
+        style="@style/TextViewGeneral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="8dp"
         android:text="@string/label_replied_to_a_chat_with"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_text_message"
+        app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
         app:layout_constraintStart_toEndOf="@+id/list_item_iv_profile_picture"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_name" />
 
     <TextView
-        android:textColor="@color/black"
         android:id="@+id/list_item_tv_profile_replied_to_target_of_reply"
+        style="@style/TextViewGeneral"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:hint="@string/hint_reply_target"
         android:maxLines="1"
         android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/list_item_tv_text_message"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_replied_to_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_replied_to_label"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_name" />
+        app:layout_constraintTop_toTopOf="@+id/list_item_tv_profile_replied_to_label" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:visibility="gone"
         android:id="@+id/list_item_tv_text_message"
         android:layout_width="0dp"
@@ -140,7 +142,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/white"
         android:contentDescription="@string/content_description_reply_button"
@@ -149,12 +150,12 @@
         app:srcCompat="@drawable/ic_chat_bubble_outline_green" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:visibility="gone"
         android:id="@+id/list_item_tv_start_shat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/label_start_a_private_chat"
         app:layout_constraintStart_toEndOf="@+id/list_item_ib_start_chat"

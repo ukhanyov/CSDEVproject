@@ -21,4 +21,27 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="TextViewFABTitle">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/ic_fab_text_square</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/cagliostro</item>
+    </style>
+
+    <style name="TextViewGeneral">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/cairo</item>
+    </style>
+
+    <style name="TextViewDot" parent="TextViewGeneral">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

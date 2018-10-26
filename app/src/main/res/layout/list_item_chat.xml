@@ -23,6 +23,7 @@
         app:srcCompat="@drawable/ic_dummy_default" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_chat_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -39,6 +40,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_chat_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,6 +50,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_chat_label_more_than"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,6 +62,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_chat_message_sneak_pick"
         android:layout_width="0dp"
         android:layout_height="0dp"

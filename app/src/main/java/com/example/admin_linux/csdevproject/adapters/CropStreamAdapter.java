@@ -57,9 +57,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             } else {
                 holder.tvProfileCorp.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 holder.tvProfileCorp.setTextColor(mContext.getColor(R.color.grey));
-                holder.tvProfileName.setText(current.getProfileName());
-                holder.tvProfileName.setVisibility(View.VISIBLE);
                 holder.tvProfileCorp.setText(current.getPersonsCorp());
+                holder.tvProfileName.setText(current.getProfileName());
+                holder.tvProfileName.setTypeface(Typeface.DEFAULT_BOLD);
+                holder.tvProfileName.setTextColor(mContext.getColor(R.color.black));
+                holder.tvProfileName.setVisibility(View.VISIBLE);
             }
 
             holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
