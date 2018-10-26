@@ -7,31 +7,33 @@
 
     <ImageView
         android:id="@+id/list_item_iv_profile_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/content_description_profile_picture"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_replied_to_label"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_one" />
 
     <TextView
-        android:maxLines="1"
-        android:singleLine="true"
-        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_profile_name"
+        style="@style/TextViewGeneral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
         android:hint="@string/hint_name_name"
+        android:maxLines="1"
+        android:singleLine="true"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_label"
         app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_company"
-        app:layout_constraintStart_toEndOf="@+id/list_item_iv_profile_picture"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -94,7 +96,7 @@
         android:text="@string/label_replied_to_a_chat_with"
         app:layout_constraintBottom_toTopOf="@+id/list_item_tv_text_message"
         app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
-        app:layout_constraintStart_toEndOf="@+id/list_item_iv_profile_picture"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_name" />
 
     <TextView
@@ -175,6 +177,13 @@
         android:layout_height="8dp"
         android:background="@color/light_gray"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -1,9 +1,18 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +24,13 @@ import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.ImageHelper;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,10 +59,52 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             CropStreamMessage current = mList.get(i);
 
             // Bind views
-            Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
-                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                    .into(holder.ivProfilePicture);
+            if (current.getCombineImage()) {
+                try {
+                    // TODO: put into async task
+                    URL url1;
+                    URL url2;
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                    StrictMode.setThreadPolicy(policy);
+
+                    url1 = new URL(current.getCombineImageUrlFirst());
+                    HttpURLConnection connection1 = (HttpURLConnection) url1.openConnection();
+                    connection1.setDoInput(true);
+                    connection1.connect();
+                    InputStream input1 = connection1.getInputStream();
+                    Bitmap myBitmap1 = BitmapFactory.decodeStream(input1);
+
+                    url2 = new URL(current.getCombineImageUrlSecond());
+                    HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
+                    connection2.setDoInput(true);
+                    connection2.connect();
+                    InputStream input2 = connection2.getInputStream();
+                    Bitmap myBitmap2 = BitmapFactory.decodeStream(input2);
+
+                    Bitmap mergedBitmap;
+                    int w, h;
+                    h = myBitmap1.getHeight() + myBitmap2.getHeight();
+
+                    if (myBitmap1.getWidth() > myBitmap2.getWidth()) w = myBitmap1.getWidth();
+                    else w = myBitmap2.getWidth();
+
+                    mergedBitmap = Bitmap.createBitmap(2*w, h, Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(mergedBitmap);
+                    canvas.drawBitmap(myBitmap1, 0f, 0f, null);
+                    canvas.drawBitmap(myBitmap2, myBitmap1.getWidth()/2, myBitmap1.getHeight()/2, null);
+
+                    holder.ivProfilePicture.setImageDrawable(new BitmapDrawable(mContext.getResources(), mergedBitmap));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
+                        .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
+                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                        .into(holder.ivProfilePicture);
+            }
 
             if (current.getProfileCorpName() != null) {
                 holder.tvProfileCorp.setText(current.getProfileCorpName());
@@ -70,10 +127,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
 
-            if (current.getMessagePicture() != null) holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
+            if (current.getMessagePicture() != null)
+                holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
 
-            if(current.getConversationFirstMessage()) holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
-            else holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
+            if (current.getConversationFirstMessage())
+                holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
+            else
+                holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
 
 
         } else {

@@ -117,16 +117,21 @@ public class CropStreamFragment extends Fragment {
                 List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
                 for(FeedEventItemModel item : list) {
 
-                    List<FEIMInvolvedPerson> involvedPeople = new ArrayList<>();
+                    List<FEIMInvolvedPerson> involvedPeople;
                     involvedPeople = item.getInvolvedPersons();
                     StringBuilder stringBuilder = new StringBuilder();
                     int iterator = 0;
+                    boolean combineImage = false;
+                    String imageFirst = null;
+                    String imageSecond = null;
+
                     if(involvedPeople != null){
                         for(FEIMInvolvedPerson person : involvedPeople){
                             if(person.getPersonId() == Constants.PERSON_ID){
                                 stringBuilder.append("you");
                             }else {
                                 stringBuilder.append(person.getPersonFullName());
+                                combineImage = true;
                             }
                             iterator++;
                             if(iterator < involvedPeople.size() - 2){
@@ -135,6 +140,10 @@ public class CropStreamFragment extends Fragment {
                                 break;
                             }
                         }
+
+                        imageFirst = involvedPeople.get(0).getIconPath();
+                        imageSecond = involvedPeople.get(1).getIconPath();
+
                     } else {
                         stringBuilder.append("you");
                     }
@@ -159,7 +168,10 @@ public class CropStreamFragment extends Fragment {
                             "",
                             item.isConversationFirstMessage(),
                             stringBuilder.toString(),
-                            item.getPerson().getOrganizationName()
+                            item.getPerson().getOrganizationName(),
+                            combineImage,
+                            imageFirst,
+                            imageSecond
                     ));
                 }
 

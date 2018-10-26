@@ -4,7 +4,7 @@ import com.example.admin_linux.csdevproject.network.pojo.CoordinatesModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FeedEventItemModelActivityCropShortInfoModel {
+public class FEIMActivityCropShortInfoModel {
 
     @SerializedName("CropId")
     @Expose

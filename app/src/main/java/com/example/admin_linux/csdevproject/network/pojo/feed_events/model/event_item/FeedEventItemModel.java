@@ -1,8 +1,8 @@
 package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item;
 
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelFeedImage;
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelOrganization;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMFeedImage;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMlOrganization;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMPerson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -17,7 +17,7 @@ public class FeedEventItemModel {
 
     @SerializedName("Organization")
     @Expose
-    private FeedEventItemModelOrganization organization;
+    private FEIMlOrganization organization;
 
 //    @SerializedName("FeedEventId")
 //    @Expose
@@ -41,7 +41,7 @@ public class FeedEventItemModel {
 
     @SerializedName("FeedImage")
     @Expose
-    private FeedEventItemModelFeedImage feedImage;
+    private FEIMFeedImage feedImage;
 
 //    @SerializedName("ItemId")
 //    @Expose
@@ -61,11 +61,11 @@ public class FeedEventItemModel {
 
 //    @SerializedName("FeedType")
 //    @Expose
-//    private FeedEventItemModelFeedEventTypeTypes feedType;
+//    private FEIMFeedEventTypes feedType;
 
 //    @SerializedName("ActivityCropShortInfo")
 //    @Expose
-//    private FeedEventItemModelActivityCropShortInfoModel activityCropShortInfo;
+//    private FEIMActivityCropShortInfoModel activityCropShortInfo;
 
     @SerializedName("InvolvedPersons")
     @Expose
@@ -95,7 +95,7 @@ public class FeedEventItemModel {
         return person;
     }
 
-    public FeedEventItemModelOrganization getOrganization() {
+    public FEIMlOrganization getOrganization() {
         return organization;
     }
 
@@ -119,7 +119,7 @@ public class FeedEventItemModel {
         return displayText;
     }
 
-    public FeedEventItemModelFeedImage getFeedImage() {
+    public FEIMFeedImage getFeedImage() {
         return feedImage;
     }
 
@@ -139,11 +139,11 @@ public class FeedEventItemModel {
         return onDate;
     }
 
-//    public FeedEventItemModelFeedEventTypeTypes getFeedType() {
+//    public FEIMFeedEventTypes getFeedType() {
 //        return feedType;
 //    }
 //
-//    public FeedEventItemModelActivityCropShortInfoModel getActivityCropShortInfo() {
+//    public FEIMActivityCropShortInfoModel getActivityCropShortInfo() {
 //        return activityCropShortInfo;
 //    }
 
