@@ -245,8 +245,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private void fetchData() {
 
-        List<CropStreamMessage> listArray = new ArrayList<>();
-
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
                 Constants.BEARER,
@@ -257,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
                 ApiResultOfFeedEventsModel pj = response.body();
-
+        List<CropStreamMessage> listArray = new ArrayList<>();
                 List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
                 for(FeedEventItemModel item : list){
                     feedList.add(new CropStreamMessage(

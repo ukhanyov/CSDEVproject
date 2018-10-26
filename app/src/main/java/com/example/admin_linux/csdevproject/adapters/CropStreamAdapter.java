@@ -13,18 +13,22 @@ import android.widget.TextView;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.utils.ImageHelper;
+import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<CropStreamMessage> mList;
+    private Context mContext;
 
     public CropStreamAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
+        mContext = context;
     }
 
     @NonNull
@@ -41,7 +45,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             CropStreamMessage current = mList.get(i);
 
             // Bind views
-            holder.ivProfilePicture.setBackground(loadImageFromWebOperations(current.getProfilePicture()));
+            Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
+                    .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .into(holder.ivProfilePicture);
 
             if(current.getProfileCorpName() != null) {
                 holder.tvProfileCorp.setText(current.getProfileCorpName());
@@ -62,15 +69,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
-        }
-    }
-
-    public static Drawable loadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            return Drawable.createFromStream(is, null);
-        } catch (Exception e) {
-            return null;
         }
     }
 
