@@ -139,15 +139,20 @@ public class CropStreamFragment extends Fragment {
                         stringBuilder.append("you");
                     }
 
+                    String corpName;
+                    if(item.getOrganization() != null) corpName = item.getOrganization().getOrganizationName();
+                    else corpName = null;
+
                     listArray.add(new CropStreamMessage(
                             item.getPerson().getIconPath(),
                             item.getPerson().getPersonFullName(),
-                            item.getPerson().getOrganizationName(),
+                            corpName,
                             "",
                             item.getOnDate(),
                             "",
                             item.isConversationFirstMessage(),
-                            stringBuilder.toString()
+                            stringBuilder.toString(),
+                            item.getPerson().getOrganizationName()
                     ));
                 }
 

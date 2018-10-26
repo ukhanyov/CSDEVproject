@@ -17,6 +17,7 @@ public class CropStreamMessage implements Parcelable {
     private String mMessagePicture;
     private boolean mConversationFirstMessage;
     private String mInvolvedPersonsNames;
+    private String mPersonsCorp;
 
     public CropStreamMessage(
             String profilePicture,
@@ -26,7 +27,8 @@ public class CropStreamMessage implements Parcelable {
             String messageTime,
             String messagePicture,
             boolean conversationFirstMessage,
-            String involvedPersonsNames) {
+            String involvedPersonsNames,
+            String personsCorp) {
 
         this.mProfilePicture = profilePicture;
         this.mProfileName = profileName;
@@ -36,6 +38,7 @@ public class CropStreamMessage implements Parcelable {
         this.mMessagePicture = messagePicture;
         this.mConversationFirstMessage = conversationFirstMessage;
         this.mInvolvedPersonsNames = involvedPersonsNames;
+        this.mPersonsCorp = personsCorp;
     }
 
     public String getProfilePicture() {
@@ -102,9 +105,17 @@ public class CropStreamMessage implements Parcelable {
         this.mInvolvedPersonsNames = mInvolvedPersonsNames;
     }
 
+    public String getPersonsCorp() {
+        return mPersonsCorp;
+    }
+
+    public void setPersonsCorp(String mPersonsCorp) {
+        this.mPersonsCorp = mPersonsCorp;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[8];
+        String[] data = new String[9];
         in.readStringArray(data);
 
         this.mProfilePicture = data[0];
@@ -115,6 +126,7 @@ public class CropStreamMessage implements Parcelable {
         this.mMessagePicture = data[5];
         this.mConversationFirstMessage = Boolean.getBoolean(data[6]);
         this.mInvolvedPersonsNames = data[7];
+        this.mPersonsCorp = data[8];
 
     }
 
@@ -133,7 +145,8 @@ public class CropStreamMessage implements Parcelable {
                 this.mMessageTime,
                 this.mMessagePicture,
                 String.valueOf(this.mConversationFirstMessage),
-                this.mInvolvedPersonsNames
+                this.mInvolvedPersonsNames,
+                this.mPersonsCorp
         });
     }
 

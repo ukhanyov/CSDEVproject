@@ -3,7 +3,7 @@ package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.even
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelFeedImage;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelOrganization;
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FeedEventItemModelPerson;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMPerson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,7 +13,7 @@ public class FeedEventItemModel {
 
     @SerializedName("Person")
     @Expose
-    private FeedEventItemModelPerson person;
+    private FEIMPerson person;
 
     @SerializedName("Organization")
     @Expose
@@ -91,7 +91,7 @@ public class FeedEventItemModel {
     @Expose
     private boolean conversationFirstMessage;
 
-    public FeedEventItemModelPerson getPerson() {
+    public FEIMPerson getPerson() {
         return person;
     }
 

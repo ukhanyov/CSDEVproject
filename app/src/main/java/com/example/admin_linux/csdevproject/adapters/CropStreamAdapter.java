@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,10 +51,15 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             if (current.getProfileCorpName() != null) {
                 holder.tvProfileCorp.setText(current.getProfileCorpName());
+                holder.tvProfileCorp.setTypeface(Typeface.DEFAULT_BOLD);
+                holder.tvProfileCorp.setTextColor(mContext.getColor(R.color.black));
                 holder.tvProfileName.setVisibility(View.GONE);
             } else {
+                holder.tvProfileCorp.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+                holder.tvProfileCorp.setTextColor(mContext.getColor(R.color.grey));
                 holder.tvProfileName.setText(current.getProfileName());
                 holder.tvProfileName.setVisibility(View.VISIBLE);
+                holder.tvProfileCorp.setText(current.getPersonsCorp());
             }
 
             holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
