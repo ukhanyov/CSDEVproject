@@ -42,7 +42,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             CropStreamMessage current = mList.get(i);
 
             // Bind views
-            if (current.getCombineImage()) {
+            if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlFirst() != null) {
 
                 Picasso.with(mContext).load(current.getCombineImageUrlFirst()).fit().centerInside()
                         .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
