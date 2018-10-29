@@ -1,24 +1,18 @@
 package com.example.admin_linux.csdevproject;
 
-import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -39,8 +33,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
-    private Animation fab_open, fab_open_1, fab_open_2, fab_open_3, fab_open_4,
-            fab_close, fab_close_1,  fab_close_2,  fab_close_3,  fab_close_4,
+    private Animation fab_open_1, fab_open_2, fab_open_3, fab_open_4,
+            fab_close_1,  fab_close_2,  fab_close_3,  fab_close_4,
             rotate_forward, rotate_backward;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -88,13 +82,12 @@ public class MainActivity extends AppCompatActivity implements
         fab2 = mBinding.fab2;
         fab3 = mBinding.fab3;
         fab4 = mBinding.fab4;
+
         // Animations init
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_open_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_1);
         fab_open_2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_2);
         fab_open_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_3);
         fab_open_4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_4);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
         fab_close_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_1);
         fab_close_2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_2);
         fab_close_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_3);
@@ -108,16 +101,13 @@ public class MainActivity extends AppCompatActivity implements
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
 
-        //feedList = new ArrayList<>();
-        //fetchData();
-
         // Start activity with CropStreamFragment
-//        fragmentManager = getSupportFragmentManager();
-//        fragmentTransaction = fragmentManager.beginTransaction();
-//        CropStreamFragment fragmentCropStream = new CropStreamFragment();
-//        fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        CropStreamFragment fragmentCropStream = new CropStreamFragment();
+        fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
@@ -156,8 +146,6 @@ public class MainActivity extends AppCompatActivity implements
 
         if (isFabOpen) {
 
-            // TODO: Add wait for previous FAB to open
-
             fab.startAnimation(rotate_backward);
             fab1.startAnimation(fab_close_4);
             fab2.startAnimation(fab_close_3);
@@ -169,6 +157,11 @@ public class MainActivity extends AppCompatActivity implements
             fab3.setClickable(false);
             fab4.setClickable(false);
             isFabOpen = false;
+
+            mBinding.tvFavTitle1.startAnimation(fab_close_4);
+            mBinding.tvFavTitle2.startAnimation(fab_close_3);
+            mBinding.tvFavTitle3.startAnimation(fab_close_2);
+            mBinding.tvFavTitle4.startAnimation(fab_close_1);
 
             mBinding.tvFavTitle1.setVisibility(View.INVISIBLE);
             mBinding.tvFavTitle2.setVisibility(View.INVISIBLE);
@@ -188,11 +181,15 @@ public class MainActivity extends AppCompatActivity implements
             fab4.setClickable(true);
             isFabOpen = true;
 
+            mBinding.tvFavTitle1.startAnimation(fab_open_1);
+            mBinding.tvFavTitle2.startAnimation(fab_open_2);
+            mBinding.tvFavTitle3.startAnimation(fab_open_3);
+            mBinding.tvFavTitle4.startAnimation(fab_open_4);
+
             mBinding.tvFavTitle1.setVisibility(View.VISIBLE);
             mBinding.tvFavTitle2.setVisibility(View.VISIBLE);
             mBinding.tvFavTitle3.setVisibility(View.VISIBLE);
             mBinding.tvFavTitle4.setVisibility(View.VISIBLE);
-            Log.d(LOG_TAG, "open");
         }
     }
 
@@ -254,30 +251,5 @@ public class MainActivity extends AppCompatActivity implements
 
     private void clearViewsFromToolbar(){
 
-    }
-
-//    @SuppressLint("NewApi")
-//    public static void show(FloatingActionButton fab) {
-//        if (ViewCompat.isLaidOut(fab)) {
-//            fab.show();
-//        } else {
-//            fab.animate().cancel();//cancel all animations
-//            fab.setScaleX(0f);
-//            fab.setScaleY(0f);
-//            fab.setAlpha(0f);
-//            fab.setVisibility(View.VISIBLE);
-//            //values from support lib source code
-//            fab.animate().setDuration(200).scaleX(1).scaleY(1).alpha(1)
-//                    .setInterpolator(new LinearOutSlowInInterpolator());
-//        }
-//    }
-
-
-    public static void showFabWithAnimation(final FloatingActionButton fab){
-        AlphaAnimation animation1 = new AlphaAnimation(1, 0);
-        animation1.setDuration(1000);
-        animation1.setStartOffset(1000);
-        animation1.setFillAfter(true);
-        fab.setAnimation(animation1);
     }
 }

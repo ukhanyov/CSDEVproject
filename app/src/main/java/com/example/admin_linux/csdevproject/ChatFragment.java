@@ -57,14 +57,14 @@ public class ChatFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
         // Generate dummy data
-        List<ChatItem> list = GenerateData.generateChatItems(rootView.getContext());
-
-        RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
-
-        ChatAdapter mAdapter = new ChatAdapter(rootView.getContext());
-        mAdapter.setChatItemList(list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mAdapter);
+//        List<ChatItem> list = GenerateData.generateChatItems(rootView.getContext());
+//
+//        RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
+//
+//        ChatAdapter mAdapter = new ChatAdapter(rootView.getContext());
+//        mAdapter.setChatItemList(list);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        recyclerView.setAdapter(mAdapter);
 
         return rootView;
     }

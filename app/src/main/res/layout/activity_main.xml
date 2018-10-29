@@ -20,8 +20,9 @@
         <TextView
             android:id="@+id/tv_fav_title_4"
             style="@style/TextViewFABTitle"
+            android:visibility="visible"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/conversation"
@@ -43,10 +44,10 @@
             app:layout_constraintStart_toStartOf="@+id/fab3" />
 
         <TextView
-            style="@style/TextViewFABTitle"
             android:id="@+id/tv_fav_title_3"
+            style="@style/TextViewFABTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/activity"
@@ -70,10 +71,10 @@
 
 
         <TextView
-            style="@style/TextViewFABTitle"
             android:id="@+id/tv_fav_title_2"
+            style="@style/TextViewFABTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/photo"
@@ -98,7 +99,7 @@
             android:id="@+id/tv_fav_title_1"
             style="@style/TextViewFABTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/note"
