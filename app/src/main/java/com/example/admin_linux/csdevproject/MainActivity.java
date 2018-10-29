@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
-    //private List<CropStreamMessage> feedList;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // Bottom navigation
-        BottomNavigationView bottomNavigationView = mBinding.bottomNavigation;
+        bottomNavigationView = mBinding.bottomNavigation;
         bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 

@@ -1,11 +1,6 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,10 +14,6 @@ import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 

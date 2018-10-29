@@ -5,28 +5,28 @@
     <item
         android:id="@+id/action_cropstream"
         android:enabled="true"
-        android:icon="@drawable/ic_crop_stream"
+        android:icon="@drawable/bnv_tab_item_cropstream"
         android:title="@string/cropstream"
         app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/action_chat"
         android:enabled="true"
-        android:icon="@drawable/ic_chat_bubble_outline"
+        android:icon="@drawable/bnv_tab_item_chat"
         android:title="@string/chat"
         app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/action_favorites"
         android:enabled="true"
-        android:icon="@drawable/ic_favorites"
+        android:icon="@drawable/bnv_tab_item_favorites"
         android:title="@string/favorites"
         app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/action_search"
         android:enabled="true"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/bnv_tab_item_search"
         android:title="@string/search"
         app:showAsAction="ifRoom|withText" />
 
