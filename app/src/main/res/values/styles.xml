@@ -36,7 +36,13 @@
 
     <style name="TextViewGeneral">
         <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">@font/cairo</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="TextViewGeneralBold" parent="TextViewGeneral">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextViewDot" parent="TextViewGeneral">

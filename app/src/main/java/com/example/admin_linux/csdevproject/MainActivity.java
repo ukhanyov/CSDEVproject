@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements
         fragmentTransaction.commit();
 
         // Toolbar title
-        mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+        mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
     }
 
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
-                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_corpstream));
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 

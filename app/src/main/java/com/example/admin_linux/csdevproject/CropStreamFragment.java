@@ -141,8 +141,11 @@ public class CropStreamFragment extends Fragment {
                             }
                         }
 
-                        imageFirst = involvedPeople.get(0).getIconPath();
-                        imageSecond = involvedPeople.get(1).getIconPath();
+                        if(involvedPeople.size() > 1){
+                            imageFirst = involvedPeople.get(0).getIconPath();
+                            imageSecond = involvedPeople.get(1).getIconPath();
+                        }
+
 
                     } else {
                         stringBuilder.append("you");

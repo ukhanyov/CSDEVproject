@@ -24,7 +24,7 @@ public class DateHelper {
             } else if(checkIfItIsYesterday(compareDate)){
                     return "Yesterday";
                 } else {
-                return getFriendlyMonth(calendar.get(Calendar.MONTH)) + ":" + calendar.get(Calendar.DAY_OF_MONTH);
+                return getFriendlyMonth(calendar.get(Calendar.MONTH)) + " " + calendar.get(Calendar.DAY_OF_MONTH);
             }
 
 

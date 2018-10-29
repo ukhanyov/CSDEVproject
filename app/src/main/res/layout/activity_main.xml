@@ -18,8 +18,8 @@
             layout="@layout/content_main" />
 
         <TextView
-            style="@style/TextViewFABTitle"
             android:id="@+id/tv_fav_title_4"
+            style="@style/TextViewFABTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -37,7 +37,7 @@
             android:layout_marginBottom="8dp"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFABGreen"
-            app:elevation="14dp"
+            app:elevation="6dp"
             app:layout_constraintBottom_toTopOf="@+id/fab3"
             app:layout_constraintEnd_toEndOf="@+id/fab3"
             app:layout_constraintStart_toStartOf="@+id/fab3" />
@@ -63,7 +63,7 @@
             android:layout_marginBottom="8dp"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFABGreen"
-            app:elevation="14dp"
+            app:elevation="6dp"
             app:layout_constraintBottom_toTopOf="@+id/fab2"
             app:layout_constraintEnd_toEndOf="@+id/fab2"
             app:layout_constraintStart_toStartOf="@+id/fab2" />
@@ -89,7 +89,7 @@
             android:layout_marginBottom="8dp"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFABGreen"
-            app:elevation="14dp"
+            app:elevation="6dp"
             app:layout_constraintBottom_toTopOf="@+id/fab1"
             app:layout_constraintEnd_toEndOf="@+id/fab1"
             app:layout_constraintStart_toStartOf="@+id/fab1" />
@@ -115,7 +115,7 @@
             android:layout_marginBottom="32dp"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFABGrey"
-            app:elevation="14dp"
+            app:elevation="6dp"
             app:layout_constraintBottom_toTopOf="@+id/fab"
             app:layout_constraintEnd_toEndOf="parent"
             app:pressedTranslationZ="12dp" />
@@ -129,7 +129,7 @@
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="32dp"
             app:backgroundTint="@color/colorFABGreen"
-            app:elevation="14dp"
+            app:elevation="6dp"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="@+id/fab1"

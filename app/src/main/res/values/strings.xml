@@ -19,8 +19,8 @@
     <!--BottomNavigationView actions titles-->
 
     <!--list_item_crop_stream.xml strings-->
-    <string name="hint_name_name">Name Name</string>
-    <string name="hint_corp">Corp</string>
+    <string name="hint_name_name">N</string>
+    <string name="hint_crop">C</string>
     <string name="medium_circle">⚫</string>
     <string name="hint_time_hint">5:15</string>
     <string name="label_replied_to_a_chat_with">replied to a chat with</string>
@@ -37,7 +37,7 @@
     <!--Toolbar layout strings-->
 
     <!--Toolbar titles strings-->
-    <string name="title_corpstream">Corpstream</string>
+    <string name="title_cropstream">Cropstream</string>
     <string name="title_chat">Chat</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_search">Search</string>
