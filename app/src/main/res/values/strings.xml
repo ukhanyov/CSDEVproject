@@ -54,6 +54,7 @@
     <string name="started_chat_with">started a chat with</string>
     <string name="replied_to_chat_with">replied to a chat with</string>
     <string name="simple_dot">.</string>
+    <string name="work_in_progress">Work in progress</string>
     <!--Toolbar titles strings-->
 
 </resources>

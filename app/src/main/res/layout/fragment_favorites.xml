@@ -7,7 +7,8 @@
         tools:context=".FavoritesFragment">
 
         <TextView
-            android:text="@string/favorites"
+            style="@style/TextViewGeneralBold"
+            android:text="@string/work_in_progress"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

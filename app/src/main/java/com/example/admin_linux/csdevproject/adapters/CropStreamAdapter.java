@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
-import com.example.admin_linux.csdevproject.utils.ImageHelper;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -87,6 +86,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     canvas.drawBitmap(myBitmap2, myBitmap1.getWidth() / 2, myBitmap1.getHeight() / 2, null);
 
                     holder.ivProfilePicture.setImageDrawable(new BitmapDrawable(mContext.getResources(), mergedBitmap));
+                    holder.ivProfilePicture.setAdjustViewBounds(true);
 
                 } catch (IOException e) {
                     e.printStackTrace();

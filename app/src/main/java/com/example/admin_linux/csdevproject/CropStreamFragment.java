@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
@@ -21,6 +22,7 @@ import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +146,7 @@ public class CropStreamFragment extends Fragment {
                         if(involvedPeople.size() > 1){
                             imageFirst = involvedPeople.get(0).getIconPath();
                             imageSecond = involvedPeople.get(1).getIconPath();
+
                         }
 
 
