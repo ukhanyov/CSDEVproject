@@ -59,7 +59,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 holder.ivProfilePicture.setVisibility(View.GONE);
 
             } else {
-                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
+                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerInside()
                         .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                         .into(holder.ivProfilePicture);

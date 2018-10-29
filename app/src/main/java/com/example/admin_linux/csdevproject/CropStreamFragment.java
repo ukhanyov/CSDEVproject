@@ -46,6 +46,8 @@ public class CropStreamFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    ProgressBar progressBar;
+
     public CropStreamFragment() {
         // Required empty public constructor
     }
@@ -72,6 +74,9 @@ public class CropStreamFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
+
+        progressBar = rootView.findViewById(R.id.pb_loading_indicator);
+
 
         //List<CropStreamMessage> dataArray = Objects.requireNonNull(getArguments()).getParcelableArrayList("array");
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
@@ -107,6 +112,8 @@ public class CropStreamFragment extends Fragment {
     }
 
     private void fetchData(Context context, RecyclerView recyclerView, CropStreamAdapter mAdapter) {
+
+        progressBar.setVisibility(View.VISIBLE);
 
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
@@ -207,6 +214,7 @@ public class CropStreamFragment extends Fragment {
             }
         });
 
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     public interface OnFragmentInteractionListener {

@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // TODO: Look into progressbar
+
         // TODO: Chat make toolbar search
         // TODO: Chat make toolbar search separate cancel button (when search is active)
 

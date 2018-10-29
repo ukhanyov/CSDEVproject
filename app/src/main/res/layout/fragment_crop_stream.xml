@@ -9,10 +9,21 @@
         android:background="@color/very_light_gray"
         tools:context=".CropStreamFragment">
 
+        <ProgressBar
+            android:id="@+id/pb_loading_indicator"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:backgroundTint="#ffffff"
+            android:indeterminate="true"
+            android:indeterminateTint="#1eb71a"
+            android:max="100" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_corp_stream_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 </layout>
