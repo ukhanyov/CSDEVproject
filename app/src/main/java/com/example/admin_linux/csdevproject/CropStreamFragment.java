@@ -1,6 +1,8 @@
 package com.example.admin_linux.csdevproject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
@@ -185,6 +188,7 @@ public class CropStreamFragment extends Fragment {
                 mAdapter.setCorpStreamMessages(listArray);
                 recyclerView.setAdapter(mAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
             }
 
             @Override

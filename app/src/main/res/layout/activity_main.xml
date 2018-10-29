@@ -157,6 +157,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/menu_bottom_bar" />
 
+        <ProgressBar
+            android:visibility="invisible"
+            android:id="@+id/pb_loading_indicator"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#ffffff"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/green"
+            android:max="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_main_v_bottom" />
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>
