@@ -51,53 +51,53 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             CropStreamMessage current = mList.get(i);
 
             // Bind views
-            if (current.getCombineImage()) {
-                try {
-                    // TODO: smth
-                    URL url1;
-                    URL url2;
-                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                    StrictMode.setThreadPolicy(policy);
-
-                    url1 = new URL(current.getCombineImageUrlFirst());
-                    HttpURLConnection connection1 = (HttpURLConnection) url1.openConnection();
-                    connection1.setDoInput(true);
-                    connection1.connect();
-                    InputStream input1 = connection1.getInputStream();
-                    Bitmap myBitmap1 = BitmapFactory.decodeStream(input1);
-
-                    url2 = new URL(current.getCombineImageUrlSecond());
-                    HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
-                    connection2.setDoInput(true);
-                    connection2.connect();
-                    InputStream input2 = connection2.getInputStream();
-                    Bitmap myBitmap2 = BitmapFactory.decodeStream(input2);
-
-                    Bitmap mergedBitmap;
-                    int w, h;
-                    h = myBitmap1.getHeight() + myBitmap2.getHeight();
-
-                    if (myBitmap1.getWidth() > myBitmap2.getWidth()) w = myBitmap1.getWidth();
-                    else w = myBitmap2.getWidth();
-
-                    mergedBitmap = Bitmap.createBitmap(2 * w, h, Bitmap.Config.ARGB_8888);
-                    Canvas canvas = new Canvas(mergedBitmap);
-                    canvas.drawBitmap(myBitmap1, 0f, 0f, null);
-                    canvas.drawBitmap(myBitmap2, myBitmap1.getWidth() / 2, myBitmap1.getHeight() / 2, null);
-
-                    holder.ivProfilePicture.setImageDrawable(new BitmapDrawable(mContext.getResources(), mergedBitmap));
-                    holder.ivProfilePicture.setAdjustViewBounds(true);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            } else {
+//            if (current.getCombineImage()) {
+//                try {
+//                    // TODO: smth
+//                    URL url1;
+//                    URL url2;
+//                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//                    StrictMode.setThreadPolicy(policy);
+//
+//                    url1 = new URL(current.getCombineImageUrlFirst());
+//                    HttpURLConnection connection1 = (HttpURLConnection) url1.openConnection();
+//                    connection1.setDoInput(true);
+//                    connection1.connect();
+//                    InputStream input1 = connection1.getInputStream();
+//                    Bitmap myBitmap1 = BitmapFactory.decodeStream(input1);
+//
+//                    url2 = new URL(current.getCombineImageUrlSecond());
+//                    HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection();
+//                    connection2.setDoInput(true);
+//                    connection2.connect();
+//                    InputStream input2 = connection2.getInputStream();
+//                    Bitmap myBitmap2 = BitmapFactory.decodeStream(input2);
+//
+//                    Bitmap mergedBitmap;
+//                    int w, h;
+//                    h = myBitmap1.getHeight() + myBitmap2.getHeight();
+//
+//                    if (myBitmap1.getWidth() > myBitmap2.getWidth()) w = myBitmap1.getWidth();
+//                    else w = myBitmap2.getWidth();
+//
+//                    mergedBitmap = Bitmap.createBitmap(2 * w, h, Bitmap.Config.ARGB_8888);
+//                    Canvas canvas = new Canvas(mergedBitmap);
+//                    canvas.drawBitmap(myBitmap1, 0f, 0f, null);
+//                    canvas.drawBitmap(myBitmap2, myBitmap1.getWidth() / 2, myBitmap1.getHeight() / 2, null);
+//
+//                    holder.ivProfilePicture.setImageDrawable(new BitmapDrawable(mContext.getResources(), mergedBitmap));
+//                    holder.ivProfilePicture.setAdjustViewBounds(true);
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            } else {
                 Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
                         .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                         .into(holder.ivProfilePicture);
-            }
+            //}
 
             if (current.getProfileCorpName() != null) {
                 holder.tvProfileFirst.setText(current.getProfileCorpName());
