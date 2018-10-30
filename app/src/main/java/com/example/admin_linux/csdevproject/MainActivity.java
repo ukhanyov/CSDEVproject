@@ -1,8 +1,11 @@
 package com.example.admin_linux.csdevproject;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -15,11 +18,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.CropStreamMessageViewModel;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
+import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
+import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
+import com.example.admin_linux.csdevproject.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -46,9 +63,13 @@ public class MainActivity extends AppCompatActivity implements
 
     BottomNavigationView bottomNavigationView;
 
+    private CropStreamMessageViewModel viewModel;
+    private MutableLiveData<List<CropStreamMessage>> listArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        // TODO: disable on click on the bottom bar rounds (some kind of animation)
+        // TODO: look into clicking away data smth
         // TODO: Look into progressbar
 
         // TODO: Chat make toolbar search
@@ -106,11 +127,12 @@ public class MainActivity extends AppCompatActivity implements
 
         // Start activity with CropStreamFragment
         fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        CropStreamFragment fragmentCropStream = new CropStreamFragment();
-        fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+
+        listArray = new MutableLiveData<>();
+        viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
+        fetchData();
+        starCropStreamFragment();
+
 
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
@@ -200,11 +222,8 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
-                fragmentTransaction = fragmentManager.beginTransaction();
-                CropStreamFragment fragmentCropStream = new CropStreamFragment();
-                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStream);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                fetchData();
+                starCropStreamFragment();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -255,4 +274,121 @@ public class MainActivity extends AppCompatActivity implements
     private void clearViewsFromToolbar(){
 
     }
+
+    private void fetchData() {
+        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
+                Constants.BEARER,
+                Constants.PERSON_ID,
+                Constants.MAX_EVENT_COUNT);
+
+        parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
+                ApiResultOfFeedEventsModel pj = response.body();
+                List<CropStreamMessage> tempArray = new ArrayList<>();
+                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
+                for (FeedEventItemModel item : list) {
+
+                    List<FEIMInvolvedPerson> involvedPeople;
+                    involvedPeople = item.getInvolvedPersons();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    int iterator = 0;
+                    boolean combineImage = false;
+                    String imageFirst = null;
+                    String imageSecond = null;
+
+                    if (involvedPeople != null) {
+                        for (FEIMInvolvedPerson person : involvedPeople) {
+                            if (person.getPersonId() == Constants.PERSON_ID) {
+                                stringBuilder.append("you");
+                            } else {
+                                stringBuilder.append(person.getPersonFullName());
+                                combineImage = true;
+                            }
+                            iterator++;
+                            if (iterator < involvedPeople.size() - 2) {
+                                stringBuilder.append(", ");
+                            } else {
+                                break;
+                            }
+                        }
+
+                        if (involvedPeople.size() > 1) {
+                            for (FEIMInvolvedPerson person : involvedPeople) {
+                                if (person.getPersonId() != Constants.PERSON_ID) {
+
+                                    if (imageFirst != null) {
+                                        imageSecond = person.getIconPath();
+                                        break;
+                                    } else {
+                                        imageFirst = person.getIconPath();
+                                    }
+                                }
+                            }
+                        }
+
+
+                    } else {
+                        stringBuilder.append("you");
+                    }
+
+                    String corpName;
+                    String pictureUrl;
+                    if (item.getOrganization() != null) {
+                        corpName = item.getOrganization().getOrganizationName();
+                        pictureUrl = item.getOrganization().getImageUrl();
+                    } else {
+                        corpName = null;
+                        pictureUrl = item.getPerson().getIconPath();
+                    }
+
+                    tempArray.add(new CropStreamMessage(
+                            pictureUrl,
+                            item.getPerson().getPersonFullName(),
+                            corpName,
+                            "",
+                            item.getOnDate(),
+                            "",
+                            item.isConversationFirstMessage(),
+                            stringBuilder.toString(),
+                            item.getPerson().getOrganizationName(),
+                            combineImage,
+                            imageFirst,
+                            imageSecond
+                    ));
+                }
+
+                //listArray.setValue(tempArray);
+                viewModel.setList(tempArray);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
+                Log.d("Error: ", t.getMessage());
+                Toast.makeText(MainActivity.this, "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void starCropStreamFragment(){
+        viewModel.getList().observe(this, listArray -> {
+            if(listArray != null){
+                List<CropStreamMessage> transferList = new ArrayList<>();
+                transferList.addAll(listArray);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("transferList", (ArrayList<? extends Parcelable>) transferList);
+
+                fragmentTransaction = fragmentManager.beginTransaction();
+                CropStreamFragment fragmentCropStreamTransaction = new CropStreamFragment();
+                fragmentCropStreamTransaction.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+        });
+    }
+
 }

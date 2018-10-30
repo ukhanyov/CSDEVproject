@@ -1,31 +1,32 @@
 package com.example.admin_linux.csdevproject;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.CropStreamMessageViewModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,9 @@ public class CropStreamFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     ProgressBar progressBar;
+
+//    private CropStreamMessageViewModel viewModel;
+//    private MutableLiveData<List<CropStreamMessage>> listArray;
 
     public CropStreamFragment() {
         // Required empty public constructor
@@ -76,15 +80,31 @@ public class CropStreamFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
 
         progressBar = rootView.findViewById(R.id.pb_loading_indicator);
+        progressBar.setVisibility(View.VISIBLE);
 
-
-        //List<CropStreamMessage> dataArray = Objects.requireNonNull(getArguments()).getParcelableArrayList("array");
+        List<CropStreamMessage> transferList = getArguments().getParcelableArrayList("transferList");
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
-
+        mAdapter.setCorpStreamMessages(transferList);
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        fetchData(rootView.getContext(), recyclerView, mAdapter);
+//        listArray = new MutableLiveData<>();
+//        fetchData();
+        //final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
 
+//        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(CropStreamMessageViewModel.class);
+//        viewModel.getList().observe(getActivity(), listArray -> {
+//            if(listArray != null){
+//                mAdapter.setCorpStreamMessages(listArray);
+//            }
+//        });
+
+//        RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
+//        recyclerView.setAdapter(mAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        progressBar.setVisibility(View.INVISIBLE);
         return rootView;
     }
 
@@ -111,111 +131,106 @@ public class CropStreamFragment extends Fragment {
         mListener = null;
     }
 
-    private void fetchData(Context context, RecyclerView recyclerView, CropStreamAdapter mAdapter) {
-
-        progressBar.setVisibility(View.VISIBLE);
-
-        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
-                Constants.BEARER,
-                Constants.PERSON_ID,
-                Constants.MAX_EVENT_COUNT);
-
-        parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
-            @Override
-            public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
-                ApiResultOfFeedEventsModel pj = response.body();
-                List<CropStreamMessage> listArray = new ArrayList<>();
-                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
-                for(FeedEventItemModel item : list) {
-
-                    List<FEIMInvolvedPerson> involvedPeople;
-                    involvedPeople = item.getInvolvedPersons();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    int iterator = 0;
-                    boolean combineImage = false;
-                    String imageFirst = null;
-                    String imageSecond = null;
-
-                    if(involvedPeople != null){
-                        for(FEIMInvolvedPerson person : involvedPeople){
-                            if(person.getPersonId() == Constants.PERSON_ID){
-                                stringBuilder.append("you");
-                            }else {
-                                stringBuilder.append(person.getPersonFullName());
-                                combineImage = true;
-                            }
-                            iterator++;
-                            if(iterator < involvedPeople.size() - 2){
-                                stringBuilder.append(", ");
-                            }else {
-                                break;
-                            }
-                        }
-
-                        if(involvedPeople.size() > 1){
-                            for(FEIMInvolvedPerson person : involvedPeople){
-                                if(person.getPersonId() != Constants.PERSON_ID){
-
-                                    if(imageFirst != null){
-                                        imageSecond = person.getIconPath();
-                                        break;
-                                    } else {
-                                        imageFirst = person.getIconPath();
-                                    }
-                                }
-                            }
-                        }
-
-
-                    } else {
-                        stringBuilder.append("you");
-                    }
-
-                    String corpName;
-                    String pictureUrl;
-                    if(item.getOrganization() != null) {
-                        corpName = item.getOrganization().getOrganizationName();
-                        pictureUrl = item.getOrganization().getImageUrl();
-                    }
-                    else {
-                        corpName = null;
-                        pictureUrl = item.getPerson().getIconPath();
-                    }
-
-                    listArray.add(new CropStreamMessage(
-                            pictureUrl,
-                            item.getPerson().getPersonFullName(),
-                            corpName,
-                            "",
-                            item.getOnDate(),
-                            "",
-                            item.isConversationFirstMessage(),
-                            stringBuilder.toString(),
-                            item.getPerson().getOrganizationName(),
-                            combineImage,
-                            imageFirst,
-                            imageSecond
-                    ));
-                }
-
-                // Setup list of data to an rv
-                mAdapter.setCorpStreamMessages(listArray);
-                recyclerView.setAdapter(mAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
-                Log.d("Error: ", t.getMessage());
-                Toast.makeText(getContext(), "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        progressBar.setVisibility(View.INVISIBLE);
-    }
+//    private void fetchData() {
+//
+//        progressBar.setVisibility(View.VISIBLE);
+//
+//        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+//        Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
+//                Constants.BEARER,
+//                Constants.PERSON_ID,
+//                Constants.MAX_EVENT_COUNT);
+//
+//        parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
+//                ApiResultOfFeedEventsModel pj = response.body();
+//                List<CropStreamMessage> tempArray = new ArrayList<>();
+//                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
+//                for (FeedEventItemModel item : list) {
+//
+//                    List<FEIMInvolvedPerson> involvedPeople;
+//                    involvedPeople = item.getInvolvedPersons();
+//                    StringBuilder stringBuilder = new StringBuilder();
+//                    int iterator = 0;
+//                    boolean combineImage = false;
+//                    String imageFirst = null;
+//                    String imageSecond = null;
+//
+//                    if (involvedPeople != null) {
+//                        for (FEIMInvolvedPerson person : involvedPeople) {
+//                            if (person.getPersonId() == Constants.PERSON_ID) {
+//                                stringBuilder.append("you");
+//                            } else {
+//                                stringBuilder.append(person.getPersonFullName());
+//                                combineImage = true;
+//                            }
+//                            iterator++;
+//                            if (iterator < involvedPeople.size() - 2) {
+//                                stringBuilder.append(", ");
+//                            } else {
+//                                break;
+//                            }
+//                        }
+//
+//                        if (involvedPeople.size() > 1) {
+//                            for (FEIMInvolvedPerson person : involvedPeople) {
+//                                if (person.getPersonId() != Constants.PERSON_ID) {
+//
+//                                    if (imageFirst != null) {
+//                                        imageSecond = person.getIconPath();
+//                                        break;
+//                                    } else {
+//                                        imageFirst = person.getIconPath();
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//
+//                    } else {
+//                        stringBuilder.append("you");
+//                    }
+//
+//                    String corpName;
+//                    String pictureUrl;
+//                    if (item.getOrganization() != null) {
+//                        corpName = item.getOrganization().getOrganizationName();
+//                        pictureUrl = item.getOrganization().getImageUrl();
+//                    } else {
+//                        corpName = null;
+//                        pictureUrl = item.getPerson().getIconPath();
+//                    }
+//
+//                    tempArray.add(new CropStreamMessage(
+//                            pictureUrl,
+//                            item.getPerson().getPersonFullName(),
+//                            corpName,
+//                            "",
+//                            item.getOnDate(),
+//                            "",
+//                            item.isConversationFirstMessage(),
+//                            stringBuilder.toString(),
+//                            item.getPerson().getOrganizationName(),
+//                            combineImage,
+//                            imageFirst,
+//                            imageSecond
+//                    ));
+//                }
+//
+//                listArray.setValue(tempArray);
+//                viewModel.setList(listArray);
+//                progressBar.setVisibility(View.INVISIBLE);
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
+//                Log.d("Error: ", t.getMessage());
+//                Toast.makeText(getActivity(), "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
+//                progressBar.setVisibility(View.INVISIBLE);
+//            }
+//        });
+//    }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
