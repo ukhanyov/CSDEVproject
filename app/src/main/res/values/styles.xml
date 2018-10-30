@@ -46,6 +46,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TextViewGeneralBlack" parent="TextViewGeneral">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextViewDot" parent="TextViewGeneral">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>

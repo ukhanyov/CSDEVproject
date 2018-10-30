@@ -59,10 +59,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 holder.ivProfilePicture.setVisibility(View.GONE);
 
             } else {
-                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
+                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerInside()
                         .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                        .transform(new RoundCorners(dpToPx(6), dpToPx(6)))
+                        .transform(new RoundCorners(dpToPx(8), dpToPx(0)))
                         .into(holder.ivProfilePicture);
 
                 holder.ivProfilePictureMashTop.setVisibility(View.GONE);
@@ -75,8 +75,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 holder.tvProfileSecond.setVisibility(View.GONE);
             } else {
                 holder.tvProfileFirst.setText(current.getProfileName());
-                holder.tvProfileSecond.setVisibility(View.VISIBLE);
-                holder.tvProfileSecond.setText(current.getPersonsCorp());
+                if(current.getPersonsCorp() != null && !current.getPersonsCorp().equals("")){
+                    holder.tvProfileSecond.setVisibility(View.VISIBLE);
+                    holder.tvProfileSecond.setText(current.getPersonsCorp());
+                }else {
+                    holder.tvProfileSecond.setVisibility(View.GONE);
+                }
+
             }
 
             holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
@@ -123,12 +128,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         notifyDataSetChanged();
     }
 
-    public int dpToPx(int dp) {
+    private int dpToPx(int dp) {
         DisplayMetrics displayMetrics = mContext.getResources()
                 .getDisplayMetrics();
-        int px = Math.round(dp
-                * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
 
