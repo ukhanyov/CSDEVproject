@@ -17,6 +17,7 @@ public class CropStreamMessage implements Parcelable {
     private boolean mCombineImage;
     private String mCombineImageUrlFirst;
     private String mCombineImageUrlSecond;
+    private String mFeedType;
 
     public CropStreamMessage(
             String profilePicture,
@@ -30,7 +31,8 @@ public class CropStreamMessage implements Parcelable {
             String personsCorp,
             boolean combineImage,
             String combineImageUrlFirst,
-            String combineImageUrlSecond) {
+            String combineImageUrlSecond,
+            String feedType) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -44,6 +46,7 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImage = combineImage;
         this.mCombineImageUrlFirst = combineImageUrlFirst;
         this.mCombineImageUrlSecond = combineImageUrlSecond;
+        this.mFeedType = feedType;
     }
 
     public String getProfilePicture() {
@@ -142,9 +145,17 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImageUrlSecond = mCombineImageUrlSecond;
     }
 
+    public String getFeedType() {
+        return mFeedType;
+    }
+
+    public void setFeedType(String mFeedType) {
+        this.mFeedType = mFeedType;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[12];
+        String[] data = new String[13];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -159,6 +170,7 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImage = Boolean.getBoolean(data[9]);
         this.mCombineImageUrlFirst = data[10];
         this.mCombineImageUrlSecond = data[11];
+        this.mFeedType = data[12];
     }
 
     @Override
@@ -180,7 +192,8 @@ public class CropStreamMessage implements Parcelable {
                 this.mPersonsCorp,
                 String.valueOf(this.mCombineImage),
                 this.mCombineImageUrlFirst,
-                this.mCombineImageUrlSecond
+                this.mCombineImageUrlSecond,
+                this.mFeedType
         });
     }
 

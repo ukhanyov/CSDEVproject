@@ -62,5 +62,6 @@
     <string name="work_in_progress_on_chat">Work in progress on Chat</string>
     <string name="work_in_progress_on_favorites">Work in progress on Favorites</string>
     <string name="work_in_progress_on_search">Work in progress on Search</string>
+    <string name="view_message">View message</string>
 
 </resources>

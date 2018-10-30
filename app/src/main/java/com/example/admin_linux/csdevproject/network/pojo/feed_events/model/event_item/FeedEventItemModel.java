@@ -1,5 +1,6 @@
 package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item;
 
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMFeedEventTypes;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMFeedImage;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMlOrganization;
@@ -59,9 +60,9 @@ public class FeedEventItemModel {
     @Expose
     private String onDate;
 
-//    @SerializedName("FeedType")
-//    @Expose
-//    private FEIMFeedEventTypes feedType;
+    @SerializedName("FeedType")
+    @Expose
+    private String feedType;
 
 //    @SerializedName("ActivityCropShortInfo")
 //    @Expose
@@ -139,9 +140,9 @@ public class FeedEventItemModel {
         return onDate;
     }
 
-//    public FEIMFeedEventTypes getFeedType() {
-//        return feedType;
-//    }
+    public String getFeedType() {
+        return feedType;
+    }
 //
 //    public FEIMActivityCropShortInfoModel getActivityCropShortInfo() {
 //        return activityCropShortInfo;

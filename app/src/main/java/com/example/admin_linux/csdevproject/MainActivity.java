@@ -363,7 +363,8 @@ public class MainActivity extends AppCompatActivity implements
                             item.getPerson().getOrganizationName(),
                             combineImage,
                             imageFirst,
-                            imageSecond
+                            imageSecond,
+                            item.getFeedType()
                     ));
                 }
 

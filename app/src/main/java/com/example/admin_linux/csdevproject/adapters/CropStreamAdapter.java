@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -110,6 +111,16 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             else
                 holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
 
+            if(current.getFeedType().equals("ConversationMessage")){
+                holder.ibUnderProfile.setVisibility(View.INVISIBLE);
+                holder.tvUnderProfile.setVisibility(View.INVISIBLE);
+                holder.tvViewMessage.setVisibility(View.VISIBLE);
+            }else {
+                holder.ibUnderProfile.setVisibility(View.VISIBLE);
+                holder.tvUnderProfile.setVisibility(View.VISIBLE);
+                holder.tvViewMessage.setVisibility(View.INVISIBLE);
+            }
+
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
@@ -147,6 +158,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvTypeOfConversation;
         ImageView ivProfilePictureMashTop;
         ImageView ivProfilePictureMashBottom;
+        ImageButton ibUnderProfile;
+        TextView tvUnderProfile;
+        TextView tvViewMessage;
 
 
         CorpStreamViewHolder(@NonNull View itemView) {
@@ -162,6 +176,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvTypeOfConversation = itemView.findViewById(R.id.list_item_tv_profile_replied_to_label);
             ivProfilePictureMashTop = itemView.findViewById(R.id.list_item_iv_profile_picture_mash_top);
             ivProfilePictureMashBottom = itemView.findViewById(R.id.list_item_iv_profile_picture_mash_bottom);
+            ibUnderProfile = itemView.findViewById(R.id.list_item_ib_start_chat);
+            tvUnderProfile = itemView.findViewById(R.id.list_item_tv_start_shat);
+            tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
         }
     }
 }
