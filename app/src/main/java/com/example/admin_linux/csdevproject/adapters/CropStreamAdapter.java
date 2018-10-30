@@ -3,6 +3,7 @@ package com.example.admin_linux.csdevproject.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
+import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -38,12 +40,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     @Override
     public void onBindViewHolder(@NonNull CorpStreamViewHolder holder, int i) {
         if (mList != null) {
-
             CropStreamMessage current = mList.get(i);
 
             // Bind views
             if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlFirst() != null) {
-
                 Picasso.with(mContext).load(current.getCombineImageUrlFirst()).fit().centerInside()
                         .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
@@ -62,6 +62,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
                         .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                        .transform(new RoundCorners(dpToPx(6), dpToPx(6)))
                         .into(holder.ivProfilePicture);
 
                 holder.ivProfilePictureMashTop.setVisibility(View.GONE);
@@ -120,6 +121,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     public void setCorpStreamMessages(List<CropStreamMessage> list) {
         this.mList = list;
         notifyDataSetChanged();
+    }
+
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = mContext.getResources()
+                .getDisplayMetrics();
+        int px = Math.round(dp
+                * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
     }
 
 
