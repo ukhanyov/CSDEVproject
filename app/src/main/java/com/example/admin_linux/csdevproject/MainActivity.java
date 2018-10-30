@@ -1,6 +1,5 @@
 package com.example.admin_linux.csdevproject;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -64,13 +63,10 @@ public class MainActivity extends AppCompatActivity implements
     BottomNavigationView bottomNavigationView;
 
     private CropStreamMessageViewModel viewModel;
-    private MutableLiveData<List<CropStreamMessage>> listArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO: disable on click on the bottom bar rounds (some kind of animation)
-        // TODO: look into clicking away data smth
-        // TODO: Look into progressbar
 
         // TODO: Chat make toolbar search
         // TODO: Chat make toolbar search separate cancel button (when search is active)
@@ -128,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements
         // Start activity with CropStreamFragment
         fragmentManager = getSupportFragmentManager();
 
-        listArray = new MutableLiveData<>();
         viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
         fetchData();
         starCropStreamFragment();
@@ -271,10 +266,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    private void clearViewsFromToolbar(){
-
-    }
-
     private void fetchData() {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
@@ -359,7 +350,6 @@ public class MainActivity extends AppCompatActivity implements
                     ));
                 }
 
-                //listArray.setValue(tempArray);
                 viewModel.setList(tempArray);
             }
 
@@ -374,8 +364,7 @@ public class MainActivity extends AppCompatActivity implements
     private void starCropStreamFragment(){
         viewModel.getList().observe(this, listArray -> {
             if(listArray != null){
-                List<CropStreamMessage> transferList = new ArrayList<>();
-                transferList.addAll(listArray);
+                List<CropStreamMessage> transferList = new ArrayList<>(listArray);
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("transferList", (ArrayList<? extends Parcelable>) transferList);

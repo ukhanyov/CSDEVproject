@@ -9,7 +9,7 @@
 
         <TextView
             style="@style/TextViewGeneralBold"
-            android:text="@string/work_in_progress"
+            android:text="@string/work_in_progress_on_search"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
