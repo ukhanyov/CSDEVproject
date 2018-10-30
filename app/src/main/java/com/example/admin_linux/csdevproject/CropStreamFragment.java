@@ -3,6 +3,7 @@ package com.example.admin_linux.csdevproject;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,6 +29,8 @@ public class CropStreamFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    List<CropStreamMessage> transferList;
 
     ProgressBar progressBar;
 
@@ -56,16 +60,26 @@ public class CropStreamFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
-
         progressBar = rootView.findViewById(R.id.pb_loading_indicator);
         progressBar.setVisibility(View.VISIBLE);
 
-        List<CropStreamMessage> transferList = getArguments().getParcelableArrayList("transferList");
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
-        mAdapter.setCorpStreamMessages(transferList);
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if(savedInstanceState != null){
+            transferList = savedInstanceState.getParcelableArrayList("saved_instance_transferList");
+            mAdapter.setCorpStreamMessages(transferList);
+            recyclerView.setAdapter(mAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }else {
+            transferList = getArguments().getParcelableArrayList("transferList");
+            mAdapter.setCorpStreamMessages(transferList);
+            recyclerView.setAdapter(mAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
+
+
+
 
         progressBar.setVisibility(View.INVISIBLE);
         return rootView;
@@ -75,6 +89,13 @@ public class CropStreamFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelableArrayList("saved_instance_transferList", (ArrayList<? extends Parcelable>) transferList);
     }
 
     @Override

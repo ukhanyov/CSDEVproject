@@ -17,8 +17,8 @@
     <color name="light_gray">#f0f0f0</color>
     <color name="very_light_gray">#fafafa</color>
 
-    <color name="bottom_nav_text_selected">#27bd4d</color>
-    <color name="bottom_nav_text_not_selected">#a6a6a6</color>
+    <color name="bottom_nav_text_selected">#FF27bd4d</color>
+    <color name="bottom_nav_text_not_selected">#FFa6a6a6</color>
     <color name="bottom_nav_item_selected">#FF4ece3d</color>
     <color name="bottom_nav_item_not_selected">#FFc8c7cc</color>
 

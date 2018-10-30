@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -66,8 +67,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO: disable on click on the bottom bar rounds (some kind of animation)
-
         // TODO: Chat make toolbar search
         // TODO: Chat make toolbar search separate cancel button (when search is active)
 
@@ -125,7 +124,9 @@ public class MainActivity extends AppCompatActivity implements
         fragmentManager = getSupportFragmentManager();
 
         viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
-        fetchData();
+        if(viewModel.getList()!= null){
+            fetchData();
+        }
         starCropStreamFragment();
 
 
@@ -160,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
     }
-
 
     public void animateFAB() {
 
@@ -217,7 +217,9 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
-                fetchData();
+                if(viewModel.getList()!= null){
+                    fetchData();
+                }
                 starCropStreamFragment();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
