@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1eb71a</color>
+    <color name="colorPrimary">#00b22d</color>
     <color name="colorPrimaryDark">#1dd41a</color>
     <color name="colorAccent">#D81B60</color>
 
     <!--FAB colors-->
-    <color name="colorFABGrey">#a8a8a8</color>
-    <color name="colorFABGreen">#1eb71a</color>
+    <color name="colorFABGrey">#AAAAAA</color>
+    <color name="colorFABGreen">#00b22d</color>
+    <color name="fab_title_background">#333333</color>
     <!--FAB colors-->
 
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="grey">#808080</color>
-    <color name="green">#1eb71a</color>
-    <color name="light_gray">#e1e1e1</color>
-    <color name="very_light_gray">#ececec</color>
+    <color name="green">#00b22d</color>
+    <color name="light_gray">#f0f0f0</color>
+    <color name="very_light_gray">#fafafa</color>
+
+    <color name="bottom_nav_text_selected">#27bd4d</color>
+    <color name="bottom_nav_text_not_selected">#a6a6a6</color>
+    <color name="bottom_nav_item_selected">#FF4ece3d</color>
+    <color name="bottom_nav_item_not_selected">#FFc8c7cc</color>
 
 </resources>
