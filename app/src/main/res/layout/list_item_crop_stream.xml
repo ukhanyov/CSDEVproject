@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -8,15 +9,13 @@
         android:id="@+id/list_item_iv_profile_picture"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="16dp"
         android:contentDescription="@string/content_description_profile_picture"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_replied_to_label"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/list_item_tv_profile_first"
         app:srcCompat="@drawable/ic_one" />
 
     <TextView
@@ -26,10 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="2dp"
         android:hint="@string/hint_name_name"
-        app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_label"
-        app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_second"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,14 +36,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="2dp"
         android:hint="@string/hint_crop"
         android:maxWidth="100dp"
         android:maxLines="1"
         android:singleLine="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_label"
-        app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_point_label"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_first"
         app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_first"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,15 +50,11 @@
         style="@style/TextViewDot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="4dp"
         android:gravity="center"
         android:text="@string/simple_dot"
         android:textAlignment="gravity"
-        app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
-        app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_time"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_second"
         app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_second"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,15 +63,15 @@
         style="@style/TextViewGeneral"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="2dp"
         android:hint="@string/hint_time_hint"
         android:maxLines="1"
         android:singleLine="true"
-        app:layout_constraintBottom_toTopOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_second"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_point_label"
+        app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_second"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -90,10 +80,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/label_replied_to_a_chat_with"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/list_item_tv_profile_replied_to_target_of_reply"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_first" />
@@ -103,7 +91,6 @@
         style="@style/TextViewGeneral"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:hint="@string/hint_reply_target"
@@ -118,43 +105,40 @@
     <TextView
         android:id="@+id/list_item_tv_text_message"
         style="@style/TextViewGeneral"
-        android:layout_width="0dp"
+        android:layout_width="294dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:hint="@string/hint_text_message"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/list_item_iv_profile_picture"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_replied_to_label" />
 
     <ImageView
         android:id="@+id/list_item_iv_message_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:contentDescription="@string/content_description_message_picture"
+        android:src="@drawable/ic_search"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/list_item_iv_profile_picture"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_text_message" />
 
     <ImageButton
         android:id="@+id/list_item_ib_start_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:background="@color/white"
         android:contentDescription="@string/content_description_reply_button"
-        android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/list_item_iv_profile_picture"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image"
         app:srcCompat="@drawable/ic_chat_bubble_outline_green" />
 
@@ -164,18 +148,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/label_start_a_private_chat"
-        android:visibility="gone"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_ib_start_chat"
         app:layout_constraintStart_toEndOf="@+id/list_item_ib_start_chat"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image" />
+        app:layout_constraintTop_toTopOf="@+id/list_item_ib_start_chat" />
 
     <View
         android:id="@+id/list_item_v_bottom"
         android:layout_width="match_parent"
         android:layout_height="8dp"
+        android:layout_marginTop="8dp"
         android:background="@color/light_gray"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_ib_start_chat" />
 
 
     <ImageView
@@ -185,7 +172,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/content_description_profile_picture"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_replied_to_label"
@@ -198,7 +185,7 @@
         android:id="@+id/list_item_iv_profile_picture_mash_bottom"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/content_description_profile_picture"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_replied_to_label"

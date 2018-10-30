@@ -59,7 +59,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 holder.ivProfilePicture.setVisibility(View.GONE);
 
             } else {
-                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerInside()
+                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerCrop()
                         .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                         .into(holder.ivProfilePicture);
@@ -80,11 +80,24 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
 
-            //holder.tvMessageText.setText(current.getMessageText());
+            if(current.getMessageText() != null){
+                holder.tvMessageText.setVisibility(View.VISIBLE);
+                holder.tvMessageText.setText(current.getMessageText());
+            }else {
+                holder.tvMessageText.setVisibility(View.GONE);
+            }
 
             holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
 
-            //if (current.getMessagePicture() != null) holder.ivMessagePicture.setImageBitmap(ImageHelper.decodeFromByteArray(current.getMessagePicture()));
+            if (current.getMessagePicture() != null) {
+                holder.ivMessagePicture.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(current.getMessagePicture()).fit().centerInside()
+                        .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
+                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                        .into(holder.ivMessagePicture);
+            }else {
+                holder.ivMessagePicture.setVisibility(View.GONE);
+            }
 
             if (current.getConversationFirstMessage())
                 holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));

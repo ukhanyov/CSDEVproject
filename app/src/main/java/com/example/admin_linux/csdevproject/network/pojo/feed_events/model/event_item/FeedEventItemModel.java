@@ -71,9 +71,9 @@ public class FeedEventItemModel {
     @Expose
     private List<FEIMInvolvedPerson> involvedPersons;
 
-//    @SerializedName("Comments")
-//    @Expose
-//    private String comments;
+    @SerializedName("Comments")
+    @Expose
+    private String comments;
 
 //    @SerializedName("DefaultConversationUserId")
 //    @Expose
@@ -151,10 +151,10 @@ public class FeedEventItemModel {
         return involvedPersons;
     }
 
-//    public String getComments() {
-//        return comments;
-//    }
-//
+    public String getComments() {
+        return comments;
+    }
+
 //    public int getDefaultConversationUserId() {
 //        return defaultConversationUserId;
 //    }
