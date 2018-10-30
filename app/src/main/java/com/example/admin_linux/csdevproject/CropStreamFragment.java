@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,14 @@ public class CropStreamFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            transferList = savedInstanceState.getParcelableArrayList("saved_instance_transferList");
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -66,8 +75,8 @@ public class CropStreamFragment extends Fragment {
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
 
-        if(savedInstanceState != null){
-            transferList = savedInstanceState.getParcelableArrayList("saved_instance_transferList");
+        if(transferList != null){
+
             mAdapter.setCorpStreamMessages(transferList);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

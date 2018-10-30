@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.widget.BottomNavigationView;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4;
     private Animation fab_open_1, fab_open_2, fab_open_3, fab_open_4,
-            fab_close_1,  fab_close_2,  fab_close_3,  fab_close_4,
+            fab_close_1, fab_close_2, fab_close_3, fab_close_4,
             rotate_forward, rotate_backward;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements
     BottomNavigationView bottomNavigationView;
 
     private CropStreamMessageViewModel viewModel;
+    private CropStreamFragment fragmentCropStreamTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements
         // TODO: Search make recyclerView with nested recyclers
         // TODO: Search make nested recyclers to recycle grids
 
-
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
@@ -122,13 +124,23 @@ public class MainActivity extends AppCompatActivity implements
 
         // Start activity with CropStreamFragment
         fragmentManager = getSupportFragmentManager();
-
         viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
-        if(viewModel.getList()!= null){
-            fetchData();
-        }
-        starCropStreamFragment();
 
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+            fragmentCropStreamTransaction = (CropStreamFragment) getSupportFragmentManager().getFragment(savedInstanceState, "CropStreamFragment");
+            if (fragmentCropStreamTransaction != null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
+                        .commit();
+            }
+        } else {
+            if (viewModel.getList().getValue() == null) {
+                fetchData();
+            }
+            starCropStreamFragment();
+        }
 
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
@@ -217,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
-                if(viewModel.getList()!= null){
+                if (viewModel.getList().getValue() == null) {
                     fetchData();
                 }
                 starCropStreamFragment();
@@ -227,33 +239,30 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.action_chat:
-                fragmentTransaction = fragmentManager.beginTransaction();
-                ChatFragment fragmentChat = new ChatFragment();
-                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentChat);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_content_main, new ChatFragment())
+                        .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_chat));
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_favorites:
-                fragmentTransaction = fragmentManager.beginTransaction();
-                FavoritesFragment fragmentFavorites = new FavoritesFragment();
-                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentFavorites);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_content_main, new FavoritesFragment())
+                        .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_favorites));
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_search:
-                fragmentTransaction = fragmentManager.beginTransaction();
-                SearchFragment fragmentSearch = new SearchFragment();
-                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentSearch);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_content_main, new SearchFragment())
+                        .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_search));
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -266,6 +275,12 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        getSupportFragmentManager().putFragment(outState, "CropStreamFragment", fragmentCropStreamTransaction);
     }
 
     private void fetchData() {
@@ -363,21 +378,21 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void starCropStreamFragment(){
+    private void starCropStreamFragment() {
         viewModel.getList().observe(this, listArray -> {
-            if(listArray != null){
+            if (listArray != null) {
                 List<CropStreamMessage> transferList = new ArrayList<>(listArray);
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("transferList", (ArrayList<? extends Parcelable>) transferList);
 
-                fragmentTransaction = fragmentManager.beginTransaction();
-                CropStreamFragment fragmentCropStreamTransaction = new CropStreamFragment();
+                fragmentCropStreamTransaction = new CropStreamFragment();
                 fragmentCropStreamTransaction.setArguments(bundle);
-                fragmentTransaction.replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
 
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
+                        .commit();
             }
         });
     }
