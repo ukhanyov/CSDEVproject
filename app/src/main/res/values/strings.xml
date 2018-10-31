@@ -86,6 +86,14 @@
     <string name="label_phone_auth">Phone Number Authentication</string>
     <string name="privacy_policy">By tapping to continue, you are indicating that you have read Privacy policy and agree to the Terms of service</string>
     <string name="use_phone_number">Use phone number</string>
+    <string name="code_ua">+380</string>
+    <string name="phone_number">Phone number</string>
+    <string name="verify_phone_number">Verify phone number</string>
+
+    <string-array name="country_array">
+        <item>+380</item>
+    </string-array>
+
     <!--Auth stuff-->
 
 </resources>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EnterPhoneActivity">
+
+    <Spinner
+        android:id="@+id/spinner_activity_enter_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_enter_phone_title" />
+
+    <EditText
+        android:id="@+id/et_activity_enter_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:accessibilityHeading="false"
+        android:inputType="phone"
+        android:textColorLink="@color/green"
+        android:textIsSelectable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinner_activity_enter_phone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_enter_phone_title" />
+
+    <TextView
+        style="@style/TextViewGeneralGreen"
+        android:id="@+id/tv_activity_enter_phone_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/phone_number"
+        app:layout_constraintStart_toStartOf="@+id/et_activity_enter_phone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:text="@string/verify_phone_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/auth_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_activity_enter_phone" />
+
+</android.support.constraint.ConstraintLayout>
