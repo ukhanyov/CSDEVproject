@@ -204,10 +204,10 @@ public class MainActivity extends AppCompatActivity implements
         fab_open_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_3);
         fab_open_4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_4);
 
-        fab_title_close_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_title_close_1);
-        fab_title_close_2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_title_close_2);
-        fab_title_close_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_title_close_3);
-        fab_title_close_4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_title_close_4);
+        fab_title_close_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_title_1);
+        fab_title_close_2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_title_2);
+        fab_title_close_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_title_3);
+        fab_title_close_4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_title_4);
         fab_close_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_1);
         fab_close_2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_2);
         fab_close_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_3);
@@ -222,10 +222,10 @@ public class MainActivity extends AppCompatActivity implements
         if (isFabOpen) {
 
             mBinding.fab.startAnimation(rotate_backward);
-            mBinding.fab1.startAnimation(fab_close_1);
-            mBinding.fab2.startAnimation(fab_close_2);
-            mBinding.fab3.startAnimation(fab_close_3);
-            mBinding.fab4.startAnimation(fab_close_4);
+            mBinding.fab1.startAnimation(fab_close_4);
+            mBinding.fab2.startAnimation(fab_close_3);
+            mBinding.fab3.startAnimation(fab_close_2);
+            mBinding.fab4.startAnimation(fab_close_1);
 
             mBinding.fab1.setClickable(false);
             mBinding.fab2.setClickable(false);
@@ -243,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements
             mBinding.tvFavTitle3.setVisibility(View.INVISIBLE);
             mBinding.tvFavTitle4.setVisibility(View.INVISIBLE);
         } else {
+
             mBinding.fab.startAnimation(rotate_forward);
             mBinding.fab1.startAnimation(fab_open_1);
             mBinding.fab2.startAnimation(fab_open_2);

@@ -30,20 +30,6 @@
             app:layout_constraintTop_toTopOf="@+id/fab4" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="16dp"
-            android:visibility="invisible"
-            app:backgroundTint="@color/colorFABGreen"
-            app:elevation="6dp"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fab2"
-            app:layout_constraintEnd_toEndOf="@+id/fab2"
-            app:layout_constraintStart_toStartOf="@+id/fab2" />
-
-        <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,6 +42,20 @@
             app:layout_constraintBottom_toTopOf="@+id/fab3"
             app:layout_constraintEnd_toEndOf="@+id/fab3"
             app:layout_constraintStart_toStartOf="@+id/fab3" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorFABGreen"
+            app:elevation="6dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/fab2"
+            app:layout_constraintEnd_toEndOf="@+id/fab2"
+            app:layout_constraintStart_toStartOf="@+id/fab2" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab2"
