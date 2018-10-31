@@ -84,6 +84,8 @@
     <string name="firebase_status_fmt">Firebase User: %s</string>
 
     <string name="label_phone_auth">Phone Number Authentication</string>
+    <string name="privacy_policy">By tapping to continue, you are indicating that you have read Privacy policy and agree to the Terms of service</string>
+    <string name="use_phone_number">Use phone number</string>
     <!--Auth stuff-->
 
 </resources>
