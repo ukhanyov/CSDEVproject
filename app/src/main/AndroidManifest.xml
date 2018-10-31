@@ -33,7 +33,13 @@
         <activity
             android:name=".PhoneAuthActivity"
             android:label="@string/label_phone_auth"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
 
         <activity
             android:name=".AuthActivity"

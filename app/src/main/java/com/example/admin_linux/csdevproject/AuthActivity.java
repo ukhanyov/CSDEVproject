@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.example.admin_linux.csdevproject.databinding.ActivityAuthBinding;
+import com.example.admin_linux.csdevproject.utils.Constants;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -276,10 +277,14 @@ public class AuthActivity extends AppCompatActivity{
 //    }
 
     public void btnUsePhoneNumberClicked(View view) {
-        startActivity(new Intent(this, EnterPhoneActivity.class));
+        Intent intent = new Intent(this, EnterPhoneActivity.class);
+        startActivity(intent);
     }
 
     public void btnUseTokenClicked(View view) {
-
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(Constants.KEY_INTENT_USER_ID, Constants.PERSON_ID);
+        intent.putExtra(Constants.KEY_INTENT_BEARER, Constants.BEARER);
+        startActivity(intent);
     }
 }

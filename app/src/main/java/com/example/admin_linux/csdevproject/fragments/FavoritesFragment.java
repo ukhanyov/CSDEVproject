@@ -1,7 +1,6 @@
-package com.example.admin_linux.csdevproject;
+package com.example.admin_linux.csdevproject.fragments;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.admin_linux.csdevproject.databinding.FragmentSearchBinding;
+import com.example.admin_linux.csdevproject.R;
 
 
-public class SearchFragment extends Fragment {
+public class FavoritesFragment extends Fragment {
+
+
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -23,12 +24,12 @@ public class SearchFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SearchFragment() {
+    public FavoritesFragment() {
         // Required empty public constructor
     }
 
-    public static SearchFragment newInstance(String param1, String param2) {
-        SearchFragment fragment = new SearchFragment();
+    public static FavoritesFragment newInstance(String param1, String param2) {
+        FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -49,8 +50,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
-
+        return inflater.inflate(R.layout.fragment_favorites, container, false);
     }
 
     public void onButtonPressed(Uri uri) {

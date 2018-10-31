@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject;
+package com.example.admin_linux.csdevproject.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 

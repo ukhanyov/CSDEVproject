@@ -21,6 +21,10 @@ import android.widget.Toast;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.data.CropStreamMessageViewModel;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
+import com.example.admin_linux.csdevproject.fragments.ChatFragment;
+import com.example.admin_linux.csdevproject.fragments.CropStreamFragment;
+import com.example.admin_linux.csdevproject.fragments.FavoritesFragment;
+import com.example.admin_linux.csdevproject.fragments.SearchFragment;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
@@ -297,6 +301,9 @@ public class MainActivity extends AppCompatActivity implements
         parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
             @Override
             public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
+
+                // TODO: look into person/user id shenanigans
+
                 ApiResultOfFeedEventsModel pj = response.body();
                 List<CropStreamMessage> tempArray = new ArrayList<>();
                 List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();

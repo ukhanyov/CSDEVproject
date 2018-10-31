@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-//import com.google.firebase.quickstart.auth.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -152,8 +151,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
             }
 
             @Override
-            public void onCodeSent(String verificationId,
-                                   PhoneAuthProvider.ForceResendingToken token) {
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
@@ -200,6 +198,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS);
     }
 
+
     private void startPhoneNumberVerification(String phoneNumber) {
         // [START start_phone_auth]
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -236,28 +235,31 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     // [START sign_in_with_phone]
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success");
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
 
-                        FirebaseUser user = task.getResult().getUser();
-                        // [START_EXCLUDE]
-                        updateUI(STATE_SIGNIN_SUCCESS, user);
-                        // [END_EXCLUDE]
-                    } else {
-                        // Sign in failed, display a message and update the UI
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            // The verification code entered was invalid
+                            FirebaseUser user = task.getResult().getUser();
+                            // [START_EXCLUDE]
+                            updateUI(STATE_SIGNIN_SUCCESS, user);
+                            // [END_EXCLUDE]
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                                // [START_EXCLUDE silent]
+                                mVerificationField.setError("Invalid code.");
+                                // [END_EXCLUDE]
+                            }
                             // [START_EXCLUDE silent]
-                            mVerificationField.setError("Invalid code.");
+                            // Update UI
+                            updateUI(STATE_SIGNIN_FAILED);
                             // [END_EXCLUDE]
                         }
-                        // [START_EXCLUDE silent]
-                        // Update UI
-                        updateUI(STATE_SIGNIN_FAILED);
-                        // [END_EXCLUDE]
                     }
                 });
     }

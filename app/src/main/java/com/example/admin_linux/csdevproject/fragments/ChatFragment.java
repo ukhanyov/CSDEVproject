@@ -1,21 +1,15 @@
-package com.example.admin_linux.csdevproject;
+package com.example.admin_linux.csdevproject.fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.admin_linux.csdevproject.adapters.ChatAdapter;
-import com.example.admin_linux.csdevproject.data.ChatItem;
-import com.example.admin_linux.csdevproject.utils.GenerateData;
-
-import java.util.List;
+import com.example.admin_linux.csdevproject.R;
 
 
 public class ChatFragment extends Fragment {
