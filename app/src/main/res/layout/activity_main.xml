@@ -25,77 +25,65 @@
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/conversation"
-            app:layout_constraintBottom_toBottomOf="@+id/fab8"
-            app:layout_constraintEnd_toStartOf="@+id/fab8"
-            app:layout_constraintTop_toTopOf="@+id/fab8" />
+            app:layout_constraintBottom_toBottomOf="@+id/fab4"
+            app:layout_constraintEnd_toStartOf="@+id/fab4"
+            app:layout_constraintTop_toTopOf="@+id/fab4" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab7"
+            android:id="@+id/fab3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFABGreen"
             app:elevation="6dp"
             app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fab6"
-            app:layout_constraintEnd_toEndOf="@+id/fab6"
-            app:layout_constraintStart_toStartOf="@+id/fab6" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="8dp"
-            android:visibility="invisible"
-            app:backgroundTint="@color/colorFABGreen"
-            app:elevation="6dp"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fab7"
-            app:layout_constraintEnd_toEndOf="@+id/fab7"
-            app:layout_constraintStart_toStartOf="@+id/fab7" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="8dp"
-            android:visibility="invisible"
-            app:backgroundTint="@color/colorFABGreen"
-            app:elevation="6dp"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fab5"
-            app:layout_constraintEnd_toEndOf="@+id/fab5"
-            app:layout_constraintStart_toStartOf="@+id/fab5" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="8dp"
-            android:visibility="invisible"
-            app:backgroundTint="@color/colorFABGreen"
-            app:elevation="6dp"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fab"
-            app:layout_constraintEnd_toEndOf="@+id/fab"
-            app:layout_constraintStart_toStartOf="@+id/fab" />
+            app:layout_constraintBottom_toTopOf="@+id/fab2"
+            app:layout_constraintEnd_toEndOf="@+id/fab2"
+            app:layout_constraintStart_toStartOf="@+id/fab2" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
             android:visibility="invisible"
             app:backgroundTint="@color/colorFABGreen"
             app:elevation="6dp"
             app:fabSize="mini"
-            tools:layout_editor_absoluteX="56dp"
-            tools:layout_editor_absoluteY="83dp" />
+            app:layout_constraintBottom_toTopOf="@+id/fab3"
+            app:layout_constraintEnd_toEndOf="@+id/fab3"
+            app:layout_constraintStart_toStartOf="@+id/fab3" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorFABGreen"
+            app:elevation="6dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/fab1"
+            app:layout_constraintEnd_toEndOf="@+id/fab1"
+            app:layout_constraintStart_toStartOf="@+id/fab1" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="32dp"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorFABGrey"
+            app:elevation="6dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/fab"
+            app:layout_constraintEnd_toEndOf="@+id/fab"
+            app:layout_constraintStart_toStartOf="@+id/fab" />
 
         <TextView
             android:id="@+id/tv_fav_title_3"
@@ -105,22 +93,9 @@
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/activity"
-            app:layout_constraintBottom_toBottomOf="@+id/fab7"
-            app:layout_constraintEnd_toStartOf="@+id/fab7"
-            app:layout_constraintTop_toTopOf="@+id/fab7" />
-
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:visibility="invisible"
-            app:backgroundTint="@color/colorFABGreen"
-            app:elevation="6dp"
-            app:fabSize="mini"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="159dp" />
+            app:layout_constraintBottom_toBottomOf="@+id/fab3"
+            app:layout_constraintEnd_toStartOf="@+id/fab3"
+            app:layout_constraintTop_toTopOf="@+id/fab3" />
 
 
         <TextView
@@ -131,21 +106,9 @@
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/photo"
-            app:layout_constraintBottom_toBottomOf="@+id/fab6"
-            app:layout_constraintEnd_toStartOf="@+id/fab6"
-            app:layout_constraintTop_toTopOf="@+id/fab6" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:visibility="invisible"
-            app:backgroundTint="@color/colorFABGreen"
-            app:elevation="6dp"
-            app:fabSize="mini"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="235dp" />
+            app:layout_constraintBottom_toBottomOf="@+id/fab2"
+            app:layout_constraintEnd_toStartOf="@+id/fab2"
+            app:layout_constraintTop_toTopOf="@+id/fab2" />
 
         <TextView
             android:id="@+id/tv_fav_title_1"
@@ -155,22 +118,9 @@
             android:layout_marginEnd="8dp"
             android:hint="@string/fab_hint"
             android:text="@string/note"
-            app:layout_constraintBottom_toBottomOf="@+id/fab5"
-            app:layout_constraintEnd_toStartOf="@+id/fab5"
-            app:layout_constraintTop_toTopOf="@+id/fab5" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:visibility="invisible"
-            app:backgroundTint="@color/colorFABGrey"
-            app:elevation="6dp"
-            app:fabSize="mini"
-            app:pressedTranslationZ="12dp"
-            tools:layout_editor_absoluteX="39dp"
-            tools:layout_editor_absoluteY="321dp" />
+            app:layout_constraintBottom_toBottomOf="@+id/fab1"
+            app:layout_constraintEnd_toStartOf="@+id/fab1"
+            app:layout_constraintTop_toTopOf="@+id/fab1" />
 
 
         <android.support.design.widget.FloatingActionButton
@@ -201,16 +151,15 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             app:itemTextColor="@drawable/bnv_tab_item_foreground"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/white"
             app:menu="@menu/menu_bottom_bar" />
 
         <ProgressBar
-            android:visibility="invisible"
             android:id="@+id/pb_loading_indicator"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
@@ -222,6 +171,7 @@
             android:indeterminate="true"
             android:indeterminateTint="@color/green"
             android:max="100"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_main_v_bottom" />
