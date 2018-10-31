@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
 
-                // TODO: look into person/user id shenanigans
+                // TODO: look into person/user id shenanigans (there is a miss math with person/user
 
                 ApiResultOfFeedEventsModel pj = response.body();
                 List<CropStreamMessage> tempArray = new ArrayList<>();
