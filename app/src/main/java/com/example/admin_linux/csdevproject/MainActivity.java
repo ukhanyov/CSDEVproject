@@ -29,6 +29,8 @@ import com.example.admin_linux.csdevproject.fragments.SearchFragment;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
+import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseUserReturnValue;
+import com.example.admin_linux.csdevproject.network.pojo.firebase_user.model.FireBaseUserModel;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
@@ -56,7 +58,10 @@ public class MainActivity extends AppCompatActivity implements
     private Boolean isSearchETOpened = false;
     private Boolean isNotDefaultUser = false;
 
-    private String mBearer, mUserFirebaseId;
+    private String mBearer;
+    private String mUserFirebaseId;
+    private String mUserFirebasePhoneNumber;
+
     private int mUserId;
 
     private Animation
@@ -84,18 +89,20 @@ public class MainActivity extends AppCompatActivity implements
 
         Intent intent = getIntent();
         mBearer = intent.getStringExtra(Constants.KEY_INTENT_BEARER);
-        mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
         mUserId = intent.getIntExtra(Constants.KEY_INTENT_USER_ID, 0);
-        if(mBearer != null && !mBearer.equals("") && mUserId != 0){
+        mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
+        mUserFirebasePhoneNumber = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER);
+        if (mBearer != null && !mBearer.equals("") && mUserId != 0) {
             // old user root
             isNotDefaultUser = false;
 
-        } else if(mUserFirebaseId != null && !mUserFirebaseId.equals("")){
+        } else if (mUserFirebaseId != null && !mUserFirebaseId.equals("") &&
+                mUserFirebasePhoneNumber != null && !mUserFirebasePhoneNumber.equals("")) {
             // new user root
             isNotDefaultUser = true;
             mBearer = null;
             mUserId = 0;
-            fetchUserData(mUserFirebaseId);
+            fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
         }
 
         // Toolbar
@@ -128,7 +135,11 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else {
             if (viewModel.getList().getValue() == null) {
-                fetchData(mBearer, mUserId);
+                if(!isNotDefaultUser){
+                    fetchData(mBearer, mUserId);
+                } else if(mBearer != null && !mBearer.equals("") && mUserId != 0){
+                    fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
+                }
             }
             starCropStreamFragment();
         }
@@ -155,7 +166,12 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
                 if (viewModel.getList().getValue() == null) {
-                    fetchData(mBearer, mUserId);
+                    if(!isNotDefaultUser){
+                        fetchData(mBearer, mUserId);
+                    } else if(mBearer != null && !mBearer.equals("") && mUserId != 0){
+                        fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
+                    }
+
                 }
                 starCropStreamFragment();
 
@@ -225,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements
         getSupportFragmentManager().putFragment(outState, "CropStreamFragment", fragmentCropStreamTransaction);
     }
 
-    private void initAnimations(){
+    private void initAnimations() {
         fab_title_open_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_title_open_1);
         fab_title_open_2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_title_open_2);
         fab_title_open_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_title_open_3);
@@ -327,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     if (involvedPeople != null) {
                         for (FEIMInvolvedPerson person : involvedPeople) {
-                            if (person.getPersonId() == Constants.PERSON_ID) {
+                            if (person.getPersonId() == personId) {
                                 stringBuilder.append("you");
                             } else {
                                 stringBuilder.append(person.getPersonFullName());
@@ -343,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements
 
                         if (involvedPeople.size() > 1) {
                             for (FEIMInvolvedPerson person : involvedPeople) {
-                                if (person.getPersonId() != Constants.PERSON_ID) {
+                                if (person.getPersonId() != personId) {
 
                                     if (imageFirst != null) {
                                         imageSecond = person.getIconPath();
@@ -398,9 +414,30 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void fetchUserData(String mUserFirebaseId){
-        if(mUserFirebaseId != null && !mUserFirebaseId.equals("")){
+    private void fetchUserData(String userFirebaseId, String phoneNumber) {
+        if (userFirebaseId != null && !userFirebaseId.equals("") &&
+                phoneNumber != null && !phoneNumber.equals("")) {
 
+            GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+            Call<FirebaseUserReturnValue> parsedJSON = service.getUserGetByFireBaseId(
+                    userFirebaseId,
+                    phoneNumber);
+
+            parsedJSON.enqueue(new Callback<FirebaseUserReturnValue>() {
+                @Override
+                public void onResponse(@NonNull Call<FirebaseUserReturnValue> call, @NonNull Response<FirebaseUserReturnValue> response) {
+                    FirebaseUserReturnValue returnValue = response.body();
+                    FireBaseUserModel userModel = Objects.requireNonNull(returnValue).getFireBaseUserModel();
+                    mUserId = userModel.getPersonId();
+                    mBearer = "Bearer " + userModel.getAuthorizeToken();
+                    fetchData(mBearer, mUserId);
+                }
+
+                @Override
+                public void onFailure(Call<FirebaseUserReturnValue> call, Throwable t) {
+
+                }
+            });
         }
     }
 
@@ -424,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void toggleSearchButtonChatToolbar(View view) {
-        if(isSearchETOpened){
+        if (isSearchETOpened) {
 
             mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.VISIBLE);
             mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.VISIBLE);

@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.network.retrofit;
 
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
+import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseUserReturnValue;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -10,22 +11,6 @@ import retrofit2.http.Query;
 
 
 public interface GetDataService {
-//    @GET("api/v1/ActivityCard/FeedEvents?PersonId=" +
-//            "{PersonId}&LastServerTimeMinutes=" +
-//            "{LastServerTimeMinutes}&MaxEventCount=" +
-//            "{MaxEventCount}&StartDateUTC=" +
-//            "{StartDateUTC}&OrganizationId=" +
-//            "{OrganizationId}&UserId=" +
-//            "{UserId}")
-//    Call<ApiResultOfFeedEventsModel> getActivityCardFeedEvents(
-//            @Header("Authorization") String BEARER,
-//            @Path("PersonId") int personId,
-//            @Path("LastServerTimeMinutes") int timeMinutes,
-//            @Path("MaxEventCount") int maxEventCount,
-//            @Path("StartDateUTC") String startDateUTC,
-//            @Path("OrganizationId") int organizationId,
-//            @Path("UserId") int userId
-//    );
 
     // "api/v1/ActivityCard/FeedEvents?PersonId={PersonId}"
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
@@ -35,5 +20,12 @@ public interface GetDataService {
             @Query("PersonId") int personId,
             @Query("MaxEventCount") int maxEventCount
 
+    );
+
+    // "api/v1/User/GetByFireBaseId?FireBaseId={FireBaseId}&MobilePhoneNumber={MobilePhoneNumber}"
+    @GET("api/v1/User/GetByFireBaseId")
+    Call<FirebaseUserReturnValue> getUserGetByFireBaseId(
+            @Query("FireBaseId") String FireBaseId,
+            @Query("MobilePhoneNumber") String MobilePhoneNumber
     );
 }

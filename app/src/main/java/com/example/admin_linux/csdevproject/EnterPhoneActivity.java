@@ -180,6 +180,7 @@ public class EnterPhoneActivity extends AppCompatActivity {
     private void launchActivityWithUser(String userUID){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, userUID);
+        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, mPhoneNumber);
         startActivity(intent);
     }
 
