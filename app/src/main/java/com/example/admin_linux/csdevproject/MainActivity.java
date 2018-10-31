@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity implements
     ActivityMainBinding mBinding;
 
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5;
-    private Animation fab_open_1, fab_open_2, fab_open_3, fab_open_4, fab_open_5,
-            fab_close_1, fab_close_2, fab_close_3, fab_close_4, fab_close_5,
+    private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
+    private Animation fab_open_1, fab_open_2, fab_open_3, fab_open_4, fab_open_5, fab_open_6, fab_open_7, fab_open_8,
+            fab_close_1, fab_close_2, fab_close_3, fab_close_4, fab_close_5, fab_close_6, fab_close_7, fab_close_8,
             rotate_forward, rotate_backward;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements
         fab3 = mBinding.fab3;
         fab4 = mBinding.fab4;
         fab5 = mBinding.fab5;
+        fab6 = mBinding.fab6;
+        fab7 = mBinding.fab7;
+        fab8 = mBinding.fab8;
 
         // Animations init
         fab_open_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_1);
@@ -111,12 +114,19 @@ public class MainActivity extends AppCompatActivity implements
         fab_open_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_3);
         fab_open_4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_4);
         fab_open_5 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_5);
+        fab_open_6 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_6);
+        fab_open_7 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_7);
+        fab_open_8 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open_8);
 
         fab_close_1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_1);
         fab_close_2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_2);
         fab_close_3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_3);
         fab_close_4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_4);
         fab_close_5 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_5);
+        fab_close_6 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_6);
+        fab_close_7 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_7);
+        fab_close_8 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close_8);
+
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
         // Click listeners for FAB
@@ -188,12 +198,18 @@ public class MainActivity extends AppCompatActivity implements
             fab3.startAnimation(fab_close_2);
             fab4.startAnimation(fab_close_1);
             fab5.startAnimation(fab_close_5);
+            fab6.startAnimation(fab_close_6);
+            fab7.startAnimation(fab_close_7);
+            fab8.startAnimation(fab_close_8);
 
             fab1.setClickable(false);
             fab2.setClickable(false);
             fab3.setClickable(false);
             fab4.setClickable(false);
             fab5.setClickable(false);
+            fab6.setClickable(false);
+            fab7.setClickable(false);
+            fab8.setClickable(false);
             isFabOpen = false;
 
             mBinding.tvFavTitle1.startAnimation(fab_close_4);
@@ -212,11 +228,18 @@ public class MainActivity extends AppCompatActivity implements
             fab3.startAnimation(fab_open_3);
             fab4.startAnimation(fab_open_4);
             fab5.startAnimation(fab_open_5);
+            fab6.startAnimation(fab_open_6);
+            fab7.startAnimation(fab_open_7);
+            fab8.startAnimation(fab_open_8);
 
             fab1.setClickable(true);
             fab2.setClickable(true);
             fab3.setClickable(true);
             fab4.setClickable(true);
+            fab5.setClickable(true);
+            fab6.setClickable(true);
+            fab7.setClickable(true);
+            fab8.setClickable(true);
             isFabOpen = true;
 
             mBinding.tvFavTitle1.startAnimation(fab_open_1);
