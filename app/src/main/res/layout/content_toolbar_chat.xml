@@ -9,6 +9,7 @@
         tools:showIn="@layout/layout_toolbar">
 
         <ImageButton
+            android:onClick="toggleSearchButtonChatToolbar"
             android:id="@+id/content_toolbar_ib_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/ic_cancel_green"
             android:contentDescription="@string/content_description_cancel_search"
@@ -84,7 +84,6 @@
             app:layout_constraintStart_toEndOf="@+id/content_toolbar_ib_search"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--TODO: Change Symbol-->
         <TextView
             style="@style/TextViewGeneral"
             android:id="@+id/content_toolbar_tv_label_arrow"
@@ -92,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="v"
+            android:background="@drawable/ic_expand_more_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/content_toolbar_tv_profile_name"
             app:layout_constraintTop_toTopOf="parent" />
@@ -104,7 +103,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/ic_settings_green"
             app:layout_constraintBottom_toBottomOf="parent"

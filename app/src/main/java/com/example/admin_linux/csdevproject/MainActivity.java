@@ -44,11 +44,26 @@ public class MainActivity extends AppCompatActivity implements
         FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
 
+    // TODO: Chat make toolbar search
+    // TODO: Chat make toolbar search separate cancel button (when search is active)
+
+    // TODO: Chat make settings cog
+    // TODO: Chat add settings screen
+    // TODO: Favorites make toolbar name
+    // TODO: Favorites make tabs
+    // TODO: Favorites mock mechanism to add tabs
+    // TODO: Search make toolbar search field (with cancel button)
+    // TODO: Search mock image spin in top part of the fragment
+    // TODO: Search make recyclerView with nested recyclers
+    // TODO: Search make nested recyclers to recycle grids
+
     // Fancy dataBinding
     ActivityMainBinding mBinding;
 
     private Boolean isFabOpen = false;
-    private Animation fab_title_open_1, fab_title_open_2, fab_title_open_3, fab_title_open_4,
+    private Boolean isSearchETOpened = false;
+    private Animation
+            fab_title_open_1, fab_title_open_2, fab_title_open_3, fab_title_open_4,
             fab_open_1, fab_open_2, fab_open_3, fab_open_4,
             fab_title_close_1, fab_title_close_2, fab_title_close_3, fab_title_close_4,
             fab_close_1, fab_close_2, fab_close_3, fab_close_4,
@@ -66,19 +81,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO: Chat make toolbar search
-        // TODO: Chat make toolbar search separate cancel button (when search is active)
-
-        // TODO: Chat make settings cog
-        // TODO: Chat add settings screen
-        // TODO: Favorites make toolbar name
-        // TODO: Favorites make tabs
-        // TODO: Favorites mock mechanism to add tabs
-        // TODO: Search make toolbar search field (with cancel button)
-        // TODO: Search mock image spin in top part of the fragment
-        // TODO: Search make recyclerView with nested recyclers
-        // TODO: Search make nested recyclers to recycle grids
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -147,6 +149,15 @@ public class MainActivity extends AppCompatActivity implements
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+
+                mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.INVISIBLE);
+
                 break;
 
             case R.id.action_chat:
@@ -156,7 +167,15 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_chat));
-                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.INVISIBLE);
+
+                mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.INVISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.VISIBLE);
+                mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_favorites:
@@ -383,4 +402,29 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
+    public void toggleSearchButtonChatToolbar(View view) {
+        if(isSearchETOpened){
+
+            mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.VISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.VISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.INVISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.VISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.INVISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.INVISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.INVISIBLE);
+
+            isSearchETOpened = true;
+        } else {
+
+            mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.INVISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.INVISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.VISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.VISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.VISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.VISIBLE);
+            mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.VISIBLE);
+
+            isSearchETOpened = false;
+        }
+    }
 }

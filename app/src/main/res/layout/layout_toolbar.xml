@@ -22,11 +22,11 @@
 
             <include
                 android:visibility="gone"
-                android:id="@+id/content"
+                android:id="@+id/content_chat"
                 layout="@layout/content_toolbar_chat" />
-
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
 </layout>
