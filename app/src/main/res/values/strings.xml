@@ -89,6 +89,7 @@
     <string name="code_ua">+380</string>
     <string name="phone_number">Phone number</string>
     <string name="verify_phone_number">Verify phone number</string>
+    <string name="use_token">Use token</string>
 
     <string-array name="country_array">
         <item>+380</item>

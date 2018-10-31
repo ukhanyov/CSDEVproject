@@ -82,9 +82,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Toolbar
