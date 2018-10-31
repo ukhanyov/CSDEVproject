@@ -53,7 +53,18 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
 
-    // FireBase
+    // Firebase stuff
     implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
+    // Firabase auth stuff
     implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
+    // Firebase storage stuff
+    implementation 'com.google.firebase:firebase-storage:16.0.4'
+    // Firebase messaging (notifications) stuff
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    // firebase Remote Config stuff
+    implementation 'com.google.firebase:firebase-config:16.1.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

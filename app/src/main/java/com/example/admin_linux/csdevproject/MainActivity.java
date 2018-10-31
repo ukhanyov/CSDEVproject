@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         // Toolbar
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+
     }
 
     @Override

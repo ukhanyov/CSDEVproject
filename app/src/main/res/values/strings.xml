@@ -64,4 +64,26 @@
     <string name="work_in_progress_on_search">Work in progress on Search</string>
     <string name="view_message">View message</string>
 
+    <!--Auth stuff-->
+    <string name="desc_firebase_lockup">Firebase logo and name</string>
+    <string name="phone_title_text">Phone Number</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_verification_code">Verification Code</string>
+    <string name="start_phone_auth">Start</string>
+    <string name="verify_phone_auth">Verify</string>
+    <string name="resend_phone_auth">Resend</string>
+    <string name="sign_out">Sign Out</string>
+
+    <string name="status_code_sent">Code Sent</string>
+    <string name="status_verification_failed">Verification failed</string>
+    <string name="status_verification_succeeded">Verification succeeded</string>
+    <string name="instant_validation">(instant validation)</string>
+    <string name="status_sign_in_failed">Sign-in failed</string>
+    <string name="signed_in">Signed In</string>
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+
+    <string name="label_phone_auth">Phone Number Authentication</string>
+    <!--Auth stuff-->
+
 </resources>
