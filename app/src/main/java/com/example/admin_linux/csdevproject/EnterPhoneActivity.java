@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.databinding.ActivityEnterPhoneBinding;
+import com.example.admin_linux.csdevproject.utils.Constants;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class EnterPhoneActivity extends AppCompatActivity {
@@ -138,8 +141,8 @@ public class EnterPhoneActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
-                        FirebaseUser user = task.getResult().getUser();
-                        launchActivityWithUser();
+                        FirebaseUser user = Objects.requireNonNull(task.getResult()).getUser();
+                        launchActivityWithUser(user.getUid());
 
                     } else {
                         // Sign in failed, display a message and update the UI
@@ -174,8 +177,10 @@ public class EnterPhoneActivity extends AppCompatActivity {
     }
 
     // Launch activity after successful authentication
-    private void launchActivityWithUser(){
-
+    private void launchActivityWithUser(String userUID){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, userUID);
+        startActivity(intent);
     }
 
 

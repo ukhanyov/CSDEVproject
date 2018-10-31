@@ -7,4 +7,5 @@ public class Constants {
 
     public static final String KEY_INTENT_USER_ID = "key_intent_user_id";
     public static final String KEY_INTENT_BEARER = "key_intent_bearer";
+    public static final String KEY_INTENT_USER_FIREBASE_ID = "key_intent_firebase_id";
 }

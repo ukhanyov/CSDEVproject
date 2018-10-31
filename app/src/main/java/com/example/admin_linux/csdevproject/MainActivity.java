@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,24 +49,16 @@ public class MainActivity extends AppCompatActivity implements
         FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
 
-    // TODO: Chat make toolbar search
-    // TODO: Chat make toolbar search separate cancel button (when search is active)
-
-    // TODO: Chat make settings cog
-    // TODO: Chat add settings screen
-    // TODO: Favorites make toolbar name
-    // TODO: Favorites make tabs
-    // TODO: Favorites mock mechanism to add tabs
-    // TODO: Search make toolbar search field (with cancel button)
-    // TODO: Search mock image spin in top part of the fragment
-    // TODO: Search make recyclerView with nested recyclers
-    // TODO: Search make nested recyclers to recycle grids
-
     // Fancy dataBinding
     ActivityMainBinding mBinding;
 
     private Boolean isFabOpen = false;
     private Boolean isSearchETOpened = false;
+    private Boolean isNotDefaultUser = false;
+
+    private String mBearer, mUserFirebaseId;
+    private int mUserId;
+
     private Animation
             fab_title_open_1, fab_title_open_2, fab_title_open_3, fab_title_open_4,
             fab_open_1, fab_open_2, fab_open_3, fab_open_4,
@@ -89,6 +82,22 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        Intent intent = getIntent();
+        mBearer = intent.getStringExtra(Constants.KEY_INTENT_BEARER);
+        mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
+        mUserId = intent.getIntExtra(Constants.KEY_INTENT_USER_ID, 0);
+        if(mBearer != null && !mBearer.equals("") && mUserId != 0){
+            // old user root
+            isNotDefaultUser = false;
+
+        } else if(mUserFirebaseId != null && !mUserFirebaseId.equals("")){
+            // new user root
+            isNotDefaultUser = true;
+            mBearer = null;
+            mUserId = 0;
+            fetchUserData(mUserFirebaseId);
+        }
+
         // Toolbar
         Toolbar toolbar = mBinding.layoutToolbar.toolbar;
         setSupportActionBar(toolbar);
@@ -105,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements
         // Click listeners for FAB
         mBinding.fab.setOnClickListener(this);
 
-        // Start activity with CropStreamFragment
         fragmentManager = getSupportFragmentManager();
         viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
 
@@ -120,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else {
             if (viewModel.getList().getValue() == null) {
-                fetchData();
+                fetchData(mBearer, mUserId);
             }
             starCropStreamFragment();
         }
@@ -147,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
                 if (viewModel.getList().getValue() == null) {
-                    fetchData();
+                    fetchData(mBearer, mUserId);
                 }
                 starCropStreamFragment();
 
@@ -291,11 +299,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void fetchData() {
+    private void fetchData(String bearer, int personId) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
-                Constants.BEARER,
-                Constants.PERSON_ID,
+                bearer,
+                personId,
                 Constants.MAX_EVENT_COUNT);
 
         parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
@@ -388,6 +396,12 @@ public class MainActivity extends AppCompatActivity implements
                 Toast.makeText(MainActivity.this, "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void fetchUserData(String mUserFirebaseId){
+        if(mUserFirebaseId != null && !mUserFirebaseId.equals("")){
+
+        }
     }
 
     private void starCropStreamFragment() {
