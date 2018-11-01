@@ -92,6 +92,14 @@
     <string name="use_token">Use token</string>
     <string name="country_code_default">+1</string>
     <string name="enter_your_verification_code_here">Enter your verification code here</string>
+    <string name="verify">Verify</string>
+    <string name="et_1">1</string>
+    <string name="et_2">2</string>
+    <string name="et_3">3</string>
+    <string name="et_4">1</string>
+    <string name="et_5">2</string>
+    <string name="et_6">3</string>
+    <string name="_5552221237">5552221237</string>
 
     <string-array name="country_array">
         <item>+380</item>

@@ -135,9 +135,9 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else {
             if (viewModel.getList().getValue() == null) {
-                if(!isNotDefaultUser){
+                if (!isNotDefaultUser) {
                     fetchData(mBearer, mUserId);
-                } else if(mBearer != null && !mBearer.equals("") && mUserId != 0){
+                } else if (mBearer != null && !mBearer.equals("") && mUserId != 0) {
                     fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
                 }
             }
@@ -166,9 +166,9 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
                 if (viewModel.getList().getValue() == null) {
-                    if(!isNotDefaultUser){
+                    if (!isNotDefaultUser) {
                         fetchData(mBearer, mUserId);
-                    } else if(mBearer != null && !mBearer.equals("") && mUserId != 0){
+                    } else if (mBearer != null && !mBearer.equals("") && mUserId != 0) {
                         fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
                     }
 
@@ -328,82 +328,177 @@ public class MainActivity extends AppCompatActivity implements
 
                 // TODO: look into person/user id shenanigans (there is a miss math with person/user
 
-                ApiResultOfFeedEventsModel pj = response.body();
-                List<CropStreamMessage> tempArray = new ArrayList<>();
-                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
-                for (FeedEventItemModel item : list) {
+                // Tips "Comments" -> text displayed on CropStreamMessage instance
+                // Tips "FeedType": "ConversationMessage" -> bottom of CropStreamMessage is "View message"
+                // Tips "FeedType": "CatalogEntryPosted" -> some image or whatever
 
-                    List<FEIMInvolvedPerson> involvedPeople;
-                    involvedPeople = item.getInvolvedPersons();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    int iterator = 0;
-                    boolean combineImage = false;
-                    String imageFirst = null;
-                    String imageSecond = null;
+                // Possible roots |1|: organization -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
+                // Possible roots |2|: organization -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
+                // Possible roots |3|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
+                // Possible roots |4|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
 
-                    if (involvedPeople != null) {
-                        for (FEIMInvolvedPerson person : involvedPeople) {
-                            if (person.getPersonId() == personId) {
-                                stringBuilder.append("you");
-                            } else {
-                                stringBuilder.append(person.getPersonFullName());
-                                combineImage = true;
-                            }
-                            iterator++;
-                            if (iterator < involvedPeople.size() - 2) {
-                                stringBuilder.append(", ");
-                            } else {
-                                break;
-                            }
+                ApiResultOfFeedEventsModel feedEventsModel = response.body();
+                List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
+                List<CropStreamMessage> listToFeedIntoViewModel = new ArrayList<>();
+
+                for (FeedEventItemModel event : listOfEvents) {
+                    if (event.getOrganization() != null) {
+                        if (event.getInvolvedPersons() == null) {
+                            // Go root |1|
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getOrganization().getImageUrl(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getOrganization().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    "you",
+                                    event.getPerson().getOrganizationName(),
+                                    false,
+                                    null,
+                                    null,
+                                    event.getFeedType())
+                            );
+                        } else {
+                            // Go root |2|
+                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), personId);
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getOrganization().getImageUrl(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getOrganization().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    involvedPeople.toString(),
+                                    event.getPerson().getOrganizationName(),
+                                    true,
+                                    (event.getInvolvedPersons().size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
+                                    (event.getInvolvedPersons().size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    event.getFeedType())
+                            );
+                            // TODO: do stuff whe there are only one involved person
                         }
-
-                        if (involvedPeople.size() > 1) {
-                            for (FEIMInvolvedPerson person : involvedPeople) {
-                                if (person.getPersonId() != personId) {
-
-                                    if (imageFirst != null) {
-                                        imageSecond = person.getIconPath();
-                                        break;
-                                    } else {
-                                        imageFirst = person.getIconPath();
-                                    }
-                                }
-                            }
+                    } else {
+                        if (event.getInvolvedPersons() == null) {
+                            // Go root |3|
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getPerson().getIconPath(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getPerson().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    "you",
+                                    event.getPerson().getOrganizationName(),
+                                    false,
+                                    null,
+                                    null,
+                                    event.getFeedType())
+                            );
+                        } else {
+                            // Go root |4|
+                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), personId);
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getPerson().getIconPath(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getPerson().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    involvedPeople.toString(),
+                                    event.getPerson().getOrganizationName(),
+                                    true,
+                                    (event.getInvolvedPersons().size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
+                                    (event.getInvolvedPersons().size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    event.getFeedType())
+                            );
+                            // TODO: do stuff whe there are only one involved person
                         }
-
-
-                    } else {
-                        stringBuilder.append("you");
                     }
-
-                    String corpName;
-                    String pictureUrl;
-                    if (item.getOrganization() != null) {
-                        corpName = item.getOrganization().getOrganizationName();
-                        pictureUrl = item.getOrganization().getImageUrl();
-                    } else {
-                        corpName = null;
-                        pictureUrl = item.getPerson().getIconPath();
-                    }
-
-                    tempArray.add(new CropStreamMessage(
-                            pictureUrl,
-                            item.getPerson().getPersonFullName(),
-                            corpName,
-                            item.getComments(),
-                            item.getOnDate(),
-                            null,
-                            item.isConversationFirstMessage(),
-                            stringBuilder.toString(),
-                            item.getPerson().getOrganizationName(),
-                            combineImage,
-                            imageFirst,
-                            imageSecond,
-                            item.getFeedType()
-                    ));
                 }
 
-                viewModel.setList(tempArray);
+
+                //Old way
+//                ApiResultOfFeedEventsModel pj = response.body();
+//                List<CropStreamMessage> tempArray = new ArrayList<>();
+//                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
+//                for (FeedEventItemModel item : list) {
+//
+//                    List<FEIMInvolvedPerson> involvedPeople;
+//                    involvedPeople = item.getInvolvedPersons();
+//                    StringBuilder stringBuilder = new StringBuilder();
+//                    int iterator = 0;
+//                    boolean combineImage = false;
+//                    String imageFirst = null;
+//                    String imageSecond = null;
+//
+//                    if (involvedPeople != null) {
+//                        for (FEIMInvolvedPerson person : involvedPeople) {
+//                            if (person.getPersonId() == personId) {
+//                                stringBuilder.append("you");
+//                            } else {
+//                                stringBuilder.append(person.getPersonFullName());
+//                                combineImage = true;
+//                            }
+//                            iterator++;
+//                            if (iterator < involvedPeople.size() - 2) {
+//                                stringBuilder.append(", ");
+//                            } else {
+//                                break;
+//                            }
+//                        }
+//
+//                        if (involvedPeople.size() > 1) {
+//                            for (FEIMInvolvedPerson person : involvedPeople) {
+//                                if (person.getPersonId() != personId) {
+//
+//                                    if (imageFirst != null) {
+//                                        imageSecond = person.getIconPath();
+//                                        break;
+//                                    } else {
+//                                        imageFirst = person.getIconPath();
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//
+//                    } else {
+//                        stringBuilder.append("you");
+//                    }
+//
+//                    String corpName;
+//                    String pictureUrl;
+//                    if (item.getOrganization() != null) {
+//                        corpName = item.getOrganization().getOrganizationName();
+//                        pictureUrl = item.getOrganization().getImageUrl();
+//                    } else {
+//                        corpName = null;
+//                        pictureUrl = item.getPerson().getIconPath();
+//                    }
+//
+//                    tempArray.add(new CropStreamMessage(
+//                            pictureUrl,
+//                            item.getPerson().getPersonFullName(),
+//                            corpName,
+//                            item.getComments(),
+//                            item.getOnDate(),
+//                            null,
+//                            item.isConversationFirstMessage(),
+//                            stringBuilder.toString(),
+//                            item.getPerson().getOrganizationName(),
+//                            combineImage,
+//                            imageFirst,
+//                            imageSecond,
+//                            item.getFeedType()
+//                    ));
+//
+                //viewModel.setList(tempArray);
+                viewModel.setList(listToFeedIntoViewModel);
             }
 
             @Override
@@ -412,6 +507,61 @@ public class MainActivity extends AppCompatActivity implements
                 Toast.makeText(MainActivity.this, "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private List<String> populateListOfInvolvedPeople(List<FEIMInvolvedPerson> involvedPeople, int personId) {
+        List<String> people = new ArrayList<>();
+        for (FEIMInvolvedPerson person : involvedPeople) {
+            if (person.getPersonId() != personId) {
+                people.add(person.getPersonFullName());
+            }
+        }
+
+        return people;
+    }
+
+    private String getFirstImageUrl(List<FEIMInvolvedPerson> involvedPeople, String person) {
+        for (FEIMInvolvedPerson iterator : involvedPeople) {
+            if (iterator.getPersonFullName().equals(person)) return iterator.getIconPath();
+        }
+        return null;
+    }
+
+    private String getSecondImageUrl(List<FEIMInvolvedPerson> involvedPeople, String person) {
+        for (FEIMInvolvedPerson iterator : involvedPeople) {
+            if (iterator.getPersonFullName().equals(person)) return iterator.getIconPath();
+        }
+        return null;
+    }
+
+    private CropStreamMessage instantiateCropStreamMessage(String pictureUrl,
+                                                           String fullName,
+                                                           String corpName,
+                                                           String textToDisplay,
+                                                           String onDate,
+                                                           String messagePicture,
+                                                           Boolean isFirstMessage,
+                                                           String involvedPersons,
+                                                           String organizationName,
+                                                           Boolean isCombinedImage,
+                                                           String firstImageUrl,
+                                                           String secondImageUrl,
+                                                           String feedType) {
+        return new CropStreamMessage(
+                pictureUrl,
+                fullName,
+                corpName,
+                textToDisplay,
+                onDate,
+                messagePicture,
+                isFirstMessage,
+                involvedPersons,
+                organizationName,
+                isCombinedImage,
+                firstImageUrl,
+                secondImageUrl,
+                feedType
+        );
     }
 
     private void fetchUserData(String userFirebaseId, String phoneNumber) {
@@ -434,8 +584,9 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 @Override
-                public void onFailure(Call<FirebaseUserReturnValue> call, Throwable t) {
-
+                public void onFailure(@NonNull Call<FirebaseUserReturnValue> call, @NonNull Throwable t) {
+                    Log.d("Error: ", t.getMessage());
+                    Toast.makeText(MainActivity.this, "Oh no... Error fetching user data!", Toast.LENGTH_SHORT).show();
                 }
             });
         }

@@ -46,12 +46,12 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             // Bind views
             if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlFirst() != null) {
                 Picasso.with(mContext).load(current.getCombineImageUrlFirst()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
+                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                         .into(holder.ivProfilePictureMashTop);
 
                 Picasso.with(mContext).load(current.getCombineImageUrlSecond()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
+                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                         .into(holder.ivProfilePictureMashBottom);
 
@@ -61,7 +61,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             } else {
                 Picasso.with(mContext).load(current.getProfilePicture()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
+                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                         .transform(new RoundCorners(dpToPx(8), dpToPx(0)))
                         .into(holder.ivProfilePicture);
@@ -99,7 +99,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             if (current.getMessagePicture() != null) {
                 holder.ivMessagePicture.setVisibility(View.VISIBLE);
                 Picasso.with(mContext).load(current.getMessagePicture()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_dummy_default))
+                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                         .into(holder.ivMessagePicture);
             }else {

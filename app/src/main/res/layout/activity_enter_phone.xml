@@ -32,7 +32,7 @@
             android:layout_marginEnd="8dp"
             android:accessibilityHeading="false"
             android:inputType="number"
-            android:text="5552221237"
+            android:text="@string/_5552221237"
             android:textIsSelectable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/et_activity_enter_phone_country_code"
@@ -68,20 +68,20 @@
             app:layout_constraintTop_toBottomOf="@+id/et_activity_enter_phone" />
 
         <TextView
-            android:visibility="gone"
-            style="@style/TextViewGeneralBlack"
             android:id="@+id/tv_activity_enter_phone_label_verification"
+            style="@style/TextViewGeneralBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:text="@string/enter_your_verification_code_here"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:visibility="gone"
-            android:text="3"
+            android:text="@string/et_6"
             android:id="@+id/et_activity_enter_phone_verification_6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
 
         <EditText
             android:visibility="gone"
-            android:text="2"
+            android:text="@string/et_5"
             android:id="@+id/et_activity_enter_phone_verification_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
 
         <EditText
             android:visibility="gone"
-            android:text="1"
+            android:text="@string/et_4"
             android:id="@+id/et_activity_enter_phone_verification_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
 
         <EditText
             android:visibility="gone"
-            android:text="3"
+            android:text="@string/et_3"
             android:id="@+id/et_activity_enter_phone_verification_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
 
         <EditText
             android:visibility="gone"
-            android:text="2"
+            android:text="@string/et_2"
             android:id="@+id/et_activity_enter_phone_verification_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
 
         <EditText
             android:visibility="gone"
-            android:text="1"
+            android:text="@string/et_1"
             android:id="@+id/et_activity_enter_phone_verification_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/auth_button"
-            android:text="Verify"
+            android:text="@string/verify"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
