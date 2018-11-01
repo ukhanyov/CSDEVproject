@@ -52,6 +52,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             // TODO: some bug with text color of message destination
             // TODO: decide what to do if in the group chat there is only one picture
+            // TODO: fix round edges
 
             if (current.isFromOrganization()) {
                 if (current.getInvolvedPersonsNames().equals("you")) {
@@ -85,7 +86,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
 
         // Bind message text
-        bindMessageText(holder,current.getMessageText());
+        bindMessageText(holder, current.getMessageText());
 
         // Bind time
         holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
@@ -105,9 +106,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindViewsRootTwo(CropStreamMessage current, CorpStreamViewHolder holder) {
 
         // Bind profile picture
-        if(current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null ){
+        if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null) {
             bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
-        } else if(current.getCombineImageUrlFirst() != null){
+        } else if (current.getCombineImageUrlFirst() != null) {
             bindImage(holder, current.getCombineImageUrlFirst(), null);
         }
 
@@ -118,7 +119,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
 
         // Bind message text
-        bindMessageText(holder,current.getMessageText());
+        bindMessageText(holder, current.getMessageText());
 
         // Bind time
         holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
@@ -147,7 +148,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
 
         // Bind message text
-        bindMessageText(holder,current.getMessageText());
+        bindMessageText(holder, current.getMessageText());
 
         // Bind time
         holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
@@ -166,9 +167,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindViewsRootFour(CropStreamMessage current, CorpStreamViewHolder holder) {
 
         // Bind profile picture
-        if(current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null ){
+        if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null) {
             bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
-        } else if(current.getCombineImageUrlFirst() != null){
+        } else if (current.getCombineImageUrlFirst() != null) {
             bindImage(holder, current.getCombineImageUrlFirst(), null);
         }
 
@@ -179,7 +180,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
 
         // Bind message text
-        bindMessageText(holder,current.getMessageText());
+        bindMessageText(holder, current.getMessageText());
 
         // Bind time
         holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
@@ -195,9 +196,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     }
 
-    private void bindImage(CorpStreamViewHolder holder, String urlOne, String urlTwo){
+    private void bindImage(CorpStreamViewHolder holder, String urlOne, String urlTwo) {
 
-        if(urlTwo == null){
+        if (urlTwo == null) {
             Picasso.with(mContext).load(urlOne).fit().centerInside()
                     .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
@@ -206,7 +207,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.ivProfilePictureMashTop.setVisibility(View.GONE);
             holder.ivProfilePictureMashBottom.setVisibility(View.GONE);
             holder.ivProfilePicture.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             Picasso.with(mContext).load(urlOne).fit().centerInside()
                     .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
@@ -223,7 +224,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindName(CorpStreamViewHolder holder, String nameOne, String nameTwo){
+    private void bindName(CorpStreamViewHolder holder, String nameOne, String nameTwo) {
 
         if (nameTwo == null) {
             // Bind only organization name
@@ -240,7 +241,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindMessageText(CorpStreamViewHolder holder, String text){
+    private void bindMessageText(CorpStreamViewHolder holder, String text) {
         if (text != null) {
             holder.tvMessageText.setVisibility(View.VISIBLE);
             holder.tvMessageText.setText(text);
@@ -249,7 +250,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindMessagePicture(CorpStreamViewHolder holder, String pictureUrl){
+    private void bindMessagePicture(CorpStreamViewHolder holder, String pictureUrl) {
         if (pictureUrl != null) {
             holder.ivMessagePicture.setVisibility(View.VISIBLE);
             Picasso.with(mContext).load(pictureUrl).fit().centerInside()
@@ -261,16 +262,15 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage){
-        if (isFirstMessage){
+    private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage) {
+        if (isFirstMessage) {
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
-        }
-        else{
+        } else {
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
         }
     }
 
-    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, String feedType){
+    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, String feedType) {
         if (feedType.equals("ConversationMessage")) {
             holder.ibUnderProfile.setVisibility(View.INVISIBLE);
             holder.tvUnderProfile.setVisibility(View.INVISIBLE);
@@ -331,12 +331,15 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
 
             mListener = listener;
-            tvViewMessage.setOnClickListener(this);
+            tvTypeOfConversation.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            mListener.onClick(view, mList.get(getAdapterPosition()));
+            if (mList.get(getAdapterPosition()).getInvolvedPersonsNames() != null
+                    && !mList.get(getAdapterPosition()).getInvolvedPersonsNames().equals("you")) {
+                mListener.onClick(view, mList.get(getAdapterPosition()));
+            }
         }
     }
 }
