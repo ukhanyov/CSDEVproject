@@ -3,6 +3,7 @@ package com.example.admin_linux.csdevproject.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
+import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -49,10 +51,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             // Possible roots |2|: organization -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
             // Possible roots |3|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
             // Possible roots |4|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
-
-            // TODO: some bug with text color of message destination
-            // TODO: decide what to do if in the group chat there is only one picture
-            // TODO: fix round edges
 
             if (current.isFromOrganization()) {
                 if (current.getInvolvedPersonsNames().equals("you")) {
@@ -202,6 +200,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             Picasso.with(mContext).load(urlOne).fit().centerInside()
                     .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .transform(new RoundCorners(dpToPx(8), dpToPx(0)))
                     .into(holder.ivProfilePicture);
 
             holder.ivProfilePictureMashTop.setVisibility(View.GONE);
@@ -282,6 +281,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
+    private int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = mContext.getResources()
+                .getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
 
     @Override
     public int getItemCount() {
