@@ -13,16 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
+import com.example.admin_linux.csdevproject.adapters.RecyclerViewClickListener;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
-public class CropStreamFragment extends Fragment {
+public class CropStreamFragment extends Fragment{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -73,7 +76,12 @@ public class CropStreamFragment extends Fragment {
         progressBar = rootView.findViewById(R.id.pb_loading_indicator);
         progressBar.setVisibility(View.VISIBLE);
 
-        final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext());
+        // List item click stuff
+        RecyclerViewClickListener listener = (view, position) -> {
+            Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
+        };
+
+        final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
 
         if(transferList != null){
@@ -82,7 +90,7 @@ public class CropStreamFragment extends Fragment {
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }else {
-            transferList = getArguments().getParcelableArrayList("transferList");
+            transferList = Objects.requireNonNull(getArguments()).getParcelableArrayList("transferList");
             mAdapter.setCorpStreamMessages(transferList);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

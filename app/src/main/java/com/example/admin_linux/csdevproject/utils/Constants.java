@@ -11,4 +11,6 @@ public class Constants {
     public static final String KEY_INTENT_BEARER = "key_intent_bearer";
     public static final String KEY_INTENT_USER_FIREBASE_ID = "key_intent_firebase_id";
     public static final String KEY_INTENT_USER_FIREBASE_PHONE_NUMBER = "key_intent_firebase_phone_number";
+
+    public static final String CLICK_KEY_CONVERSATION_DETAILS = "conversation_details";
 }

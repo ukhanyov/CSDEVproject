@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.data.CropStreamMessageViewModel;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements
         CropStreamFragment.OnFragmentInteractionListener,
         ChatFragment.OnFragmentInteractionListener,
         FavoritesFragment.OnFragmentInteractionListener,
-        SearchFragment.OnFragmentInteractionListener {
+        SearchFragment.OnFragmentInteractionListener{
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;

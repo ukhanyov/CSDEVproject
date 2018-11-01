@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
@@ -25,17 +26,20 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private final LayoutInflater mInflater;
     private List<CropStreamMessage> mList;
     private Context mContext;
+    private RecyclerViewClickListener mListener;
 
-    public CropStreamAdapter(Context context) {
+    public CropStreamAdapter(Context context, RecyclerViewClickListener listener) {
         mInflater = LayoutInflater.from(context);
         mContext = context;
+        mListener = listener;
     }
+
 
     @NonNull
     @Override
     public CorpStreamViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = mInflater.inflate(R.layout.list_item_crop_stream, viewGroup, false);
-        return new CorpStreamViewHolder(itemView);
+        return new CorpStreamViewHolder(itemView, mListener);
     }
 
     @Override
@@ -293,7 +297,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         notifyDataSetChanged();
     }
 
-    class CorpStreamViewHolder extends RecyclerView.ViewHolder {
+    class CorpStreamViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView ivProfilePicture;
         TextView tvProfileFirst;
@@ -309,8 +313,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvUnderProfile;
         TextView tvViewMessage;
 
+        private RecyclerViewClickListener mListener;
 
-        CorpStreamViewHolder(@NonNull View itemView) {
+
+        CorpStreamViewHolder(@NonNull View itemView, RecyclerViewClickListener listener) {
             super(itemView);
 
             ivProfilePicture = itemView.findViewById(R.id.list_item_iv_profile_picture);
@@ -326,6 +332,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             ibUnderProfile = itemView.findViewById(R.id.list_item_ib_start_chat);
             tvUnderProfile = itemView.findViewById(R.id.list_item_tv_start_shat);
             tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
+
+            mListener = listener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            mListener.onClick(view, getAdapterPosition());
         }
     }
 }
