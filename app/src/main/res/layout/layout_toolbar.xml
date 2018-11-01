@@ -25,6 +25,11 @@
                 android:id="@+id/content_chat"
                 layout="@layout/content_toolbar_chat" />
 
+            <include
+                android:visibility="gone"
+                android:id="@+id/content_toolbar_conversation_details"
+                layout="@layout/content_toolbar_conversation_details"/>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
