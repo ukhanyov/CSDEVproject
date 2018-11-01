@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,9 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
-import com.example.admin_linux.csdevproject.adapters.RecyclerViewClickListener;
+import com.example.admin_linux.csdevproject.adapters.CropStreamClickListener;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 
 import java.util.ArrayList;
@@ -77,8 +79,15 @@ public class CropStreamFragment extends Fragment{
         progressBar.setVisibility(View.VISIBLE);
 
         // List item click stuff
-        RecyclerViewClickListener listener = (view, position) -> {
-            Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
+        CropStreamClickListener listener = (view, cropStreamMessage) -> {
+
+            String bearer = Objects.requireNonNull(getArguments()).getString("transferBearerToFragment");
+
+            Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
+            intent.putExtra("transfer_bearer", bearer);
+            intent.putExtra("transfer_message", cropStreamMessage);
+            startActivity(intent);
+
         };
 
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);

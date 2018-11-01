@@ -33,6 +33,7 @@ public interface GetDataService {
     // "api/v1/Conversation/ConversationDetails?ConversationId={ConversationId}&PersonId={PersonId}"
     @GET("api/v1/Conversation/ConversationDetails")
     Call<ConversationDetailsReturnValue> geConversationDetail(
+            @Header("Authorization") String BEARER,
             @Query("ConversationId") int conversationId,
             @Query("PersonId") int personId
     );

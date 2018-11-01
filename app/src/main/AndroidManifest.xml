@@ -39,8 +39,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".EnterPhoneActivity"/>
+        <activity android:name=".EnterPhoneActivity" />
+        <activity android:name=".ConversationDetailsActivity"></activity>
     </application>
 
 </manifest>

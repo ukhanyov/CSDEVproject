@@ -361,7 +361,9 @@ public class MainActivity extends AppCompatActivity implements
                                     null,
                                     null,
                                     event.getFeedType(),
-                                    true)
+                                    true,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId))
                             );
                         } else {
                             // Go root |2|
@@ -380,7 +382,9 @@ public class MainActivity extends AppCompatActivity implements
                                     (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
                                     (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
                                     event.getFeedType(),
-                                    true)
+                                    true,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId))
                             );
                         }
                     } else {
@@ -400,7 +404,9 @@ public class MainActivity extends AppCompatActivity implements
                                     null,
                                     null,
                                     event.getFeedType(),
-                                    false)
+                                    false,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId))
                             );
                         } else {
                             // Go root |4|
@@ -419,7 +425,9 @@ public class MainActivity extends AppCompatActivity implements
                                     (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
                                     (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
                                     event.getFeedType(),
-                                    false)
+                                    false,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId))
                             );
                         }
                     }
@@ -463,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private CropStreamMessage instantiateCropStreamMessage(String pictureUrl, String fullName, String corpName, String textToDisplay, String onDate, String messagePicture, boolean isFirstMessage,
                                                            String involvedPersons, String organizationName, boolean isCombinedImage, String firstImageUrl, String secondImageUrl, String feedType,
-                                                           boolean isFromOrganization) {
+                                                           boolean isFromOrganization, String conversationId, String personId) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -478,7 +486,9 @@ public class MainActivity extends AppCompatActivity implements
                 firstImageUrl,
                 secondImageUrl,
                 feedType,
-                isFromOrganization
+                isFromOrganization,
+                conversationId,
+                personId
         );
     }
 
@@ -517,6 +527,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("transferList", (ArrayList<? extends Parcelable>) transferList);
+                bundle.putString("transferBearerToFragment", mBearer);
 
                 fragmentCropStreamTransaction = new CropStreamFragment();
                 fragmentCropStreamTransaction.setArguments(bundle);

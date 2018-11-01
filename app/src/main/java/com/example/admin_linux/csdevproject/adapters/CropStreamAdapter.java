@@ -3,7 +3,6 @@ package com.example.admin_linux.csdevproject.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,7 @@ import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
-import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
-import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -26,9 +23,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private final LayoutInflater mInflater;
     private List<CropStreamMessage> mList;
     private Context mContext;
-    private RecyclerViewClickListener mListener;
+    private CropStreamClickListener mListener;
 
-    public CropStreamAdapter(Context context, RecyclerViewClickListener listener) {
+    public CropStreamAdapter(Context context, CropStreamClickListener listener) {
         mInflater = LayoutInflater.from(context);
         mContext = context;
         mListener = listener;
@@ -313,10 +310,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvUnderProfile;
         TextView tvViewMessage;
 
-        private RecyclerViewClickListener mListener;
+        private CropStreamClickListener mListener;
 
 
-        CorpStreamViewHolder(@NonNull View itemView, RecyclerViewClickListener listener) {
+        CorpStreamViewHolder(@NonNull View itemView, CropStreamClickListener listener) {
             super(itemView);
 
             ivProfilePicture = itemView.findViewById(R.id.list_item_iv_profile_picture);
@@ -339,7 +336,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
         @Override
         public void onClick(View view) {
-            mListener.onClick(view, getAdapterPosition());
+            mListener.onClick(view, mList.get(getAdapterPosition()));
         }
     }
 }

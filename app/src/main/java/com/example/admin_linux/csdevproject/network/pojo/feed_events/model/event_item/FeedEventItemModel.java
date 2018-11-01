@@ -28,9 +28,9 @@ public class FeedEventItemModel {
 //    @Expose
 //    private int activityId;
 
-//    @SerializedName("ConversationId")
-//    @Expose
-//    private int conversationId;
+    @SerializedName("ConversationId")
+    @Expose
+    private int conversationId;
 
     @SerializedName("FeedEventTitle")
     @Expose
@@ -107,10 +107,10 @@ public class FeedEventItemModel {
 //    public int getActivityId() {
 //        return activityId;
 //    }
-//
-//    public int getConversationId() {
-//        return conversationId;
-//    }
+
+    public int getConversationId() {
+        return conversationId;
+    }
 
     public String getFeedEventTitle() {
         return feedEventTitle;

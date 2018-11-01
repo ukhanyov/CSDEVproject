@@ -19,6 +19,8 @@ public class CropStreamMessage implements Parcelable {
     private String mCombineImageUrlSecond;
     private String mFeedType;
     private boolean mFromOrganization;
+    private String mConversationId;
+    private String mPersonId;
 
     public CropStreamMessage(
             String profilePicture,
@@ -34,7 +36,9 @@ public class CropStreamMessage implements Parcelable {
             String combineImageUrlFirst,
             String combineImageUrlSecond,
             String feedType,
-            boolean isFromOrganization) {
+            boolean isFromOrganization,
+            String conversationId,
+            String personId) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -50,6 +54,8 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImageUrlSecond = combineImageUrlSecond;
         this.mFeedType = feedType;
         this.mFromOrganization = isFromOrganization;
+        this.mConversationId = conversationId;
+        this.mPersonId = personId;
     }
 
     public String getProfilePicture() {
@@ -164,9 +170,25 @@ public class CropStreamMessage implements Parcelable {
         this.mFromOrganization = mFromOrganization;
     }
 
+    public String getConversationId() {
+        return mConversationId;
+    }
+
+    public void setConversationId(String mConversationId) {
+        this.mConversationId = mConversationId;
+    }
+
+    public String getPersonId() {
+        return mPersonId;
+    }
+
+    public void setPersonId(String mPersonId) {
+        this.mPersonId = mPersonId;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[14];
+        String[] data = new String[16];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -183,6 +205,8 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImageUrlSecond = data[11];
         this.mFeedType = data[12];
         this.mFromOrganization = Boolean.getBoolean(data[13]);
+        this.mConversationId = data[14];
+        this.mPersonId = data[15];
     }
 
     @Override
@@ -206,7 +230,9 @@ public class CropStreamMessage implements Parcelable {
                 this.mCombineImageUrlFirst,
                 this.mCombineImageUrlSecond,
                 this.mFeedType,
-                String.valueOf(this.mFromOrganization)
+                String.valueOf(this.mFromOrganization),
+                this.mConversationId,
+                this.mPersonId
         });
     }
 
