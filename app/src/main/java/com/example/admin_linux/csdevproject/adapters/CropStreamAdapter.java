@@ -334,7 +334,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
 
             mListener = listener;
-            itemView.setOnClickListener(this);
+            tvViewMessage.setOnClickListener(this);
         }
 
         @Override
