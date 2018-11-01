@@ -44,86 +44,237 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             CropStreamMessage current = mList.get(i);
 
             // Bind views
-            if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlFirst() != null) {
-                Picasso.with(mContext).load(current.getCombineImageUrlFirst()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
-                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                        .into(holder.ivProfilePictureMashTop);
+            // Possible roots |1|: organization -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
+            // Possible roots |2|: organization -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
+            // Possible roots |3|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
+            // Possible roots |4|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
 
-                Picasso.with(mContext).load(current.getCombineImageUrlSecond()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
-                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                        .into(holder.ivProfilePictureMashBottom);
-
-                holder.ivProfilePictureMashTop.setVisibility(View.VISIBLE);
-                holder.ivProfilePictureMashBottom.setVisibility(View.VISIBLE);
-                holder.ivProfilePicture.setVisibility(View.GONE);
-
-            } else {
-                Picasso.with(mContext).load(current.getProfilePicture()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
-                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                        .transform(new RoundCorners(dpToPx(8), dpToPx(0)))
-                        .into(holder.ivProfilePicture);
-
-                holder.ivProfilePictureMashTop.setVisibility(View.GONE);
-                holder.ivProfilePictureMashBottom.setVisibility(View.GONE);
-                holder.ivProfilePicture.setVisibility(View.VISIBLE);
-            }
-
-            if (current.getProfileCorpName() != null) {
-                holder.tvProfileFirst.setText(current.getProfileCorpName());
-                holder.tvProfileSecond.setVisibility(View.GONE);
-            } else {
-                holder.tvProfileFirst.setText(current.getProfileName());
-                if(current.getPersonsCorp() != null && !current.getPersonsCorp().equals("")){
-                    holder.tvProfileSecond.setVisibility(View.VISIBLE);
-                    holder.tvProfileSecond.setText(current.getPersonsCorp());
-                }else {
-                    holder.tvProfileSecond.setVisibility(View.GONE);
+            if (current.isFromOrganization()) {
+                if (current.getInvolvedPersonsNames().equals("you")) {
+                    bindViewsRootOne(current, holder); // root |1|
+                } else {
+                    bindViewsRootTwo(current, holder); // root |2|
                 }
-
+            } else {
+                if (current.getInvolvedPersonsNames().equals("you")) {
+                    bindViewsRootThree(current, holder); // root |3|
+                } else {
+                    bindViewsRootFour(current, holder);  // root |4|
+                }
             }
-
-            holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
-
-            if(current.getMessageText() != null){
-                holder.tvMessageText.setVisibility(View.VISIBLE);
-                holder.tvMessageText.setText(current.getMessageText());
-            }else {
-                holder.tvMessageText.setVisibility(View.GONE);
-            }
-
-            holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
-
-            if (current.getMessagePicture() != null) {
-                holder.ivMessagePicture.setVisibility(View.VISIBLE);
-                Picasso.with(mContext).load(current.getMessagePicture()).fit().centerInside()
-                        .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
-                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                        .into(holder.ivMessagePicture);
-            }else {
-                holder.ivMessagePicture.setVisibility(View.GONE);
-            }
-
-            if (current.getConversationFirstMessage())
-                holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
-            else
-                holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
-
-            if(current.getFeedType().equals("ConversationMessage")){
-                holder.ibUnderProfile.setVisibility(View.INVISIBLE);
-                holder.tvUnderProfile.setVisibility(View.INVISIBLE);
-                holder.tvViewMessage.setVisibility(View.VISIBLE);
-            }else {
-                holder.ibUnderProfile.setVisibility(View.VISIBLE);
-                holder.tvUnderProfile.setVisibility(View.VISIBLE);
-                holder.tvViewMessage.setVisibility(View.INVISIBLE);
-            }
-
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
+        }
+    }
+
+    // root |1|
+    private void bindViewsRootOne(CropStreamMessage current, CorpStreamViewHolder holder) {
+
+        // Bind profile picture
+        bindImage(holder, current.getProfilePicture(), null);
+
+        // Bind name
+        bindName(holder, current.getProfileName(), null);
+
+        // Bind involved persons
+        holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
+
+        // Bind message text
+        bindMessageText(holder,current.getMessageText());
+
+        // Bind time
+        holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
+
+        // Bind message picture
+        //bindMessagePicture(holder, current.getMessagePicture());
+
+        // Bind message order (is it first)
+        bindMessageOrder(holder, current.getConversationFirstMessage());
+
+        // Bind bottom views (Reply/Start/View Message)
+        bindStartReplyViewMessageViews(holder, current.getFeedType());
+
+    }
+
+    // root |2|
+    private void bindViewsRootTwo(CropStreamMessage current, CorpStreamViewHolder holder) {
+
+        // Bind profile picture
+        if(current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null ){
+            bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
+        } else if(current.getCombineImageUrlFirst() != null){
+            bindImage(holder, current.getCombineImageUrlFirst(), null);
+        }
+
+        // Bind name
+        bindName(holder, current.getProfileName(), null);
+
+        // Bind involved persons
+        holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
+
+        // Bind message text
+        bindMessageText(holder,current.getMessageText());
+
+        // Bind time
+        holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
+
+        // Bind message picture
+        //bindMessagePicture(holder, current.getMessagePicture());
+
+        // Bind message order (is it first)
+        bindMessageOrder(holder, current.getConversationFirstMessage());
+
+        // Bind bottom views (Reply/Start/View Message)
+        bindStartReplyViewMessageViews(holder, current.getFeedType());
+
+    }
+
+    // root |3|
+    private void bindViewsRootThree(CropStreamMessage current, CorpStreamViewHolder holder) {
+
+        // Bind profile picture
+        bindImage(holder, current.getProfilePicture(), null);
+
+        // Bind name
+        bindName(holder, current.getProfileName(), current.getProfileCorpName());
+
+        // Bind involved persons
+        holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
+
+        // Bind message text
+        bindMessageText(holder,current.getMessageText());
+
+        // Bind time
+        holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
+
+        // Bind message picture
+        //bindMessagePicture(holder, current.getMessagePicture());
+
+        // Bind message order (is it first)
+        bindMessageOrder(holder, current.getConversationFirstMessage());
+
+        // Bind bottom views (Reply/Start/View Message)
+        bindStartReplyViewMessageViews(holder, current.getFeedType());
+    }
+
+    // root |4|
+    private void bindViewsRootFour(CropStreamMessage current, CorpStreamViewHolder holder) {
+
+        // Bind profile picture
+        if(current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null ){
+            bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
+        } else if(current.getCombineImageUrlFirst() != null){
+            bindImage(holder, current.getCombineImageUrlFirst(), null);
+        }
+
+        // Bind name
+        bindName(holder, current.getProfileName(), current.getProfileCorpName());
+
+        // Bind involved persons
+        holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
+
+        // Bind message text
+        bindMessageText(holder,current.getMessageText());
+
+        // Bind time
+        holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
+
+        // Bind message picture
+        //bindMessagePicture(holder, current.getMessagePicture());
+
+        // Bind message order (is it first)
+        bindMessageOrder(holder, current.getConversationFirstMessage());
+
+        // Bind bottom views (Reply/Start/View Message)
+        bindStartReplyViewMessageViews(holder, current.getFeedType());
+
+    }
+
+    private void bindImage(CorpStreamViewHolder holder, String urlOne, String urlTwo){
+
+        if(urlTwo == null){
+            Picasso.with(mContext).load(urlOne).fit().centerInside()
+                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .into(holder.ivProfilePicture);
+
+            holder.ivProfilePictureMashTop.setVisibility(View.GONE);
+            holder.ivProfilePictureMashBottom.setVisibility(View.GONE);
+            holder.ivProfilePicture.setVisibility(View.VISIBLE);
+        }else {
+            Picasso.with(mContext).load(urlOne).fit().centerInside()
+                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .into(holder.ivProfilePictureMashTop);
+
+            Picasso.with(mContext).load(urlTwo).fit().centerInside()
+                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .into(holder.ivProfilePictureMashBottom);
+
+            holder.ivProfilePictureMashTop.setVisibility(View.VISIBLE);
+            holder.ivProfilePictureMashBottom.setVisibility(View.VISIBLE);
+            holder.ivProfilePicture.setVisibility(View.GONE);
+        }
+    }
+
+    private void bindName(CorpStreamViewHolder holder, String nameOne, String nameTwo){
+
+        if (nameTwo == null) {
+            // Bind only organization name
+            holder.tvProfileFirst.setText(nameOne);
+            holder.tvProfileSecond.setVisibility(View.GONE);
+        } else {
+            holder.tvProfileFirst.setText(nameOne);
+            if (!nameTwo.equals("")) {
+                holder.tvProfileSecond.setVisibility(View.VISIBLE);
+                holder.tvProfileSecond.setText(nameTwo);
+            } else {
+                holder.tvProfileSecond.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void bindMessageText(CorpStreamViewHolder holder, String text){
+        if (text != null) {
+            holder.tvMessageText.setVisibility(View.VISIBLE);
+            holder.tvMessageText.setText(text);
+        } else {
+            holder.tvMessageText.setVisibility(View.GONE);
+        }
+    }
+
+    private void bindMessagePicture(CorpStreamViewHolder holder, String pictureUrl){
+        if (pictureUrl != null) {
+            holder.ivMessagePicture.setVisibility(View.VISIBLE);
+            Picasso.with(mContext).load(pictureUrl).fit().centerInside()
+                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .into(holder.ivMessagePicture);
+        } else {
+            holder.ivMessagePicture.setVisibility(View.GONE);
+        }
+    }
+
+    private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage){
+        if (isFirstMessage){
+            holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
+        }
+        else{
+            holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
+        }
+    }
+
+    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, String feedType){
+        if (feedType.equals("ConversationMessage")) {
+            holder.ibUnderProfile.setVisibility(View.INVISIBLE);
+            holder.tvUnderProfile.setVisibility(View.INVISIBLE);
+            holder.tvViewMessage.setVisibility(View.VISIBLE);
+        } else {
+            holder.ibUnderProfile.setVisibility(View.VISIBLE);
+            holder.tvUnderProfile.setVisibility(View.VISIBLE);
+            holder.tvViewMessage.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -138,13 +289,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         this.mList = list;
         notifyDataSetChanged();
     }
-
-    private int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = mContext.getResources()
-                .getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
 
     class CorpStreamViewHolder extends RecyclerView.ViewHolder {
 

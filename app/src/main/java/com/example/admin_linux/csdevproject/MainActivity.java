@@ -358,7 +358,8 @@ public class MainActivity extends AppCompatActivity implements
                                     false,
                                     null,
                                     null,
-                                    event.getFeedType())
+                                    event.getFeedType(),
+                                    true)
                             );
                         } else {
                             // Go root |2|
@@ -376,9 +377,9 @@ public class MainActivity extends AppCompatActivity implements
                                     true,
                                     (event.getInvolvedPersons().size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
                                     (event.getInvolvedPersons().size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
-                                    event.getFeedType())
+                                    event.getFeedType(),
+                                    true)
                             );
-                            // TODO: do stuff whe there are only one involved person
                         }
                     } else {
                         if (event.getInvolvedPersons() == null) {
@@ -396,7 +397,8 @@ public class MainActivity extends AppCompatActivity implements
                                     false,
                                     null,
                                     null,
-                                    event.getFeedType())
+                                    event.getFeedType(),
+                                    false)
                             );
                         } else {
                             // Go root |4|
@@ -414,90 +416,13 @@ public class MainActivity extends AppCompatActivity implements
                                     true,
                                     (event.getInvolvedPersons().size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
                                     (event.getInvolvedPersons().size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
-                                    event.getFeedType())
+                                    event.getFeedType(),
+                                    false)
                             );
-                            // TODO: do stuff whe there are only one involved person
                         }
                     }
                 }
 
-
-                //Old way
-//                ApiResultOfFeedEventsModel pj = response.body();
-//                List<CropStreamMessage> tempArray = new ArrayList<>();
-//                List<FeedEventItemModel> list = Objects.requireNonNull(pj).getFeedEventsModel().getFeedEventItemModels();
-//                for (FeedEventItemModel item : list) {
-//
-//                    List<FEIMInvolvedPerson> involvedPeople;
-//                    involvedPeople = item.getInvolvedPersons();
-//                    StringBuilder stringBuilder = new StringBuilder();
-//                    int iterator = 0;
-//                    boolean combineImage = false;
-//                    String imageFirst = null;
-//                    String imageSecond = null;
-//
-//                    if (involvedPeople != null) {
-//                        for (FEIMInvolvedPerson person : involvedPeople) {
-//                            if (person.getPersonId() == personId) {
-//                                stringBuilder.append("you");
-//                            } else {
-//                                stringBuilder.append(person.getPersonFullName());
-//                                combineImage = true;
-//                            }
-//                            iterator++;
-//                            if (iterator < involvedPeople.size() - 2) {
-//                                stringBuilder.append(", ");
-//                            } else {
-//                                break;
-//                            }
-//                        }
-//
-//                        if (involvedPeople.size() > 1) {
-//                            for (FEIMInvolvedPerson person : involvedPeople) {
-//                                if (person.getPersonId() != personId) {
-//
-//                                    if (imageFirst != null) {
-//                                        imageSecond = person.getIconPath();
-//                                        break;
-//                                    } else {
-//                                        imageFirst = person.getIconPath();
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-//
-//                    } else {
-//                        stringBuilder.append("you");
-//                    }
-//
-//                    String corpName;
-//                    String pictureUrl;
-//                    if (item.getOrganization() != null) {
-//                        corpName = item.getOrganization().getOrganizationName();
-//                        pictureUrl = item.getOrganization().getImageUrl();
-//                    } else {
-//                        corpName = null;
-//                        pictureUrl = item.getPerson().getIconPath();
-//                    }
-//
-//                    tempArray.add(new CropStreamMessage(
-//                            pictureUrl,
-//                            item.getPerson().getPersonFullName(),
-//                            corpName,
-//                            item.getComments(),
-//                            item.getOnDate(),
-//                            null,
-//                            item.isConversationFirstMessage(),
-//                            stringBuilder.toString(),
-//                            item.getPerson().getOrganizationName(),
-//                            combineImage,
-//                            imageFirst,
-//                            imageSecond,
-//                            item.getFeedType()
-//                    ));
-//
-                //viewModel.setList(tempArray);
                 viewModel.setList(listToFeedIntoViewModel);
             }
 
@@ -534,19 +459,9 @@ public class MainActivity extends AppCompatActivity implements
         return null;
     }
 
-    private CropStreamMessage instantiateCropStreamMessage(String pictureUrl,
-                                                           String fullName,
-                                                           String corpName,
-                                                           String textToDisplay,
-                                                           String onDate,
-                                                           String messagePicture,
-                                                           Boolean isFirstMessage,
-                                                           String involvedPersons,
-                                                           String organizationName,
-                                                           Boolean isCombinedImage,
-                                                           String firstImageUrl,
-                                                           String secondImageUrl,
-                                                           String feedType) {
+    private CropStreamMessage instantiateCropStreamMessage(String pictureUrl, String fullName, String corpName, String textToDisplay, String onDate, String messagePicture, boolean isFirstMessage,
+                                                           String involvedPersons, String organizationName, boolean isCombinedImage, String firstImageUrl, String secondImageUrl, String feedType,
+                                                           boolean isFromOrganization) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -560,7 +475,8 @@ public class MainActivity extends AppCompatActivity implements
                 isCombinedImage,
                 firstImageUrl,
                 secondImageUrl,
-                feedType
+                feedType,
+                isFromOrganization
         );
     }
 

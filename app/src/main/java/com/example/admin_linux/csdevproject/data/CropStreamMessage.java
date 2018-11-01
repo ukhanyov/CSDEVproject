@@ -18,6 +18,7 @@ public class CropStreamMessage implements Parcelable {
     private String mCombineImageUrlFirst;
     private String mCombineImageUrlSecond;
     private String mFeedType;
+    private boolean mFromOrganization;
 
     public CropStreamMessage(
             String profilePicture,
@@ -32,7 +33,8 @@ public class CropStreamMessage implements Parcelable {
             boolean combineImage,
             String combineImageUrlFirst,
             String combineImageUrlSecond,
-            String feedType) {
+            String feedType,
+            boolean isFromOrganization) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -47,6 +49,7 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImageUrlFirst = combineImageUrlFirst;
         this.mCombineImageUrlSecond = combineImageUrlSecond;
         this.mFeedType = feedType;
+        this.mFromOrganization = isFromOrganization;
     }
 
     public String getProfilePicture() {
@@ -153,9 +156,17 @@ public class CropStreamMessage implements Parcelable {
         this.mFeedType = mFeedType;
     }
 
+    public boolean isFromOrganization() {
+        return mFromOrganization;
+    }
+
+    public void setFromOrganization(boolean mFromOrganization) {
+        this.mFromOrganization = mFromOrganization;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[13];
+        String[] data = new String[14];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -171,6 +182,7 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImageUrlFirst = data[10];
         this.mCombineImageUrlSecond = data[11];
         this.mFeedType = data[12];
+        this.mFromOrganization = Boolean.getBoolean(data[13]);
     }
 
     @Override
@@ -193,7 +205,8 @@ public class CropStreamMessage implements Parcelable {
                 String.valueOf(this.mCombineImage),
                 this.mCombineImageUrlFirst,
                 this.mCombineImageUrlSecond,
-                this.mFeedType
+                this.mFeedType,
+                String.valueOf(this.mFromOrganization)
         });
     }
 
