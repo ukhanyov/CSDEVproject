@@ -90,6 +90,8 @@
     <string name="phone_number">Phone number</string>
     <string name="verify_phone_number">Verify phone number</string>
     <string name="use_token">Use token</string>
+    <string name="country_code_default">+1</string>
+    <string name="enter_your_verification_code_here">Enter your verification code here</string>
 
     <string-array name="country_array">
         <item>+380</item>

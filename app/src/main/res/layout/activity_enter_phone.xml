@@ -8,30 +8,38 @@
         android:layout_height="match_parent"
         tools:context=".EnterPhoneActivity">
 
-        <Spinner
-            android:id="@+id/spinner_activity_enter_phone"
+        <EditText
+            android:visibility="visible"
+            android:id="@+id/et_activity_enter_phone_country_code"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:inputType="number"
+            android:minWidth="48dp"
+            android:outlineAmbientShadowColor="@color/green"
+            android:text="@string/country_code_default"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_enter_phone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_activity_enter_phone_title" />
 
         <EditText
-            android:text="+15552221237"
+            android:visibility="visible"
             android:id="@+id/et_activity_enter_phone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:accessibilityHeading="false"
-            android:inputType="phone"
-            android:textColorLink="@color/green"
+            android:inputType="number"
+            android:text="5552221237"
             android:textIsSelectable="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/spinner_activity_enter_phone"
+            app:layout_constraintStart_toEndOf="@+id/et_activity_enter_phone_country_code"
             app:layout_constraintTop_toBottomOf="@+id/tv_activity_enter_phone_title" />
 
         <TextView
+            android:visibility="visible"
             android:id="@+id/tv_activity_enter_phone_title"
             style="@style/TextViewGeneralGreen"
             android:layout_width="wrap_content"
@@ -43,6 +51,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/btn_activity_enter_phone_verify_number"
+            android:visibility="visible"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -56,6 +66,112 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_activity_enter_phone" />
+
+        <TextView
+            android:visibility="gone"
+            style="@style/TextViewGeneralBlack"
+            android:id="@+id/tv_activity_enter_phone_label_verification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/enter_your_verification_code_here"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:visibility="gone"
+            android:text="3"
+            android:id="@+id/et_activity_enter_phone_verification_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/et_activity_enter_phone_verification_5"
+            app:layout_constraintTop_toBottomOf="@+id/tv_activity_enter_phone_label_verification" />
+
+        <EditText
+            android:visibility="gone"
+            android:text="2"
+            android:id="@+id/et_activity_enter_phone_verification_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_enter_phone_verification_6"
+            app:layout_constraintEnd_toStartOf="@+id/et_activity_enter_phone_verification_6"
+            app:layout_constraintStart_toEndOf="@+id/et_activity_enter_phone_verification_4"
+            app:layout_constraintTop_toTopOf="@+id/et_activity_enter_phone_verification_6" />
+
+        <EditText
+            android:visibility="gone"
+            android:text="1"
+            android:id="@+id/et_activity_enter_phone_verification_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_enter_phone_verification_5"
+            app:layout_constraintEnd_toStartOf="@+id/et_activity_enter_phone_verification_5"
+            app:layout_constraintStart_toEndOf="@+id/et_activity_enter_phone_verification_3"
+            app:layout_constraintTop_toTopOf="@+id/et_activity_enter_phone_verification_5" />
+
+        <EditText
+            android:visibility="gone"
+            android:text="3"
+            android:id="@+id/et_activity_enter_phone_verification_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_enter_phone_verification_4"
+            app:layout_constraintEnd_toStartOf="@+id/et_activity_enter_phone_verification_4"
+            app:layout_constraintStart_toEndOf="@+id/et_activity_enter_phone_verification_2"
+            app:layout_constraintTop_toTopOf="@+id/et_activity_enter_phone_verification_4" />
+
+        <EditText
+            android:visibility="gone"
+            android:text="2"
+            android:id="@+id/et_activity_enter_phone_verification_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_enter_phone_verification_3"
+            app:layout_constraintEnd_toStartOf="@+id/et_activity_enter_phone_verification_3"
+            app:layout_constraintStart_toEndOf="@+id/et_activity_enter_phone_verification_1"
+            app:layout_constraintTop_toTopOf="@+id/et_activity_enter_phone_verification_3" />
+
+        <EditText
+            android:visibility="gone"
+            android:text="1"
+            android:id="@+id/et_activity_enter_phone_verification_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_enter_phone_verification_2"
+            app:layout_constraintEnd_toStartOf="@+id/et_activity_enter_phone_verification_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_activity_enter_phone_verification_2" />
+
+        <Button
+            android:onClick="btnVerifyCodeClicked"
+            android:id="@+id/btn_activity_enter_phone_verify_code"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/auth_button"
+            android:text="Verify"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_activity_enter_phone_verification_6" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

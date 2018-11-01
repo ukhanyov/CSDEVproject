@@ -32,7 +32,6 @@ public class EnterPhoneActivity extends AppCompatActivity {
 
     private static final String TAG = "Check_Auth";
 
-    private Spinner spinner;
     private LayoutInflater mInf;
 
     private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
@@ -46,17 +45,13 @@ public class EnterPhoneActivity extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     private String mPhoneNumber;
+    private String mVerificationCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_phone);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_enter_phone);
-
-        // Spinner stuff
-        spinner = mBinding.spinnerActivityEnterPhone;
-        spinner.setAdapter(new NewAdapter());
-        mInf = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Restore instance state
         if (savedInstanceState != null) {
@@ -112,7 +107,7 @@ public class EnterPhoneActivity extends AppCompatActivity {
                 mVerificationId = verificationId;
                 mResendToken = token;
 
-                showUiForEnteringVerificationCode(mVerificationId);
+                showUiForEnteringVerificationCode();
             }
         };
 
@@ -120,7 +115,7 @@ public class EnterPhoneActivity extends AppCompatActivity {
     }
 
     // Send a verification code to the user's phone
-    private void sendVerificationCode(){
+    private void sendVerificationCode() {
         // TODO: Set flag, that verification is in progress (in case activity is destroyed) (onSaveInstanceState)
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -133,7 +128,7 @@ public class EnterPhoneActivity extends AppCompatActivity {
     }
 
     // Sign in without necessity of entering verification code
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential){
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
         // Perform signing in with passed credential
         mAuth.signInWithCredential(credential)
@@ -158,64 +153,78 @@ public class EnterPhoneActivity extends AppCompatActivity {
     }
 
     // Sign in with necessity of entering verification code
-    private void signInWithVerificationIdAndToken(String verificationId, String token){
+    private void signInWithVerificationIdAndToken(String verificationId, String token) {
         // Create a PhoneAuthCredential object
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, token);
         signInWithPhoneAuthCredential(credential);
     }
 
     // Show UI for entering verification code
-    private void showUiForEnteringVerificationCode(String verificationId){
-        // TODO: add logic to get verification token from views
-        String token = "123123";
-        signInWithVerificationIdAndToken(verificationId, token);
+    private void showUiForEnteringVerificationCode() {
+        makeInputCodeViewsVisible();
     }
 
     // Show UI in case of invalid verification code entered
-    private void restoreAuthViews(){
+    private void restoreAuthViews() {
 
     }
 
     // Launch activity after successful authentication
-    private void launchActivityWithUser(String userUID){
+    private void launchActivityWithUser(String userUID) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, userUID);
         intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, mPhoneNumber);
         startActivity(intent);
     }
 
+    private void makeInputNumberViewsVisible() {
+        mBinding.etActivityEnterPhoneCountryCode.setVisibility(View.VISIBLE);
+        mBinding.etActivityEnterPhone.setVisibility(View.VISIBLE);
+        mBinding.tvActivityEnterPhoneTitle.setVisibility(View.VISIBLE);
+        mBinding.btnActivityEnterPhoneVerifyNumber.setVisibility(View.VISIBLE);
+
+        mBinding.tvActivityEnterPhoneLabelVerification.setVisibility(View.GONE);
+        mBinding.etActivityEnterPhoneVerification1.setVisibility(View.GONE);
+        mBinding.etActivityEnterPhoneVerification2.setVisibility(View.GONE);
+        mBinding.etActivityEnterPhoneVerification3.setVisibility(View.GONE);
+        mBinding.etActivityEnterPhoneVerification4.setVisibility(View.GONE);
+        mBinding.etActivityEnterPhoneVerification5.setVisibility(View.GONE);
+        mBinding.etActivityEnterPhoneVerification6.setVisibility(View.GONE);
+        mBinding.btnActivityEnterPhoneVerifyCode.setVisibility(View.GONE);
+    }
+
+    private void makeInputCodeViewsVisible() {
+        mBinding.etActivityEnterPhoneCountryCode.setVisibility(View.GONE);
+        mBinding.etActivityEnterPhone.setVisibility(View.GONE);
+        mBinding.tvActivityEnterPhoneTitle.setVisibility(View.GONE);
+        mBinding.btnActivityEnterPhoneVerifyNumber.setVisibility(View.GONE);
+
+        mBinding.tvActivityEnterPhoneLabelVerification.setVisibility(View.VISIBLE);
+        mBinding.etActivityEnterPhoneVerification1.setVisibility(View.VISIBLE);
+        mBinding.etActivityEnterPhoneVerification2.setVisibility(View.VISIBLE);
+        mBinding.etActivityEnterPhoneVerification3.setVisibility(View.VISIBLE);
+        mBinding.etActivityEnterPhoneVerification4.setVisibility(View.VISIBLE);
+        mBinding.etActivityEnterPhoneVerification5.setVisibility(View.VISIBLE);
+        mBinding.etActivityEnterPhoneVerification6.setVisibility(View.VISIBLE);
+        mBinding.btnActivityEnterPhoneVerifyCode.setVisibility(View.VISIBLE);
+    }
+
+    private void getSignInTokenFromViews() {
+        mVerificationCode = mBinding.etActivityEnterPhoneVerification1.getText().toString() +
+                mBinding.etActivityEnterPhoneVerification2.getText().toString() +
+                mBinding.etActivityEnterPhoneVerification3.getText().toString() +
+                mBinding.etActivityEnterPhoneVerification4.getText().toString() +
+                mBinding.etActivityEnterPhoneVerification5.getText().toString() +
+                mBinding.etActivityEnterPhoneVerification6.getText().toString();
+        signInWithVerificationIdAndToken(mVerificationId, mVerificationCode);
+    }
 
     public void btnVerifyPhoneNumberClick(View view) {
-        mPhoneNumber = mBinding.etActivityEnterPhone.getText().toString();
+        mPhoneNumber = mBinding.etActivityEnterPhoneCountryCode.getText().toString() + mBinding.etActivityEnterPhone.getText().toString();
         sendVerificationCode();
     }
 
-    // TODO: Refactor it
-    // Adapted to populate spinner of countries
-    class NewAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return 1;
-        }
-
-        @Override
-        public Object getItem(int arg0) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = mInf.inflate(R.layout.list_item_spinner, null);
-            }
-            return convertView;
-        }
-
+    public void btnVerifyCodeClicked(View view) {
+        getSignInTokenFromViews();
     }
 }
