@@ -1,5 +1,6 @@
 package com.example.admin_linux.csdevproject.network.retrofit;
 
+import com.example.admin_linux.csdevproject.network.pojo.conversation_details.ConversationDetailsReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseUserReturnValue;
 
@@ -27,5 +28,12 @@ public interface GetDataService {
     Call<FirebaseUserReturnValue> getUserGetByFireBaseId(
             @Query("FireBaseId") String FireBaseId,
             @Query("MobilePhoneNumber") String MobilePhoneNumber
+    );
+
+    // "api/v1/Conversation/ConversationDetails?ConversationId={ConversationId}&PersonId={PersonId}"
+    @GET("api/v1/Conversation/ConversationDetails")
+    Call<ConversationDetailsReturnValue> geConversationDetail(
+            @Query("ConversationId") int conversationId,
+            @Query("PersonId") int personId
     );
 }

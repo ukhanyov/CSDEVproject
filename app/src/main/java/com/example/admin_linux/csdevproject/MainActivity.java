@@ -327,8 +327,6 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
 
-                // TODO: look into person/user id shenanigans (there is a miss math with person/user
-
                 // Tips "Comments" -> text displayed on CropStreamMessage instance
                 // Tips "FeedType": "ConversationMessage" -> bottom of CropStreamMessage is "View message"
                 // Tips "FeedType": "CatalogEntryPosted" -> some image or whatever

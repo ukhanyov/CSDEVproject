@@ -49,6 +49,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             // Possible roots |3|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
             // Possible roots |4|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
 
+            // TODO: some bug with text color of message destination
+            // TODO: decide what to do if in the group chat there is only one picture
+
             if (current.isFromOrganization()) {
                 if (current.getInvolvedPersonsNames().equals("you")) {
                     bindViewsRootOne(current, holder); // root |1|
