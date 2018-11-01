@@ -29,6 +29,7 @@ import com.example.admin_linux.csdevproject.fragments.SearchFragment;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMPerson;
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseUserReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.model.FireBaseUserModel;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
@@ -315,11 +316,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void fetchData(String bearer, int personId) {
+    private void fetchData(String bearer, int yourPersonId) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
                 bearer,
-                personId,
+                yourPersonId,
                 Constants.MAX_EVENT_COUNT);
 
         parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
@@ -342,6 +343,8 @@ public class MainActivity extends AppCompatActivity implements
                 List<CropStreamMessage> listToFeedIntoViewModel = new ArrayList<>();
 
                 for (FeedEventItemModel event : listOfEvents) {
+                    FEIMPerson person = event.getPerson();
+
                     if (event.getOrganization() != null) {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |1|
@@ -363,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements
                             );
                         } else {
                             // Go root |2|
-                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), personId);
+                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             listToFeedIntoViewModel.add(instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
@@ -372,11 +375,11 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getOnDate(),
                                     null,
                                     event.isConversationFirstMessage(),
-                                    involvedPeople.toString(),
+                                    involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
                                     true,
-                                    (event.getInvolvedPersons().size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
-                                    (event.getInvolvedPersons().size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
+                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
                                     event.getFeedType(),
                                     true)
                             );
@@ -402,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements
                             );
                         } else {
                             // Go root |4|
-                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), personId);
+                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             listToFeedIntoViewModel.add(instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
@@ -411,11 +414,11 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getOnDate(),
                                     null,
                                     event.isConversationFirstMessage(),
-                                    involvedPeople.toString(),
+                                    involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
                                     true,
-                                    (event.getInvolvedPersons().size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
-                                    (event.getInvolvedPersons().size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
+                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
                                     event.getFeedType(),
                                     false)
                             );
@@ -434,14 +437,14 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private List<String> populateListOfInvolvedPeople(List<FEIMInvolvedPerson> involvedPeople, int personId) {
+    private List<String> populateListOfInvolvedPeople(List<FEIMInvolvedPerson> involvedPeople, int personId, int yourId) {
         List<String> people = new ArrayList<>();
         for (FEIMInvolvedPerson person : involvedPeople) {
-            if (person.getPersonId() != personId) {
+            if (person.getPersonId() != personId &&
+                    person.getPersonId() != yourId) {
                 people.add(person.getPersonFullName());
             }
         }
-
         return people;
     }
 
