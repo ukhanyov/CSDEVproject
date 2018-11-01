@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
@@ -210,11 +211,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             Picasso.with(mContext).load(urlOne).fit().centerInside()
                     .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .transform(new CircleTransform())
                     .into(holder.ivProfilePictureMashTop);
 
             Picasso.with(mContext).load(urlTwo).fit().centerInside()
                     .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .transform(new CircleTransform())
                     .into(holder.ivProfilePictureMashBottom);
 
             holder.ivProfilePictureMashTop.setVisibility(View.VISIBLE);
