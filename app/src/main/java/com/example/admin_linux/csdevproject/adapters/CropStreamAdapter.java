@@ -72,6 +72,12 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
+    @Override
+    public int getItemCount() {
+        if (mList != null) return mList.size();
+        else return 0;
+    }
+
     // root |1|
     private void bindViewsRootOne(CropStreamMessage current, CorpStreamViewHolder holder) {
 
@@ -288,12 +294,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         DisplayMetrics displayMetrics = mContext.getResources()
                 .getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    @Override
-    public int getItemCount() {
-        if (mList != null) return mList.size();
-        else return 0;
     }
 
     public void setCorpStreamMessages(List<CropStreamMessage> list) {

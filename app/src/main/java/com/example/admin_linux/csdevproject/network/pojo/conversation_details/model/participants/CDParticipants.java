@@ -26,6 +26,10 @@ public class CDParticipants {
     @Expose
     private int mUserId;
 
+    @SerializedName("PersonFirstName")
+    @Expose
+    private String mPersonFirstName;
+
     @SerializedName("PersonFullName")
     @Expose
     private String mPersonFullName;
@@ -44,5 +48,9 @@ public class CDParticipants {
 
     public String getPersonImageUrl() {
         return mPersonImageUrl;
+    }
+
+    public String getPersonFirstName() {
+        return mPersonFirstName;
     }
 }
