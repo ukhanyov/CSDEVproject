@@ -21,6 +21,7 @@ public class CropStreamMessage implements Parcelable {
     private boolean mFromOrganization;
     private String mConversationId;
     private String mPersonId;
+    private boolean mConversationChat;
 
     public CropStreamMessage(
             String profilePicture,
@@ -38,7 +39,8 @@ public class CropStreamMessage implements Parcelable {
             String feedType,
             boolean isFromOrganization,
             String conversationId,
-            String personId) {
+            String personId,
+            boolean conversationChat) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -56,6 +58,7 @@ public class CropStreamMessage implements Parcelable {
         this.mFromOrganization = isFromOrganization;
         this.mConversationId = conversationId;
         this.mPersonId = personId;
+        this.mConversationChat = conversationChat;
     }
 
     public String getProfilePicture() {
@@ -186,9 +189,17 @@ public class CropStreamMessage implements Parcelable {
         this.mPersonId = mPersonId;
     }
 
+    public boolean getConversationChat() {
+        return mConversationChat;
+    }
+
+    public void setConversationChat(boolean mConversationChat) {
+        this.mConversationChat = mConversationChat;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[16];
+        String[] data = new String[17];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -207,6 +218,7 @@ public class CropStreamMessage implements Parcelable {
         this.mFromOrganization = Boolean.getBoolean(data[13]);
         this.mConversationId = data[14];
         this.mPersonId = data[15];
+        this.mConversationChat = Boolean.getBoolean(data[16]);
     }
 
     @Override
@@ -232,7 +244,8 @@ public class CropStreamMessage implements Parcelable {
                 this.mFeedType,
                 String.valueOf(this.mFromOrganization),
                 this.mConversationId,
-                this.mPersonId
+                this.mPersonId,
+                String.valueOf(this.mConversationChat)
         });
     }
 

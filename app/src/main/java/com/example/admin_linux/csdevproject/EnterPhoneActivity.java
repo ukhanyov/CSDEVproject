@@ -82,7 +82,6 @@ public class EnterPhoneActivity extends AppCompatActivity {
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:" + credential);
-
                 signInWithPhoneAuthCredential(credential);
             }
 
@@ -91,6 +90,7 @@ public class EnterPhoneActivity extends AppCompatActivity {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e);
+                //mVerificationInProgress = false;
 
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
@@ -119,15 +119,39 @@ public class EnterPhoneActivity extends AppCompatActivity {
             }
         };
 
-
     }
 
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//
+//        // [START_EXCLUDE]
+//        if (mVerificationInProgress ) {
+//            sendVerificationCode(mBinding.etActivityEnterPhoneCountryCode.getText().toString() + mBinding.etActivityEnterPhone.getText().toString());
+//        }
+//        // [END_EXCLUDE]
+//    }
+
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putBoolean(KEY_VERIFY_IN_PROGRESS, mVerificationInProgress);
+//    }
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS);
+//    }
+
     // Send a verification code to the user's phone
-    private void sendVerificationCode() {
+    private void sendVerificationCode(String phone) {
         // TODO: Set flag, that verification is in progress (in case activity is destroyed) (onSaveInstanceState)
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                mPhoneNumber,           // Phone number to verify
+                phone,           // Phone number to verify
                 60,                  // Timeout duration
                 TimeUnit.SECONDS,       // Unit of timeout
                 this,           // Activity (for callback binding)
@@ -245,7 +269,7 @@ public class EnterPhoneActivity extends AppCompatActivity {
 
     public void btnVerifyPhoneNumberClick(View view) {
         mPhoneNumber = mBinding.etActivityEnterPhoneCountryCode.getText().toString() + mBinding.etActivityEnterPhone.getText().toString();
-        sendVerificationCode();
+        sendVerificationCode(mPhoneNumber);
     }
 
     public void btnVerifyCodeClicked(View view) {

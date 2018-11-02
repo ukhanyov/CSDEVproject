@@ -318,10 +318,10 @@ public class MainActivity extends AppCompatActivity implements
                 // Tips "FeedType": "ConversationMessage" -> bottom of CropStreamMessage is "View message"
                 // Tips "FeedType": "CatalogEntryPosted" -> some image or whatever
 
-                // Possible roots |1|: organization -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
-                // Possible roots |2|: organization -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
-                // Possible roots |3|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
-                // Possible roots |4|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
+                // Possible roots |1|: organization -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
+                // Possible roots |2|: organization -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
+                // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
+                // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
@@ -348,7 +348,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
-                                    String.valueOf(yourPersonId))
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0)
                             );
                         } else {
                             // Go root |2|
@@ -369,7 +370,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
-                                    String.valueOf(yourPersonId))
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0)
                             );
                         }
                     } else {
@@ -391,7 +393,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),
-                                    String.valueOf(yourPersonId))
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0)
                             );
                         } else {
                             // Go root |4|
@@ -412,7 +415,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),
-                                    String.valueOf(yourPersonId))
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0)
                             );
                         }
                     }
@@ -460,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private CropStreamMessage instantiateCropStreamMessage(String pictureUrl, String fullName, String corpName, String textToDisplay, String onDate, String messagePicture, boolean isFirstMessage,
                                                            String involvedPersons, String organizationName, boolean isCombinedImage, String firstImageUrl, String secondImageUrl, String feedType,
-                                                           boolean isFromOrganization, String conversationId, String personId) {
+                                                           boolean isFromOrganization, String conversationId, String personId, boolean isConversation) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -477,7 +481,9 @@ public class MainActivity extends AppCompatActivity implements
                 feedType,
                 isFromOrganization,
                 conversationId,
-                personId
+                personId,
+                isConversation
+
         );
     }
 

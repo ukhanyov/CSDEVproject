@@ -48,10 +48,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             CropStreamMessage current = mList.get(i);
 
             // Bind views
-            // Possible roots |1|: organization -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
-            // Possible roots |2|: organization -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
-            // Possible roots |3|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons"(null) -> you
-            // Possible roots |4|: organization(null) -> "Person" -> "ConversationFirstMessage" -> "InvolvedPersons" -> list everyone but you
+            // Possible roots |1|: organization -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
+            // Possible roots |2|: organization -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
+            // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
+            // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
 
             if (current.isFromOrganization()) {
                 if (current.getInvolvedPersonsNames().equals("you")) {
@@ -100,7 +100,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         //bindMessagePicture(holder, current.getMessagePicture());
 
         // Bind message order (is it first)
-        bindMessageOrder(holder, current.getConversationFirstMessage());
+        bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
         bindStartReplyViewMessageViews(holder, current.getFeedType());
@@ -133,7 +133,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         //bindMessagePicture(holder, current.getMessagePicture());
 
         // Bind message order (is it first)
-        bindMessageOrder(holder, current.getConversationFirstMessage());
+        bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
         bindStartReplyViewMessageViews(holder, current.getFeedType());
@@ -162,7 +162,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         //bindMessagePicture(holder, current.getMessagePicture());
 
         // Bind message order (is it first)
-        bindMessageOrder(holder, current.getConversationFirstMessage());
+        bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
         bindStartReplyViewMessageViews(holder, current.getFeedType());
@@ -194,7 +194,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         //bindMessagePicture(holder, current.getMessagePicture());
 
         // Bind message order (is it first)
-        bindMessageOrder(holder, current.getConversationFirstMessage());
+        bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
         bindStartReplyViewMessageViews(holder, current.getFeedType());
@@ -270,11 +270,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage) {
+    private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage, boolean isAChat) {
         if (isFirstMessage) {
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
-        } else {
+        } else if(isAChat){
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
+        }else {
+            holder.tvTypeOfConversation.setText(mContext.getString(R.string.send_a_message_to));
         }
     }
 
@@ -343,8 +345,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
         @Override
         public void onClick(View view) {
-            if (mList.get(getAdapterPosition()).getInvolvedPersonsNames() != null
-                    && !mList.get(getAdapterPosition()).getInvolvedPersonsNames().equals("you")) {
+            if (mList.get(getAdapterPosition()).getConversationChat()) {
                 mListener.onClick(view, mList.get(getAdapterPosition()));
             }
         }

@@ -75,7 +75,7 @@ public class AuthActivity extends AppCompatActivity{
 //                //     detect the incoming verification SMS and perform verification without
 //                //     user action.
 //                // [START_EXCLUDE silent]
-//                mVerificationInProgress = false;
+//                с
 //                // [END_EXCLUDE]
 //
 //                // [START_EXCLUDE silent]
