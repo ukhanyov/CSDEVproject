@@ -14,6 +14,7 @@
     <color name="white">#ffffff</color>
     <color name="grey">#808080</color>
     <color name="green">#00b22d</color>
+    <color name="medium_grey">#e7e7e7</color>
     <color name="light_gray">#f0f0f0</color>
     <color name="very_light_gray">#fafafa</color>
 

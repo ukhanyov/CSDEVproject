@@ -101,6 +101,9 @@
     <string name="et_6">3</string>
     <string name="_5552221237">5552221237</string>
     <string name="chat_profile_image">Chat profile image</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="hint_time">17.26</string>
+    <string name="hint_test">test</string>
 
     <string-array name="country_array">
         <item>+380</item>

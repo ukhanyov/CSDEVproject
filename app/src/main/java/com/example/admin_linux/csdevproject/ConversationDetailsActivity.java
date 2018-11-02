@@ -81,8 +81,6 @@ public class ConversationDetailsActivity extends AppCompatActivity {
                 ConversationDetailsReturnValue returnValue = response.body();
                 CDConversationModel conversationModel = Objects.requireNonNull(returnValue).getCDConversationModel();
 
-                mBinding.tvActivityConversationDetailsLastMessage.setText(conversationModel.getLastMessageValue());
-                //mParticipantsList = conversationModel.getParticipants();
                 // Populate viewModel
                 viewModel.setList(conversationModel.getParticipants());
             }
