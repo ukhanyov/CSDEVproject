@@ -18,6 +18,18 @@ public class FireBaseUserModel {
     @Expose
     private int mUserId;
 
+    @SerializedName("FirstName")
+    @Expose
+    private String mFirstName;
+
+    @SerializedName("LastName")
+    @Expose
+    private String mLastName;
+
+    @SerializedName("ProfileImageUrl")
+    @Expose
+    private String mProfileImageUrl;
+
     public String getAuthorizeToken() {
         return mAuthorizeToken;
     }
@@ -28,5 +40,17 @@ public class FireBaseUserModel {
 
     public int getUserId() {
         return mUserId;
+    }
+
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    public String getLastName() {
+        return mLastName;
+    }
+
+    public String getProfileImageUrl() {
+        return mProfileImageUrl;
     }
 }

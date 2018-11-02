@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements
     private String mBearer;
     private String mUserFirebaseId;
     private String mUserFirebasePhoneNumber;
+    private String mProfileUrl;
+    private String mFullName;
 
     private int mUserId;
 
@@ -327,7 +329,6 @@ public class MainActivity extends AppCompatActivity implements
 
                 for (FeedEventItemModel event : listOfEvents) {
                     FEIMPerson person = event.getPerson();
-
                     if (event.getOrganization() != null) {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |1|
@@ -435,6 +436,10 @@ public class MainActivity extends AppCompatActivity implements
                     person.getPersonId() != yourId) {
                 people.add(person.getPersonFullName());
             }
+            if(person.getPersonId() == personId){
+                mFullName = person.getPersonFullName();
+                mProfileUrl = person.getIconPath();
+            }
         }
         return people;
     }
@@ -492,6 +497,8 @@ public class MainActivity extends AppCompatActivity implements
                     FireBaseUserModel userModel = Objects.requireNonNull(returnValue).getFireBaseUserModel();
                     mUserId = userModel.getPersonId();
                     mBearer = "Bearer " + userModel.getAuthorizeToken();
+                    mProfileUrl = userModel.getProfileImageUrl();
+                    mFullName = userModel.getFirstName() + " " + userModel.getLastName();
                     fetchData(mBearer, mUserId);
                 }
 
@@ -512,6 +519,9 @@ public class MainActivity extends AppCompatActivity implements
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("transferList", (ArrayList<? extends Parcelable>) transferList);
                 bundle.putString("transferBearerToFragment", mBearer);
+                bundle.putString("transferProfileUrlToFragment", mProfileUrl);
+                bundle.putString("transferFullNameToFragment", mFullName);
+
 
                 fragmentCropStreamTransaction = new CropStreamFragment();
                 fragmentCropStreamTransaction.setArguments(bundle);

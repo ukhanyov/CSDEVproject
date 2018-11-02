@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CDMessageAdapter;
@@ -37,8 +38,10 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
     ActivityConversationDetailsBinding mBinding;
     private ConversationDetailsViewModel viewModel;
-    //private List<CDParticipants> mParticipantsList;
-    private List<ConversationDetailsMesasge> mMesasgeList;
+    private List<ConversationDetailsMesasge> mMessageList;
+    private String mMessageText;
+    private String mProfileUrl;
+    private String mProfileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +57,11 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         CropStreamMessage cropStreamMessage = intent.getParcelableExtra("transfer_message");
         String bearer = intent.getStringExtra("transfer_bearer");
+        mProfileUrl = intent.getStringExtra("transfer_profile_url");
+        mProfileName = intent.getStringExtra("transfer_full_name");
+
 
         viewModel = ViewModelProviders.of(this).get(ConversationDetailsViewModel.class);
-        //mParticipantsList = new ArrayList<>();
 
         // Setup participants
         final CDPeopleAdapter mAdapter = new CDPeopleAdapter(this);
@@ -108,12 +113,15 @@ public class ConversationDetailsActivity extends AppCompatActivity {
                 }
 
                 if(participant != null){
-                    mMesasgeList = new ArrayList<>();
-                    mMesasgeList.add(new ConversationDetailsMesasge(
+                    mMessageList = new ArrayList<>();
+                    mMessageList.add(new ConversationDetailsMesasge(
                             participant.getPersonImageUrl(),
                             participant.getPersonFullName(),
                             conversationModel.getLastMessageValue()));
-                    viewModel.setListOfMessages(mMesasgeList);
+
+                    mMessageList.add(new ConversationDetailsMesasge(mProfileUrl, mProfileName, "dsgdrgdr"));
+
+                    viewModel.setListOfMessages(mMessageList);
                 }
 
             }
@@ -125,5 +133,16 @@ public class ConversationDetailsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void imgSendMessageOnCDClicked(View view) {
+        mMessageText = mBinding.etActivityConversationDetailsInputText.getText().toString();
+        mMessageList.add(new ConversationDetailsMesasge(mProfileUrl, mProfileName, mMessageText));
+        viewModel.setListOfMessages(mMessageList);
+        //mBinding.etActivityConversationDetailsInputText.text
+    }
+
+    public void imgPickPhotoCDClicked(View view) {
+        Toast.makeText(this, "Feature is under development", Toast.LENGTH_SHORT).show();
     }
 }

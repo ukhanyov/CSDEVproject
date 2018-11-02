@@ -54,7 +54,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/admin-linux/Desktop/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_expand_more_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/admin-linux/Desktop/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_send_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -65,8 +65,8 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="17ff0a" />
-                            <entry key="outputName" value="ic_expand_more_green" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/chat.svg" />
+                            <entry key="outputName" value="ic_send_message" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/photograph (1).svg" />
                           </map>
                         </option>
                       </PersistentState>

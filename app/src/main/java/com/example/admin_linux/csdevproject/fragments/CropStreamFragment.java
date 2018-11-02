@@ -82,8 +82,12 @@ public class CropStreamFragment extends Fragment{
         CropStreamClickListener listener = (view, cropStreamMessage) -> {
 
             String bearer = Objects.requireNonNull(getArguments()).getString("transferBearerToFragment");
+            String mProfileFullName = Objects.requireNonNull(getArguments()).getString("transferFullNameToFragment");
+            String mProfileUrl = Objects.requireNonNull(getArguments()).getString("transferProfileUrlToFragment");
 
             Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
+            intent.putExtra("transfer_profile_url", mProfileUrl);
+            intent.putExtra("transfer_full_name", mProfileFullName);
             intent.putExtra("transfer_bearer", bearer);
             intent.putExtra("transfer_message", cropStreamMessage);
             startActivity(intent);
