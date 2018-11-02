@@ -9,15 +9,6 @@
         android:layout_height="match_parent"
         tools:context=".fragments.ChatFragment">
 
-        <include
-            android:id="@+id/layout_toolbar_chat"
-            layout="@layout/layout_toolbar_chat" />
-
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/rv_corp_stream_fragment"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
-
         <TextView
             android:id="@+id/tv_fragment_chat"
             style="@style/TextViewGeneralBold"
