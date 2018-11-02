@@ -63,15 +63,9 @@ public class CDPeopleAdapter extends RecyclerView.Adapter<CDPeopleAdapter.CDPeop
         else return 0;
     }
 
-    public void setCorpStreamMessages(List<CDParticipants> list) {
+    public void setConversationDetailsParticipants(List<CDParticipants> list) {
         this.mList = list;
         notifyDataSetChanged();
-    }
-
-    private int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = mContext.getResources()
-                .getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     class CDPeopleViewHolder extends RecyclerView.ViewHolder{
@@ -83,7 +77,7 @@ public class CDPeopleAdapter extends RecyclerView.Adapter<CDPeopleAdapter.CDPeop
             super(itemView);
 
             ivPersonPicture = itemView.findViewById(R.id.list_item_conversation_details_iv_profile_people);
-            tvPersonName = itemView.findViewById(R.id.list_item_conversation_details_tv_profile_name);
+            tvPersonName = itemView.findViewById(R.id.list_item_tv_conversation_details_profile_name);
         }
 
     }

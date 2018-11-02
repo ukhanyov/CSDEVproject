@@ -2,32 +2,29 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
 
     <ImageView
         android:id="@+id/list_item_conversation_details_iv_profile_people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxWidth="25dp"
-        android:maxHeight="25dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_profile_default"
-        app:layout_constraintBottom_toTopOf="@+id/list_item_conversation_details_tv_profile_name"
+        app:layout_constraintBottom_toTopOf="@+id/list_item_tv_conversation_details_profile_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/chat_profile_image" />
 
     <TextView
+        android:textSize="12sp"
+        style="@style/TextViewGeneral"
         android:id="@+id/list_item_tv_conversation_details_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/hint_name_name"
-        android:textColor="@color/black"
-        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
