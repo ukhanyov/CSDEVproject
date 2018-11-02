@@ -89,13 +89,14 @@
             android:contentDescription="@string/pick_picture_to_send" />
 
         <EditText
+            android:padding="4dp"
             android:id="@+id/et_activity_conversation_details_input_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@color/white"
+            android:background="@drawable/edit_text_c_d_background"
             android:hint="@string/enter_message"
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
