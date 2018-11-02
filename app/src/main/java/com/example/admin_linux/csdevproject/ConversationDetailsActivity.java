@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CDMessageAdapter;
 import com.example.admin_linux.csdevproject.adapters.CDPeopleAdapter;
-import com.example.admin_linux.csdevproject.data.ConversationDetailsMesasge;
+import com.example.admin_linux.csdevproject.data.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.data.ConversationDetailsViewModel;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.databinding.ActivityConversationDetailsBinding;
@@ -40,7 +40,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
     ActivityConversationDetailsBinding mBinding;
     private ConversationDetailsViewModel viewModel;
-    private List<ConversationDetailsMesasge> mMessageList;
+    private List<ConversationDetailsMessage> mMessageList;
     private String mMessageText;
     private String mProfileUrl;
     private String mProfileName;
@@ -116,7 +116,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
                 if(participant != null){
                     mMessageList = new ArrayList<>();
-                    mMessageList.add(new ConversationDetailsMesasge(
+                    mMessageList.add(new ConversationDetailsMessage(
                             participant.getPersonImageUrl(),
                             participant.getPersonFullName(),
                             conversationModel.getLastMessageValue()));
@@ -137,7 +137,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
     public void imgSendMessageOnCDClicked(View view) {
         mMessageText = mBinding.etActivityConversationDetailsInputText.getText().toString();
-        mMessageList.add(new ConversationDetailsMesasge(mProfileUrl, mProfileName, mMessageText));
+        mMessageList.add(new ConversationDetailsMessage(mProfileUrl, mProfileName, mMessageText));
 
         mBinding.etActivityConversationDetailsInputText.setText(null);
 

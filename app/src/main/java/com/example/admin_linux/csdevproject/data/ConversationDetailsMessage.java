@@ -3,13 +3,13 @@ package com.example.admin_linux.csdevproject.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ConversationDetailsMesasge implements Parcelable {
+public class ConversationDetailsMessage implements Parcelable {
 
     private String mProfilePictureUrl;
     private String mProfileName;
     private String mMessage;
 
-    public ConversationDetailsMesasge(String profilePictureUrl, String profileName, String message) {
+    public ConversationDetailsMessage(String profilePictureUrl, String profileName, String message) {
         this.mProfilePictureUrl = profilePictureUrl;
         this.mProfileName = profileName;
         this.mMessage = message;
@@ -40,7 +40,7 @@ public class ConversationDetailsMesasge implements Parcelable {
     }
 
     // Parcelling part
-    public ConversationDetailsMesasge(Parcel in) {
+    public ConversationDetailsMessage(Parcel in) {
         String[] data = new String[3];
         in.readStringArray(data);
 
@@ -64,12 +64,12 @@ public class ConversationDetailsMesasge implements Parcelable {
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public ConversationDetailsMesasge createFromParcel(Parcel in) {
-            return new ConversationDetailsMesasge(in);
+        public ConversationDetailsMessage createFromParcel(Parcel in) {
+            return new ConversationDetailsMessage(in);
         }
 
-        public ConversationDetailsMesasge[] newArray(int size) {
-            return new ConversationDetailsMesasge[size];
+        public ConversationDetailsMessage[] newArray(int size) {
+            return new ConversationDetailsMessage[size];
         }
     };
 }

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
-import com.example.admin_linux.csdevproject.data.ConversationDetailsMesasge;
+import com.example.admin_linux.csdevproject.data.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +20,7 @@ import java.util.Objects;
 public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMessageViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<ConversationDetailsMesasge> mList;
+    private List<ConversationDetailsMessage> mList;
     private Context mContext;
 
     public CDMessageAdapter(Context context){
@@ -39,7 +39,7 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
     public void onBindViewHolder(@NonNull CDMessageViewHolder holder, int i) {
         if (mList != null) {
             // Bind views
-            ConversationDetailsMesasge current = mList.get(i);
+            ConversationDetailsMessage current = mList.get(i);
 
             // Bind profile picture
             Picasso.with(mContext).load(current.getProfilePictureUrl()).fit().centerInside()
@@ -65,7 +65,7 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
         else return 0;
     }
 
-    public void setConversationDetailsMessages(List<ConversationDetailsMesasge> list) {
+    public void setConversationDetailsMessages(List<ConversationDetailsMessage> list) {
         this.mList = list;
         notifyDataSetChanged();
     }

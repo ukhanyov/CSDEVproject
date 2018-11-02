@@ -103,7 +103,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
-        bindStartReplyViewMessageViews(holder, current.getFeedType());
+        //bindStartReplyViewMessageViews(holder, current.getFeedType());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat());
 
     }
 
@@ -136,7 +137,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
-        bindStartReplyViewMessageViews(holder, current.getFeedType());
+        //bindStartReplyViewMessageViews(holder, current.getFeedType());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat());
 
     }
 
@@ -165,7 +167,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
-        bindStartReplyViewMessageViews(holder, current.getFeedType());
+        //bindStartReplyViewMessageViews(holder, current.getFeedType());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat());
     }
 
     // root |4|
@@ -197,7 +200,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
-        bindStartReplyViewMessageViews(holder, current.getFeedType());
+        //bindStartReplyViewMessageViews(holder, current.getFeedType());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat());
 
     }
 
@@ -280,11 +284,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, String feedType) {
-        if (feedType.equals("ConversationMessage")) {
+    // Old one was with feed type
+    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChat) {
+        //if (feedType.equals("ConversationMessage")) {
+        if (isChat) {
             holder.ibUnderProfile.setVisibility(View.INVISIBLE);
             holder.tvUnderProfile.setVisibility(View.INVISIBLE);
-            holder.tvViewMessage.setVisibility(View.VISIBLE);
+            holder.tvViewMessage.setVisibility(View.INVISIBLE);
         } else {
             holder.ibUnderProfile.setVisibility(View.VISIBLE);
             holder.tvUnderProfile.setVisibility(View.VISIBLE);
