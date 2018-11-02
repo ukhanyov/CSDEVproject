@@ -84,7 +84,9 @@
     <string name="firebase_status_fmt">Firebase User: %s</string>
 
     <string name="label_phone_auth">Phone Number Authentication</string>
-    <string name="privacy_policy">By tapping to continue, you are indicating that you have read Privacy policy and agree to the Terms of service</string>
+    <string name="privacy_policy">By tapping to continue, you are indicating that you have read
+        <a href="https://www.cropstream.com/legal/privacy-policy">Privacy policy</a> and agree to the
+        <a href="https://www.cropstream.com/legal/terms-of-service">Terms of service</a></string>
     <string name="use_phone_number">Use phone number</string>
     <string name="code_ua">+380</string>
     <string name="phone_number">Phone number</string>

@@ -4,21 +4,18 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.databinding.ActivityAuthBinding;
 import com.example.admin_linux.csdevproject.utils.Constants;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
+import com.example.admin_linux.csdevproject.utils.URLSpanNoUnderline;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class AuthActivity extends AppCompatActivity{
 
@@ -50,6 +47,10 @@ public class AuthActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_auth);
+
+        stripUnderlines(mBinding.tvActivityAuthPrivacyPolicy);
+
+        mBinding.tvActivityAuthPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
 
 //        // Restore instance state
 //        if (savedInstanceState != null) {
@@ -128,6 +129,21 @@ public class AuthActivity extends AppCompatActivity{
 //        // [END phone_auth_callbacks]
 
     }
+
+    private void stripUnderlines(TextView textView) {
+        Spannable s = new SpannableString(textView.getText());
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span: spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
+    }
+
+
 //
 //    // [START on_start_check_user]
 //    @Override
