@@ -50,6 +50,10 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
+//        Toolbar toolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar_chat);
+//        ((MainActivity)getActivity()).setSupportActionBar(toolbar);
+//        Objects.requireNonNull(((MainActivity) getActivity()).getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
         // Generate dummy data
 //        List<ChatItem> list = GenerateData.generateChatItems(rootView.getContext());
 //

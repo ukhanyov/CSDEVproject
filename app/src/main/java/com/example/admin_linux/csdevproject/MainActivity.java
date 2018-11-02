@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements
     ActivityMainBinding mBinding;
 
     private Boolean isFabOpen = false;
-    private Boolean isSearchETOpened = false;
     private Boolean isNotDefaultUser = false;
 
     private String mBearer;
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
-        mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+        //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
 
     }
 
@@ -178,15 +177,7 @@ public class MainActivity extends AppCompatActivity implements
                 starCropStreamFragment();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
-                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
-
-                mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.INVISIBLE);
+                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
 
                 break;
 
@@ -197,15 +188,8 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_chat));
-                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.INVISIBLE);
+                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
 
-                mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.INVISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.VISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.VISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.VISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.VISIBLE);
-                mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_favorites:
@@ -215,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_favorites));
-                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_search:
@@ -225,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_search));
-                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
                 break;
 
         }
@@ -538,31 +522,5 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
             }
         });
-    }
-
-    public void toggleSearchButtonChatToolbar(View view) {
-        if (isSearchETOpened) {
-
-            mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.VISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.VISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.INVISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.VISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.INVISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.INVISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.INVISIBLE);
-
-            isSearchETOpened = true;
-        } else {
-
-            mBinding.layoutToolbar.contentChat.contentToolbarEtSearch.setVisibility(View.INVISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbCancelSearch.setVisibility(View.INVISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbProfilePicture.setVisibility(View.VISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbSearch.setVisibility(View.VISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarIbSettings.setVisibility(View.VISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarTvLabelArrow.setVisibility(View.VISIBLE);
-            mBinding.layoutToolbar.contentChat.contentToolbarTvProfileName.setVisibility(View.VISIBLE);
-
-            isSearchETOpened = false;
-        }
     }
 }

@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,6 +33,11 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_details);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_conversation_details);
+
+        // Toolbar
+        Toolbar toolbar = mBinding.layoutToolbarConversationDetails.toolbarConversationDetails;
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
         CropStreamMessage cropStreamMessage = intent.getParcelableExtra("transfer_message");

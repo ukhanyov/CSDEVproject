@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_conversation_details"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <include
+            android:id="@+id/content_toolbar_conversation_details"
+            layout="@layout/content_toolbar_conversation_details" />
+
+    </android.support.v7.widget.Toolbar>
+
+</layout>

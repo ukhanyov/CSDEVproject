@@ -4,10 +4,16 @@
          android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_conversation_details_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_toolbar_conversation_details"
+            android:text="AAAAAAAAAAAaaaaaaaaaaaaaaaaaaaAAAAa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/rv_conversation_details_toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
 
     </android.support.constraint.ConstraintLayout>
 </layout>
