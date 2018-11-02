@@ -1,12 +1,16 @@
 package com.example.admin_linux.csdevproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.databinding.ActivityEnterPhoneBinding;
@@ -53,6 +57,14 @@ public class EnterPhoneActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
+
+        // Edit text listeners
+        mBinding.etActivityEnterPhoneVerification1.addTextChangedListener(new GenericTextWatcher(mBinding.etActivityEnterPhoneVerification1));
+        mBinding.etActivityEnterPhoneVerification2.addTextChangedListener(new GenericTextWatcher(mBinding.etActivityEnterPhoneVerification2));
+        mBinding.etActivityEnterPhoneVerification3.addTextChangedListener(new GenericTextWatcher(mBinding.etActivityEnterPhoneVerification3));
+        mBinding.etActivityEnterPhoneVerification4.addTextChangedListener(new GenericTextWatcher(mBinding.etActivityEnterPhoneVerification4));
+        mBinding.etActivityEnterPhoneVerification5.addTextChangedListener(new GenericTextWatcher(mBinding.etActivityEnterPhoneVerification5));
+        mBinding.etActivityEnterPhoneVerification6.addTextChangedListener(new GenericTextWatcher(mBinding.etActivityEnterPhoneVerification6));
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -203,16 +215,32 @@ public class EnterPhoneActivity extends AppCompatActivity {
         mBinding.etActivityEnterPhoneVerification5.setVisibility(View.VISIBLE);
         mBinding.etActivityEnterPhoneVerification6.setVisibility(View.VISIBLE);
         mBinding.btnActivityEnterPhoneVerifyCode.setVisibility(View.VISIBLE);
+
+        mBinding.etActivityEnterPhoneVerification1.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mBinding.etActivityEnterPhoneVerification1, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void getSignInTokenFromViews() {
-        mVerificationCode = mBinding.etActivityEnterPhoneVerification1.getText().toString() +
-                mBinding.etActivityEnterPhoneVerification2.getText().toString() +
-                mBinding.etActivityEnterPhoneVerification3.getText().toString() +
-                mBinding.etActivityEnterPhoneVerification4.getText().toString() +
-                mBinding.etActivityEnterPhoneVerification5.getText().toString() +
-                mBinding.etActivityEnterPhoneVerification6.getText().toString();
-        signInWithVerificationIdAndToken(mVerificationId, mVerificationCode);
+        if(!mBinding.etActivityEnterPhoneVerification1.getText().toString().equals("") &&
+                !mBinding.etActivityEnterPhoneVerification2.getText().toString().equals("") &&
+                !mBinding.etActivityEnterPhoneVerification3.getText().toString().equals("") &&
+                !mBinding.etActivityEnterPhoneVerification4.getText().toString().equals("") &&
+                !mBinding.etActivityEnterPhoneVerification5.getText().toString().equals("") &&
+                !mBinding.etActivityEnterPhoneVerification6.getText().toString().equals("")) {
+
+            mVerificationCode = mBinding.etActivityEnterPhoneVerification1.getText().toString() +
+                    mBinding.etActivityEnterPhoneVerification2.getText().toString() +
+                    mBinding.etActivityEnterPhoneVerification3.getText().toString() +
+                    mBinding.etActivityEnterPhoneVerification4.getText().toString() +
+                    mBinding.etActivityEnterPhoneVerification5.getText().toString() +
+                    mBinding.etActivityEnterPhoneVerification6.getText().toString();
+
+            signInWithVerificationIdAndToken(mVerificationId, mVerificationCode);
+        } else {
+            Toast.makeText(this, "Please enter verification code", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void btnVerifyPhoneNumberClick(View view) {
@@ -222,5 +250,51 @@ public class EnterPhoneActivity extends AppCompatActivity {
 
     public void btnVerifyCodeClicked(View view) {
         getSignInTokenFromViews();
+    }
+
+    public class GenericTextWatcher implements TextWatcher {
+        private View view;
+        private GenericTextWatcher(View view)
+        {
+            this.view = view;
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String text = editable.toString();
+            switch(view.getId())
+            {
+                case R.id.et_activity_enter_phone_verification_1:
+                    if(text.length()==1)
+                    mBinding.etActivityEnterPhoneVerification2.requestFocus();
+                    break;
+                case R.id.et_activity_enter_phone_verification_2:
+                    if(text.length()==1)
+                        mBinding.etActivityEnterPhoneVerification3.requestFocus();
+                    break;
+                case R.id.et_activity_enter_phone_verification_3:
+                    if(text.length()==1)
+                        mBinding.etActivityEnterPhoneVerification4.requestFocus();
+                    break;
+                case R.id.et_activity_enter_phone_verification_4:
+                    if(text.length()==1)
+                        mBinding.etActivityEnterPhoneVerification5.requestFocus();
+                    break;
+                case R.id.et_activity_enter_phone_verification_5:
+                    if(text.length()==1)
+                        mBinding.etActivityEnterPhoneVerification6.requestFocus();
+                    break;
+                case R.id.et_activity_enter_phone_verification_6:
+                    break;
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+        }
     }
 }
