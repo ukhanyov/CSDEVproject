@@ -11,8 +11,11 @@ import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.ConversationDetailsMesasge;
+import com.example.admin_linux.csdevproject.utils.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMessageViewHolder> {
 
@@ -39,13 +42,17 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
             ConversationDetailsMesasge current = mList.get(i);
 
             // Bind profile picture
-
+            Picasso.with(mContext).load(current.getProfilePictureUrl()).fit().centerInside()
+                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .transform(new CircleTransform())
+                    .into(holder.ivProfilePicture);
 
             // Bind profile name
-
+            holder.tvProfileName.setText(current.getProfileName());
 
             // Bind message
-
+            holder.tvMessage.setText(current.getMessage());
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CDMessage recycler view");
@@ -58,7 +65,7 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
         else return 0;
     }
 
-    public void setConversationDetailsMesssages(List<ConversationDetailsMesasge> list) {
+    public void setConversationDetailsMessages(List<ConversationDetailsMesasge> list) {
         this.mList = list;
         notifyDataSetChanged();
     }

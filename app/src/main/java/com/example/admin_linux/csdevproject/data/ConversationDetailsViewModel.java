@@ -12,6 +12,7 @@ import java.util.List;
 public class ConversationDetailsViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<CDParticipants>> mList = new MutableLiveData<>();
+    private MutableLiveData<List<ConversationDetailsMesasge>> mListOfMessages = new MutableLiveData<>();
 
     public ConversationDetailsViewModel(@NonNull Application application) {
         super(application);
@@ -23,5 +24,13 @@ public class ConversationDetailsViewModel extends AndroidViewModel {
 
     public void setList(List<CDParticipants> mList) {
         this.mList.setValue(mList);
+    }
+
+    public MutableLiveData<List<ConversationDetailsMesasge>> getListOfMessages() {
+        return mListOfMessages;
+    }
+
+    public void setListOfMessages(List<ConversationDetailsMesasge> mListOfMessages) {
+        this.mListOfMessages.setValue(mListOfMessages);
     }
 }

@@ -22,6 +22,10 @@ public class CDParticipants {
         "PersonImageUrl": "sample string 5"
      */
 
+    @SerializedName("PersonId")
+    @Expose
+    private int mPersonId;
+
     @SerializedName("UserId")
     @Expose
     private int mUserId;
@@ -37,6 +41,10 @@ public class CDParticipants {
     @SerializedName("PersonImageUrl")
     @Expose
     private String mPersonImageUrl;
+
+    public int getPersonId() {
+        return mPersonId;
+    }
 
     public int getUserId() {
         return mUserId;

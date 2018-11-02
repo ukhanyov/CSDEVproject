@@ -12,15 +12,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.admin_linux.csdevproject.adapters.CDMessageAdapter;
 import com.example.admin_linux.csdevproject.adapters.CDPeopleAdapter;
+import com.example.admin_linux.csdevproject.data.ConversationDetailsMesasge;
 import com.example.admin_linux.csdevproject.data.ConversationDetailsViewModel;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.databinding.ActivityConversationDetailsBinding;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.ConversationDetailsReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.model.CDConversationModel;
+import com.example.admin_linux.csdevproject.network.pojo.conversation_details.model.participants.CDParticipants;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -32,6 +37,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
     ActivityConversationDetailsBinding mBinding;
     private ConversationDetailsViewModel viewModel;
     //private List<CDParticipants> mParticipantsList;
+    private List<ConversationDetailsMesasge> mMesasgeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +57,21 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(ConversationDetailsViewModel.class);
         //mParticipantsList = new ArrayList<>();
 
+        // Setup participants
         final CDPeopleAdapter mAdapter = new CDPeopleAdapter(this);
         RecyclerView recyclerView = mBinding.layoutToolbarConversationDetails.contentToolbarConversationDetails.rvConversationDetailsToolbar;
-
-
-
-        //mAdapter.setConversationDetailsParticipants(mParticipantsList);
         recyclerView.setAdapter(mAdapter);
         LinearLayoutManager layoutManagerHorizontal = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManagerHorizontal);
         // Set list of people to adapter
         viewModel.getList().observe(this, mAdapter::setConversationDetailsParticipants);
+
+        // Setup messages
+        final CDMessageAdapter mMessageAdapter = new CDMessageAdapter(this);
+        RecyclerView messageRecyclerView = mBinding.rvActivityConversationDetailsMessages;
+        messageRecyclerView.setAdapter(mMessageAdapter);
+        messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        viewModel.getListOfMessages().observe(this, mMessageAdapter::setConversationDetailsMessages);
 
         if (cropStreamMessage != null && bearer != null) {
             fetchConversationDetails(cropStreamMessage, bearer);
@@ -83,6 +93,25 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
                 // Populate viewModel
                 viewModel.setList(conversationModel.getParticipants());
+
+                CDParticipants participant = null;
+                List<CDParticipants> participantList = conversationModel.getParticipants();
+                for(CDParticipants iterator : participantList){
+                    if(conversationModel.getLastConversationPersonId() == iterator.getPersonId()) {
+                        participant = iterator;
+                        break;
+                    }
+                }
+
+                if(participant != null){
+                    mMesasgeList = new ArrayList<>();
+                    mMesasgeList.add(new ConversationDetailsMesasge(
+                            participant.getPersonImageUrl(),
+                            participant.getPersonFullName(),
+                            conversationModel.getLastMessageValue()));
+                    viewModel.setListOfMessages(mMesasgeList);
+                }
+
             }
 
             @Override
