@@ -18,9 +18,12 @@ import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
 import com.example.admin_linux.csdevproject.R;
+import com.example.admin_linux.csdevproject.StartChatActivity;
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.adapters.CropStreamClickListener;
+import com.example.admin_linux.csdevproject.data.ConversationPerson;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,18 +82,36 @@ public class CropStreamFragment extends Fragment{
         progressBar.setVisibility(View.VISIBLE);
 
         // List item click stuff
-        CropStreamClickListener listener = (view, cropStreamMessage) -> {
+        CropStreamClickListener listener = (view, cropStreamMessage, key) -> {
 
             String bearer = Objects.requireNonNull(getArguments()).getString("transferBearerToFragment");
             String mProfileFullName = Objects.requireNonNull(getArguments()).getString("transferFullNameToFragment");
             String mProfileUrl = Objects.requireNonNull(getArguments()).getString("transferProfileUrlToFragment");
 
-            Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
-            intent.putExtra("transfer_profile_url", mProfileUrl);
-            intent.putExtra("transfer_full_name", mProfileFullName);
-            intent.putExtra("transfer_bearer", bearer);
-            intent.putExtra("transfer_message", cropStreamMessage);
-            startActivity(intent);
+            if(key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)){
+                Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
+                intent.putExtra("transfer_profile_url", mProfileUrl);
+                intent.putExtra("transfer_full_name", mProfileFullName);
+                intent.putExtra("transfer_bearer", bearer);
+                intent.putExtra("transfer_message", cropStreamMessage);
+                startActivity(intent);
+            }
+
+            if(key.equals(Constants.CLICK_KEY_START_CHAT)){
+                // TODO: send a person and you details to a StartChatActivity
+                // TODO: add to CropStreamMessage info about person
+                ConversationPerson person = new ConversationPerson(
+                        Integer.valueOf(cropStreamMessage.getPersonId()),
+                        null,
+                        null,
+                        cropStreamMessage.getProfileName(),
+                        false,
+                        cropStreamMessage.getPersonsCorp(),
+                        cropStreamMessage.getProfilePicture()
+                );
+                startActivity(new Intent(getActivity(), StartChatActivity.class));
+            }
+
 
         };
 

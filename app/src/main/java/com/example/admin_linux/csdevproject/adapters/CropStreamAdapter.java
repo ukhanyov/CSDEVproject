@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
+import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
@@ -277,9 +278,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage, boolean isAChat) {
         if (isFirstMessage) {
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.started_chat_with));
-        } else if(isAChat){
+        } else if (isAChat) {
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.replied_to_chat_with));
-        }else {
+        } else {
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.send_a_message_to));
         }
     }
@@ -347,12 +348,17 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             mListener = listener;
             tvTypeOfConversation.setOnClickListener(this);
+            ibUnderProfile.setOnClickListener(this);
+            tvUnderProfile.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             if (mList.get(getAdapterPosition()).getConversationChat()) {
-                mListener.onClick(view, mList.get(getAdapterPosition()));
+                mListener.onClick(view, mList.get(getAdapterPosition()), Constants.CLICK_KEY_CONVERSATION_DETAILS);
+            }
+            if(view.getId() == R.id.list_item_ib_start_chat || view.getId() == R.id.list_item_tv_start_shat){
+                mListener.onClick(view, mList.get(getAdapterPosition()), Constants.CLICK_KEY_START_CHAT);
             }
         }
     }

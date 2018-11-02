@@ -3,16 +3,6 @@ package com.example.admin_linux.csdevproject.data;
 import android.os.Parcelable;
 
 public class ConversationPerson {
-    /*
-
-    "PersonId": 232046,
-                    "PersonFirstName": "Alice",
-                    "PersonLastName": "Dennis",
-                    "PersonFullName": "Alice Dennis",
-                    "IsFavorite": false,
-                    "OrganizationName": "Ag-Bid",
-                    "IconPath": "https://dev.cropstream.com/Image/GetProfilePicture?ImageName=06_c8ea970e-b961-4f0c-9cc4-e5b8edf33092.jpg&width=140&height=140"
-     */
 
     private int mPersonId;
     private String mPersonFirstName;
