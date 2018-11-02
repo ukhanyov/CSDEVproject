@@ -23,6 +23,7 @@ import com.example.admin_linux.csdevproject.network.pojo.conversation_details.mo
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.model.participants.CDParticipants;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
+import com.example.admin_linux.csdevproject.utils.DateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,9 @@ public class ConversationDetailsActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<ConversationDetailsReturnValue> call, @NonNull Response<ConversationDetailsReturnValue> response) {
                 ConversationDetailsReturnValue returnValue = response.body();
                 CDConversationModel conversationModel = Objects.requireNonNull(returnValue).getCDConversationModel();
+
+                mBinding.tvConversationDetailsDate.setText(DateHelper.returnDate(conversationModel.getLastMessageTime()));
+                mBinding.tvConversationDetailsTime.setText(DateHelper.returnTime(conversationModel.getLastMessageTime()));
 
                 // Populate viewModel
                 viewModel.setList(conversationModel.getParticipants());

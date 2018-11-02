@@ -54,6 +54,10 @@ public class CDConversationModel {
     @Expose
     private String mLastMessageValue;
 
+    @SerializedName("LastMessageTime")
+    @Expose
+    private String mLastMessageTime;
+
     @SerializedName("Participants")
     @Expose
     private List<CDParticipants> mParticipants;
@@ -76,5 +80,9 @@ public class CDConversationModel {
 
     public int getLastConversationPersonId() {
         return mLastConversationPersonId;
+    }
+
+    public String getLastMessageTime() {
+        return mLastMessageTime;
     }
 }

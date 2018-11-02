@@ -5,28 +5,67 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class DateHelper {
-    public static String normalizeDate(String inputDate){
+    public static String normalizeDate(String inputDate) {
         Calendar calendar = Calendar.getInstance();
-        // Original, but crashes on phone
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", java.util.Locale.getDefault());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", java.util.Locale.getDefault());
         try {
             calendar.setTime(sdf.parse(inputDate));
 
             String compareDate = calendar.get(Calendar.YEAR) + ":" + calendar.get(Calendar.MONTH) + ":" + calendar.get(Calendar.DAY_OF_MONTH);
-            if(checkIfItIsToday(compareDate)){
+            if (checkIfItIsToday(compareDate)) {
                 String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
                 String minute = String.valueOf(calendar.get(Calendar.MINUTE));
 
-                if(minute.length() == 1) return hour + ":0" + minute;
+                if (minute.length() == 1) return hour + ":0" + minute;
                 else return hour + ":" + minute;
-            } else if(checkIfItIsYesterday(compareDate)){
-                    return "Yesterday";
-                } else {
+            } else if (checkIfItIsYesterday(compareDate)) {
+                return "Yesterday";
+            } else {
                 return getFriendlyMonth(calendar.get(Calendar.MONTH)) + " " + calendar.get(Calendar.DAY_OF_MONTH);
             }
 
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String returnDate(String inputDate) {
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", java.util.Locale.getDefault());
+        try {
+            calendar.setTime(sdf.parse(inputDate));
+
+            String compareDate = calendar.get(Calendar.YEAR) + ":" + calendar.get(Calendar.MONTH) + ":" + calendar.get(Calendar.DAY_OF_MONTH);
+            if (checkIfItIsToday(compareDate)) {
+                return "Today";
+            } else if (checkIfItIsYesterday(compareDate)) {
+                return "Yesterday";
+            } else {
+                return getFriendlyMonth(calendar.get(Calendar.MONTH)) + " " + calendar.get(Calendar.DAY_OF_MONTH);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String returnTime(String inputDate) {
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", java.util.Locale.getDefault());
+        try {
+            calendar.setTime(sdf.parse(inputDate));
+
+            String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+            String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+
+            if (minute.length() == 1) return hour + ":0" + minute;
+            else return hour + ":" + minute;
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -65,7 +104,8 @@ public class DateHelper {
 
         }
     }
-            private static boolean checkIfItIsToday(String compareDate){
+
+    private static boolean checkIfItIsToday(String compareDate) {
         Calendar currentTime = Calendar.getInstance();
         return compareDate
                 .equals(currentTime.get(Calendar.YEAR) + ":" +
@@ -73,7 +113,7 @@ public class DateHelper {
                         currentTime.get(Calendar.DAY_OF_MONTH));
     }
 
-    private static boolean checkIfItIsYesterday(String compareDate){
+    private static boolean checkIfItIsYesterday(String compareDate) {
         Calendar currentTime = Calendar.getInstance();
         currentTime.add(Calendar.DATE, -1);
 
