@@ -3,7 +3,6 @@ package com.example.admin_linux.csdevproject.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,7 @@ public class CDPeopleAdapter extends RecyclerView.Adapter<CDPeopleAdapter.CDPeop
             holder.tvPersonName.setText(current.getPersonFirstName());
 
         } else {
-            throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
+            throw new IllegalArgumentException("Some error with binding data for CDPeople recycler view");
         }
     }
 
@@ -76,7 +75,7 @@ public class CDPeopleAdapter extends RecyclerView.Adapter<CDPeopleAdapter.CDPeop
         CDPeopleViewHolder(View itemView){
             super(itemView);
 
-            ivPersonPicture = itemView.findViewById(R.id.list_item_conversation_details_iv_profile_people);
+            ivPersonPicture = itemView.findViewById(R.id.list_item_iv_conversation_details_profile_people);
             tvPersonName = itemView.findViewById(R.id.list_item_tv_conversation_details_profile_name);
         }
 

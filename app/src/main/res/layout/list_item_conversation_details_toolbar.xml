@@ -8,7 +8,7 @@
     android:layout_marginRight="8dp">
 
     <ImageView
-        android:id="@+id/list_item_conversation_details_iv_profile_people"
+        android:id="@+id/list_item_iv_conversation_details_profile_people"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_profile_default"
@@ -28,6 +28,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_conversation_details_iv_profile_people" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_iv_conversation_details_profile_people" />
 
 </android.support.constraint.ConstraintLayout>

@@ -30,9 +30,9 @@ public class CDConversationModel {
     @Expose
     private int mConversationId;
 
-//    @SerializedName("LastConversationPersonId")
-//    @Expose
-//    private int mLastConversationPersonId;
+    @SerializedName("LastConversationPersonId")
+    @Expose
+    private int mLastConversationPersonId;
 //
 //    @SerializedName("ActivityId")
 //    @Expose
@@ -72,5 +72,9 @@ public class CDConversationModel {
 
     public List<CDParticipants> getParticipants() {
         return mParticipants;
+    }
+
+    public int getLastConversationPersonId() {
+        return mLastConversationPersonId;
     }
 }
