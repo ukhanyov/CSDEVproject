@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CDMessageAdapter;
@@ -119,8 +121,6 @@ public class ConversationDetailsActivity extends AppCompatActivity {
                             participant.getPersonFullName(),
                             conversationModel.getLastMessageValue()));
 
-                    mMessageList.add(new ConversationDetailsMesasge(mProfileUrl, mProfileName, "dsgdrgdr"));
-
                     viewModel.setListOfMessages(mMessageList);
                 }
 
@@ -138,8 +138,14 @@ public class ConversationDetailsActivity extends AppCompatActivity {
     public void imgSendMessageOnCDClicked(View view) {
         mMessageText = mBinding.etActivityConversationDetailsInputText.getText().toString();
         mMessageList.add(new ConversationDetailsMesasge(mProfileUrl, mProfileName, mMessageText));
+
+        mBinding.etActivityConversationDetailsInputText.setText(null);
+
+        // Hide keyboard when done typing
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mBinding.etActivityConversationDetailsInputText.getWindowToken(), 0);
+
         viewModel.setListOfMessages(mMessageList);
-        //mBinding.etActivityConversationDetailsInputText.text
     }
 
     public void imgPickPhotoCDClicked(View view) {

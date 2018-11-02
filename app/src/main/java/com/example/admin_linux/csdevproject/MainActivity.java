@@ -436,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements
                     person.getPersonId() != yourId) {
                 people.add(person.getPersonFullName());
             }
-            if(person.getPersonId() == personId){
+            if(person.getPersonId() == yourId){
                 mFullName = person.getPersonFullName();
                 mProfileUrl = person.getIconPath();
             }
