@@ -5,6 +5,8 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
+
 import java.util.List;
 
 public class CropStreamMessageViewModel extends AndroidViewModel {

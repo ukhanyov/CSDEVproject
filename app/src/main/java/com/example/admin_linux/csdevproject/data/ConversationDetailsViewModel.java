@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import com.example.admin_linux.csdevproject.data.models.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.model.participants.CDParticipants;
 
 import java.util.List;

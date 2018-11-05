@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject.data;
+package com.example.admin_linux.csdevproject.data.models;
 
 public class FeedEvent {
     private String mImageUrl;

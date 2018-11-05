@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
-import com.example.admin_linux.csdevproject.data.ConversationDetailsMessage;
+import com.example.admin_linux.csdevproject.data.models.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 

@@ -17,9 +17,9 @@ import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CDMessageAdapter;
 import com.example.admin_linux.csdevproject.adapters.CDPeopleAdapter;
-import com.example.admin_linux.csdevproject.data.ConversationDetailsMessage;
+import com.example.admin_linux.csdevproject.data.models.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.data.ConversationDetailsViewModel;
-import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.databinding.ActivityConversationDetailsBinding;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.ConversationDetailsReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.model.CDConversationModel;

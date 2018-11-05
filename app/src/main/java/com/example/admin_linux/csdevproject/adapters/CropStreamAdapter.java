@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
-import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;

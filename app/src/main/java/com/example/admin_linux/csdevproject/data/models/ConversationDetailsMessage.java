@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject.data;
+package com.example.admin_linux.csdevproject.data.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,16 +19,8 @@ public class ConversationDetailsMessage implements Parcelable {
         return mProfilePictureUrl;
     }
 
-    public void setProfilePictureUrl(String mProfilePictureUrl) {
-        this.mProfilePictureUrl = mProfilePictureUrl;
-    }
-
     public String getProfileName() {
         return mProfileName;
-    }
-
-    public void setProfileName(String mProfileName) {
-        this.mProfileName = mProfileName;
     }
 
     public String getMessage() {

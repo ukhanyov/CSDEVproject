@@ -14,15 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.StartChatActivity;
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.adapters.CropStreamClickListener;
-import com.example.admin_linux.csdevproject.data.ConversationPerson;
-import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.models.ConversationPerson;
+import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.Constants;
 
 import java.util.ArrayList;
@@ -105,8 +104,8 @@ public class CropStreamFragment extends Fragment{
                         cropStreamMessage.getProfileName(),
                         false,
                         cropStreamMessage.getPersonsCorp(),
-                        cropStreamMessage.getProfilePicture(),
-                        cropStreamMessage.getPersonPictureUrl()
+                        cropStreamMessage.getPersonPictureUrl(),
+                        cropStreamMessage.getMessageText()
                 );
                 Intent intent = new Intent(getActivity(), StartChatActivity.class);
                 intent.putExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT, person);

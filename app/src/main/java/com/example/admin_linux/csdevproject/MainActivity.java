@@ -19,8 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
-import com.example.admin_linux.csdevproject.data.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.data.CropStreamMessageViewModel;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
 import com.example.admin_linux.csdevproject.fragments.ChatFragment;
