@@ -53,6 +53,22 @@ public class AuthActivity extends AppCompatActivity{
 
         mBinding.tvActivityAuthPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
 
+        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
+            if(preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)){
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(Constants.KEY_INTENT_USER_ID, Constants.PERSON_ID);
+                intent.putExtra(Constants.KEY_INTENT_BEARER, Constants.BEARER);
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
+                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
+                startActivity(intent);
+            }
+
+        }
+
 //        // Restore instance state
 //        if (savedInstanceState != null) {
 //            onRestoreInstanceState(savedInstanceState);
@@ -293,22 +309,17 @@ public class AuthActivity extends AppCompatActivity{
 //        return true;
 //    }
 
-    public void btnUsePhoneNumberClicked(View view) {
-        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
-            startActivity(new Intent(this, MainActivity.class));
-        }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
+    public void btnUsePhoneNumberClicked(View view) {
         Intent intent = new Intent(this, EnterPhoneActivity.class);
         startActivity(intent);
     }
 
     public void btnUseTokenClicked(View view) {
-        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
-            startActivity(new Intent(this, MainActivity.class));
-        }
-
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.KEY_INTENT_USER_ID, Constants.PERSON_ID);
         intent.putExtra(Constants.KEY_INTENT_BEARER, Constants.BEARER);

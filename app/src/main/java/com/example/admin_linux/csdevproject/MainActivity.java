@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements
     // TODO: make textview scrolable in start conversation
     // TODO: fix bug with image resizing when using default token
     // TODO: disable "back navigation"
+    // TODO: disable back button on fragments
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;
@@ -541,6 +542,7 @@ public class MainActivity extends AppCompatActivity implements
                     editor.putString(Constants.PREF_PROFILE_EMAIL, userModel.getEmailAddress());
                     editor.putString(Constants.PREF_PROFILE_PHONE_NUMBER, userModel.getMobilePhoneNumber());
                     editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
+                    editor.putString(Constants.PREF_PROFILE_FIREBASE_ID, String.valueOf(userFirebaseId));
                     editor.putBoolean(Constants.PREF_PROFILE_DEFAULT, false);
                     editor.apply();
 
@@ -580,7 +582,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void ivSettingsClicked(View view) {
-
         startActivity(new Intent(this, ProfileActivity.class));
     }
 
