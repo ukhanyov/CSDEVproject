@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements
         FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener{
 
-    // TODO: fix bug with image resizing when using default token
-
     // Fancy dataBinding
     ActivityMainBinding mBinding;
 
