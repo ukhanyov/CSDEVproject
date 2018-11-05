@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements
     private CropStreamMessageViewModel viewModel;
     private CropStreamFragment fragmentCropStreamTransaction;
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         // Toolbar
-        Toolbar toolbar = mBinding.layoutToolbar.toolbar;
-        setSupportActionBar(toolbar);
+        mToolbar = mBinding.layoutToolbar.toolbar;
+        setSupportActionBar(mToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         // Bottom navigation
@@ -148,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements
 
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
-        //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
 
     }
 
@@ -178,8 +179,7 @@ public class MainActivity extends AppCompatActivity implements
                 starCropStreamFragment();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
-                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
-
+                makeDefaultToolbarVisible();
                 break;
 
             case R.id.action_chat:
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_chat));
-                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                makeChatToolbarVisible();
 
                 break;
 
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_favorites));
-                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                makeDefaultToolbarVisible();
                 break;
 
             case R.id.action_search:
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_search));
-                //mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+                makeDefaultToolbarVisible();
                 break;
 
         }
@@ -542,5 +542,29 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
             }
         });
+    }
+
+    public void ivSettingsClicked(View view) {
+        startActivity(new Intent(this, ProfileActivity.class));
+    }
+
+    private void makeDefaultToolbarVisible(){
+        mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
+
+        mBinding.layoutToolbar.contentCropStream.ivToolbarSearch.setVisibility(View.GONE);
+        mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture.setVisibility(View.GONE);
+        mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setVisibility(View.GONE);
+        mBinding.layoutToolbar.contentCropStream.tvToolbarArrow.setVisibility(View.GONE);
+        mBinding.layoutToolbar.contentCropStream.ivToolbarSettings.setVisibility(View.GONE);
+    }
+
+    private void makeChatToolbarVisible(){
+        mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.GONE);
+
+        mBinding.layoutToolbar.contentCropStream.ivToolbarSearch.setVisibility(View.VISIBLE);
+        mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture.setVisibility(View.VISIBLE);
+        mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setVisibility(View.VISIBLE);
+        mBinding.layoutToolbar.contentCropStream.tvToolbarArrow.setVisibility(View.VISIBLE);
+        mBinding.layoutToolbar.contentCropStream.ivToolbarSettings.setVisibility(View.VISIBLE);
     }
 }
