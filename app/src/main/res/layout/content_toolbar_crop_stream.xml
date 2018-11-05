@@ -45,6 +45,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:maxHeight="25dp"
+            android:maxWidth="25dp"
             android:id="@+id/iv_toolbar_profile_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

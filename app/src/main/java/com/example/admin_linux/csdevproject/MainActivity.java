@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements
 
     // TODO: make textview scrolable in start conversation
     // TODO: fix bug with image resizing when using default token
-    // TODO: disable "back navigation"
-    // TODO: disable back button on fragments
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;
