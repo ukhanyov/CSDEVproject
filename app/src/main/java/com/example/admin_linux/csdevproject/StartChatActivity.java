@@ -8,13 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.data.models.ConversationPerson;
 import com.example.admin_linux.csdevproject.databinding.ActivityStartChatBinding;
 import com.example.admin_linux.csdevproject.utils.Constants;
+import com.example.admin_linux.csdevproject.utils.CustomEditText;
 
 import java.util.Objects;
 
@@ -39,15 +42,20 @@ public class StartChatActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ConversationPerson person = intent.getParcelableExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT);
         mBinding.tvActivityStartChatMessage.setText(person.getMessageText());
-        mBinding.tvActivityStartChatFromName.setText(person.getPersonFullName());
+        mBinding.tvActivityStartChatToName.setText(person.getPersonFullName());
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        mBinding.tvActivityStartChatToName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
+        mBinding.tvActivityStartChatFromName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
+
+        //Initialise  interface
+        CustomEditText.OnKeyPreImeListener onKeyPreImeListener = this::finish;
+        mBinding.etActivityStartChatInputText.setOnKeyPreImeListener(onKeyPreImeListener);
 
     }
 
+
     public void imgSendMessageOnSCClicked(View view) {
-        String text = mBinding.etActivityStartChatInputText.getText().toString();
+        String text = Objects.requireNonNull(mBinding.etActivityStartChatInputText.getText()).toString();
         mBinding.tvActivityStartChatYourMessage.setText(text);
 
         // Hide keyboard when done typing

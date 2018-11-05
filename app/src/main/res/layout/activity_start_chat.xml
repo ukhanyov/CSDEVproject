@@ -179,7 +179,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/et_activity_start_chat_input_text" />
 
-        <EditText
+        <com.example.admin_linux.csdevproject.utils.CustomEditText
             android:id="@+id/et_activity_start_chat_input_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
