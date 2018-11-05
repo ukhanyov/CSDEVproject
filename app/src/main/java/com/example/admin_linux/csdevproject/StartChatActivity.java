@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.admin_linux.csdevproject.data.ConversationPerson;
 import com.example.admin_linux.csdevproject.databinding.ActivityStartChatBinding;
@@ -23,5 +24,11 @@ public class StartChatActivity extends AppCompatActivity {
         ConversationPerson person = intent.getParcelableExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT);
         mBinding.tvActivityStartChat.setText(person.getPersonFullName());
 
+    }
+
+    public void imgSendMessageOnSCClicked(View view) {
+    }
+
+    public void imgPickPhotoSCClicked(View view) {
     }
 }

@@ -110,6 +110,8 @@
     <string name="pick_picture_to_send">Pick picture to send</string>
     <string name="send_message">send_message</string>
     <string name="send_a_message_to">send a message to</string>
+    <string name="to">To:</string>
+    <string name="from">From:</string>
 
     <string-array name="country_array">
         <item>+380</item>

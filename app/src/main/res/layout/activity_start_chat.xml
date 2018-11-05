@@ -8,19 +8,192 @@
         android:layout_height="match_parent"
         tools:context=".StartChatActivity">
 
-        <TextView
-            android:id="@+id/tv_activity_start_chat"
+        <include
+            android:id="@+id/layout_toolbar"
+            layout="@layout/layout_toolbar" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_horizontal_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.3" />
+
+        <TextView
+            android:id="@+id/tv_activity_start_chat"
+            style="@style/TextViewGeneralBlack"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="You have started a chat"
+            android:singleLine="false"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_toolbar" />
+
+        <View
+            android:id="@+id/v_activity_start_chat_one"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/grey_300"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
+
+        <TextView
+            android:id="@+id/tv_activity_start_chat_from"
+            style="@style/TextViewGeneralBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
+            android:text="@string/from"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_activity_start_chat_one" />
+
+        <TextView
+            android:id="@+id/tv_activity_start_chat_from_name"
+            style="@style/TextViewGeneralGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_name_name"
+            android:maxLines="1"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
+            android:singleLine="true"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_activity_start_chat_from"
+            app:layout_constraintStart_toEndOf="@+id/tv_activity_start_chat_from"
+            app:layout_constraintTop_toTopOf="@+id/tv_activity_start_chat_from" />
+
+        <View
+            android:id="@+id/v_activity_start_chat_two"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/grey_300"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_activity_start_chat_from" />
+
+        <TextView
+            android:id="@+id/tv_activity_start_chat_to"
+            style="@style/TextViewGeneralBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
+            android:text="@string/to"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_activity_start_chat_two" />
+
+        <TextView
+            android:id="@+id/tv_activity_start_chat_to_name"
+            style="@style/TextViewGeneralBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_bubble_conversation_details"
+            android:hint="@string/hint_name_name"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_activity_start_chat_to"
+            app:layout_constraintStart_toEndOf="@+id/tv_activity_start_chat_to"
+            app:layout_constraintTop_toTopOf="@+id/tv_activity_start_chat_to" />
+
+        <View
+            android:id="@+id/v_activity_start_chat_background"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:backgroundTint="@color/grey_100"
+            app:layout_constraintBottom_toBottomOf="@+id/v_activity_start_chat_three"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_top" />
+
+        <View
+            android:id="@+id/v_activity_start_chat_three"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/grey_300"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_activity_start_chat_to" />
+
+        <TextView
+            android:id="@+id/tv_activity_start_chat_your_message"
+            style="@style/TextViewGeneralBlack"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:singleLine="false"
+            app:layout_constraintBottom_toTopOf="@+id/et_activity_start_chat_input_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_activity_start_chat_three" />
+
+        <View
+            android:id="@+id/v_activity_start_chat_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/medium_grey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_activity_start_chat_your_message" />
+
+        <ImageView
+            android:onClick="imgPickPhotoSCClicked"
+            android:id="@+id/iv_activity_start_chat_pick_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_camera"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_start_chat_input_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_activity_start_chat_input_text"
+            android:contentDescription="@string/pick_picture_to_send" />
+
+        <EditText
+            android:padding="4dp"
+            android:id="@+id/et_activity_start_chat_input_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/edit_text_c_d_background"
+            android:hint="@string/enter_message"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_activity_start_chat_send_message"
+            app:layout_constraintStart_toEndOf="@+id/iv_activity_start_chat_pick_image" />
+
+        <ImageView
+            android:onClick="imgSendMessageOnSCClicked"
+            android:id="@+id/iv_activity_start_chat_send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_send_message"
+            app:layout_constraintBottom_toBottomOf="@+id/et_activity_start_chat_input_text"
+            app:layout_constraintEnd_toEndOf="@+id/v_activity_start_chat_bottom"
+            app:layout_constraintTop_toTopOf="@+id/et_activity_start_chat_input_text"
+            android:contentDescription="@string/send_message" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
