@@ -53,13 +53,15 @@ public class MainActivity extends AppCompatActivity implements
         CropStreamFragment.OnFragmentInteractionListener,
         ChatFragment.OnFragmentInteractionListener,
         FavoritesFragment.OnFragmentInteractionListener,
-        SearchFragment.OnFragmentInteractionListener{
+        SearchFragment.OnFragmentInteractionListener {
+
+    // TODO: pull to refresh
+    // TODO: paging (after you scrolled 70-80 percent download more feed events)
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;
 
     private Boolean isFabOpen = false;
-    private Boolean isNotDefaultUser = false;
 
     private String mBearer;
     private String mUserFirebaseId;
@@ -76,8 +78,6 @@ public class MainActivity extends AppCompatActivity implements
             fab_close_1, fab_close_2, fab_close_3, fab_close_4,
             rotate_forward, rotate_backward;
 
-    //private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
     // Fragment stuff
     FragmentManager fragmentManager;
 
@@ -93,29 +93,11 @@ public class MainActivity extends AppCompatActivity implements
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         Intent intent = getIntent();
-        mBearer = intent.getStringExtra(Constants.KEY_INTENT_BEARER);
-        mUserId = intent.getIntExtra(Constants.KEY_INTENT_USER_ID, 0);
         mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
         mUserFirebasePhoneNumber = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER);
-        if (mBearer != null && !mBearer.equals("") && mUserId != 0) {
-            // old user root
-            isNotDefaultUser = false;
-
-            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.putBoolean(Constants.PREF_PROFILE_DEFAULT, true);
-            editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
-            editor.apply();
-
-        } else if (mUserFirebaseId != null && !mUserFirebaseId.equals("") &&
-                mUserFirebasePhoneNumber != null && !mUserFirebasePhoneNumber.equals("")) {
-            // new user root
-            isNotDefaultUser = true;
-            mBearer = null;
-            mUserId = 0;
-            fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
-        }
+        mBearer = null;
+        mUserId = 0;
+        fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
 
         // Toolbar
         Toolbar mToolbar = mBinding.layoutToolbar.toolbar;
@@ -147,11 +129,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else {
             if (viewModel.getList().getValue() == null) {
-                if (!isNotDefaultUser) {
-                    fetchData(mBearer, mUserId);
-                } else if (mBearer != null && !mBearer.equals("") && mUserId != 0) {
-                    fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
-                }
+                fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
             }
             starCropStreamFragment();
         }
@@ -177,11 +155,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
                 if (viewModel.getList().getValue() == null) {
-                    if (!isNotDefaultUser) {
-                        fetchData(mBearer, mUserId);
-                    } else if (mBearer != null && !mBearer.equals("") && mUserId != 0) {
-                        fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
-                    }
+                    fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
 
                 }
                 starCropStreamFragment();
@@ -450,12 +424,12 @@ public class MainActivity extends AppCompatActivity implements
                     person.getPersonId() != yourId) {
                 people.add(person.getPersonFullName());
             }
-            if(person.getPersonId() == yourId){
+            if (person.getPersonId() == yourId) {
                 mFullName = person.getPersonFullName();
                 mProfileUrl = person.getIconPath();
 
                 SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-                if(preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)){
+                if (preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)) {
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString(Constants.PREF_PROFILE_IMAGE_URL, person.getIconPath());
                     editor.putString(Constants.PREF_PROFILE_FULL_NAME, person.getPersonFullName());
@@ -580,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(new Intent(this, ProfileActivity.class));
     }
 
-    private void makeDefaultToolbarVisible(){
+    private void makeDefaultToolbarVisible() {
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.VISIBLE);
 
         mBinding.layoutToolbar.contentCropStream.ivToolbarSearch.setVisibility(View.GONE);
@@ -590,7 +564,7 @@ public class MainActivity extends AppCompatActivity implements
         mBinding.layoutToolbar.contentCropStream.ivToolbarSettings.setVisibility(View.GONE);
     }
 
-    private void makeChatToolbarVisible(){
+    private void makeChatToolbarVisible() {
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setVisibility(View.GONE);
 
         mBinding.layoutToolbar.contentCropStream.ivToolbarSearch.setVisibility(View.VISIBLE);

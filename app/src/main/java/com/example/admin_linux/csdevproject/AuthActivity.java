@@ -36,8 +36,8 @@ public class AuthActivity extends AppCompatActivity{
         if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
             if(preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)){
                 Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Constants.KEY_INTENT_USER_ID, Constants.PERSON_ID);
-                intent.putExtra(Constants.KEY_INTENT_BEARER, Constants.BEARER);
+                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, Constants.DEFAULT_FIREBASE_USER_ID);
+                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
                 startActivity(intent);
             }else {
                 Intent intent = new Intent(this, MainActivity.class);
@@ -74,8 +74,8 @@ public class AuthActivity extends AppCompatActivity{
 
     public void btnUseTokenClicked(View view) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.KEY_INTENT_USER_ID, Constants.PERSON_ID);
-        intent.putExtra(Constants.KEY_INTENT_BEARER, Constants.BEARER);
+        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, Constants.DEFAULT_FIREBASE_USER_ID);
+        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
         startActivity(intent);
     }
 }
