@@ -2,6 +2,7 @@ package com.example.admin_linux.csdevproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class StartChatActivity extends AppCompatActivity {
         ConversationPerson person = intent.getParcelableExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT);
         mBinding.tvActivityStartChatMessage.setText(person.getMessageText());
         mBinding.tvActivityStartChatFromName.setText(person.getPersonFullName());
+
+        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        mBinding.tvActivityStartChatToName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
 
     }
 
