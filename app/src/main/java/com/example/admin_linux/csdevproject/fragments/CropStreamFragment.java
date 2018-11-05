@@ -2,12 +2,14 @@ package com.example.admin_linux.csdevproject.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
+import com.example.admin_linux.csdevproject.MainActivity;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.StartChatActivity;
 import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
@@ -25,11 +28,14 @@ import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static android.content.Context.MODE_PRIVATE;
 
-public class CropStreamFragment extends Fragment{
+
+public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -39,7 +45,8 @@ public class CropStreamFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
 
-    List<CropStreamMessage> transferList;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private List<CropStreamMessage> transferList;
 
     ProgressBar progressBar;
 
@@ -74,8 +81,7 @@ public class CropStreamFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
         progressBar = rootView.findViewById(R.id.pb_loading_indicator);
         progressBar.setVisibility(View.VISIBLE);
@@ -87,7 +93,7 @@ public class CropStreamFragment extends Fragment{
             String mProfileFullName = Objects.requireNonNull(getArguments()).getString("transferFullNameToFragment");
             String mProfileUrl = Objects.requireNonNull(getArguments()).getString("transferProfileUrlToFragment");
 
-            if(key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)){
+            if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
                 Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
                 intent.putExtra("transfer_profile_url", mProfileUrl);
                 intent.putExtra("transfer_full_name", mProfileFullName);
@@ -96,7 +102,7 @@ public class CropStreamFragment extends Fragment{
                 startActivity(intent);
             }
 
-            if(key.equals(Constants.CLICK_KEY_START_CHAT)){
+            if (key.equals(Constants.CLICK_KEY_START_CHAT)) {
                 ConversationPerson person = new ConversationPerson(
                         Integer.valueOf(cropStreamMessage.getPersonId()),
                         null,
@@ -118,23 +124,48 @@ public class CropStreamFragment extends Fragment{
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
 
-        if(transferList != null){
-
+        if (transferList != null) {
             mAdapter.setCorpStreamMessages(transferList);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        }else {
+        } else {
             transferList = Objects.requireNonNull(getArguments()).getParcelableArrayList("transferList");
             mAdapter.setCorpStreamMessages(transferList);
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
 
-
-
+        // SwipeRefreshLayout
+        mSwipeRefreshLayout = rootView.findViewById(R.id.srl_crop_stream_fragment);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.black,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
         progressBar.setVisibility(View.INVISIBLE);
         return rootView;
+    }
+
+    @Override
+    public void onRefresh() {
+        loadRecyclerViewData();
+    }
+
+    private void loadRecyclerViewData() {
+        // Showing refresh animation before making http call
+        mSwipeRefreshLayout.setRefreshing(true);
+        SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        ((MainActivity)Objects.requireNonNull(getActivity())).fetchData(
+                preferences.getString(Constants.PREF_PROFILE_BEARER, null),
+                preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
+
+        //((MainActivity)Objects.requireNonNull(getActivity())).starCropStreamFragment();
+
+        // Stopping swipe refresh
+        //mSwipeRefreshLayout.setRefreshing(false);
+
     }
 
     public void onButtonPressed(Uri uri) {

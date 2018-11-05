@@ -11,6 +11,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -283,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void fetchData(String bearer, int yourPersonId) {
+    public void fetchData(String bearer, int yourPersonId) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPerson(
                 bearer,
@@ -427,19 +428,7 @@ public class MainActivity extends AppCompatActivity implements
             if (person.getPersonId() == yourId) {
                 mFullName = person.getPersonFullName();
                 mProfileUrl = person.getIconPath();
-
-                SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-                if (preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)) {
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(Constants.PREF_PROFILE_IMAGE_URL, person.getIconPath());
-                    editor.putString(Constants.PREF_PROFILE_FULL_NAME, person.getPersonFullName());
-                    editor.putString(Constants.PREF_PROFILE_EMAIL, "A default email");
-                    editor.putString(Constants.PREF_PROFILE_PHONE_NUMBER, "A default number");
-                    editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
-                    editor.apply();
-                }
-
-            }
+                            }
         }
         return people;
     }
@@ -513,6 +502,7 @@ public class MainActivity extends AppCompatActivity implements
                     editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
                     editor.putString(Constants.PREF_PROFILE_FIREBASE_ID, String.valueOf(userFirebaseId));
                     editor.putBoolean(Constants.PREF_PROFILE_DEFAULT, false);
+                    editor.putInt(Constants.PREF_PROFILE_PERSON_ID, userModel.getPersonId());
                     editor.apply();
 
                     fetchData(mBearer, mUserId);
@@ -527,7 +517,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void starCropStreamFragment() {
+    public void starCropStreamFragment() {
         viewModel.getList().observe(this, listArray -> {
             if (listArray != null) {
                 List<CropStreamMessage> transferList = new ArrayList<>(listArray);

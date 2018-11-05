@@ -20,10 +20,17 @@
             android:indeterminateTint="#1eb71a"
             android:max="100" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_corp_stream_fragment"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_crop_stream_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_corp_stream_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </FrameLayout>
 </layout>
