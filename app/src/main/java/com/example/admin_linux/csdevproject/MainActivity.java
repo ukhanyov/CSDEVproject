@@ -545,6 +545,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void ivSettingsClicked(View view) {
+
         startActivity(new Intent(this, ProfileActivity.class));
     }
 
