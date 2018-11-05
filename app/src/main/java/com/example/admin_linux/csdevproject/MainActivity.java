@@ -349,7 +349,8 @@ public class MainActivity extends AppCompatActivity implements
                                     true,
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
-                                    event.getConversationId() != 0)
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
                             );
                         } else {
                             // Go root |2|
@@ -371,7 +372,8 @@ public class MainActivity extends AppCompatActivity implements
                                     true,
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
-                                    event.getConversationId() != 0)
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
                             );
                         }
                     } else {
@@ -394,7 +396,8 @@ public class MainActivity extends AppCompatActivity implements
                                     false,
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
-                                    event.getConversationId() != 0)
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
                             );
                         } else {
                             // Go root |4|
@@ -416,7 +419,8 @@ public class MainActivity extends AppCompatActivity implements
                                     false,
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
-                                    event.getConversationId() != 0)
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
                             );
                         }
                     }
@@ -464,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private CropStreamMessage instantiateCropStreamMessage(String pictureUrl, String fullName, String corpName, String textToDisplay, String onDate, String messagePicture, boolean isFirstMessage,
                                                            String involvedPersons, String organizationName, boolean isCombinedImage, String firstImageUrl, String secondImageUrl, String feedType,
-                                                           boolean isFromOrganization, String conversationId, String personId, boolean isConversation) {
+                                                           boolean isFromOrganization, String conversationId, String personId, boolean isConversation, String personPictureUrl) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -482,7 +486,8 @@ public class MainActivity extends AppCompatActivity implements
                 isFromOrganization,
                 conversationId,
                 personId,
-                isConversation
+                isConversation,
+                personPictureUrl
 
         );
     }

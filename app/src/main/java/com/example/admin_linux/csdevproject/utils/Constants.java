@@ -13,4 +13,7 @@ public class Constants {
     public static final String KEY_INTENT_USER_FIREBASE_PHONE_NUMBER = "key_intent_firebase_phone_number";
 
     public static final String CLICK_KEY_CONVERSATION_DETAILS = "conversation_details";
+    public static final String CLICK_KEY_START_CHAT = "start_chat";
+
+    public static final String INTENT_KEY_PERSON_TO_START_CHAT = "person_to_start_chat";
 }

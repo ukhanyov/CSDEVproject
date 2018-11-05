@@ -98,8 +98,6 @@ public class CropStreamFragment extends Fragment{
             }
 
             if(key.equals(Constants.CLICK_KEY_START_CHAT)){
-                // TODO: send a person and you details to a StartChatActivity
-                // TODO: add to CropStreamMessage info about person
                 ConversationPerson person = new ConversationPerson(
                         Integer.valueOf(cropStreamMessage.getPersonId()),
                         null,
@@ -107,9 +105,12 @@ public class CropStreamFragment extends Fragment{
                         cropStreamMessage.getProfileName(),
                         false,
                         cropStreamMessage.getPersonsCorp(),
-                        cropStreamMessage.getProfilePicture()
+                        cropStreamMessage.getProfilePicture(),
+                        cropStreamMessage.getPersonPictureUrl()
                 );
-                startActivity(new Intent(getActivity(), StartChatActivity.class));
+                Intent intent = new Intent(getActivity(), StartChatActivity.class);
+                intent.putExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT, person);
+                startActivity(intent);
             }
 
 

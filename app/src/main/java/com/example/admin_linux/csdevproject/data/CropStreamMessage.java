@@ -22,6 +22,7 @@ public class CropStreamMessage implements Parcelable {
     private String mConversationId;
     private String mPersonId;
     private boolean mConversationChat;
+    private String mPersonPictureUrl;
 
     public CropStreamMessage(
             String profilePicture,
@@ -40,7 +41,8 @@ public class CropStreamMessage implements Parcelable {
             boolean isFromOrganization,
             String conversationId,
             String personId,
-            boolean conversationChat) {
+            boolean conversationChat,
+            String personPictureUrl) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -59,147 +61,84 @@ public class CropStreamMessage implements Parcelable {
         this.mConversationId = conversationId;
         this.mPersonId = personId;
         this.mConversationChat = conversationChat;
+        this.mPersonPictureUrl = personPictureUrl;
     }
 
     public String getProfilePicture() {
         return mPicture;
     }
 
-    public void setProfilePicture(String mProfilePicture) {
-        this.mPicture = mProfilePicture;
-    }
-
     public String getProfileName() {
         return mProfileName;
-    }
-
-    public void setProfileName(String mProfileName) {
-        this.mProfileName = mProfileName;
     }
 
     public String getProfileCorpName() {
         return mProfileCorpName;
     }
 
-    public void setProfileCorpName(String mProfileCorpName) {
-        this.mProfileCorpName = mProfileCorpName;
-    }
-
     public String getMessageText() {
         return mMessageText;
-    }
-
-    public void setMessageText(String mMessageText) {
-        this.mMessageText = mMessageText;
     }
 
     public String getMessageTime() {
         return mMessageTime;
     }
 
-    public void setMessageTime(String mMessageTime) {
-        this.mMessageTime = mMessageTime;
-    }
-
     public String getMessagePicture() {
         return mMessagePicture;
-    }
-
-    public void setMessagePicture(String mMessagePicture) {
-        this.mMessagePicture = mMessagePicture;
     }
 
     public boolean getConversationFirstMessage() {
         return mConversationFirstMessage;
     }
 
-    public void setConversationFirstMessage(boolean mConversationFirstMessage) {
-        this.mConversationFirstMessage = mConversationFirstMessage;
-    }
-
     public String getInvolvedPersonsNames() {
         return mInvolvedPersonsNames;
-    }
-
-    public void setInvolvedPersonsNames(String mInvolvedPersonsNames) {
-        this.mInvolvedPersonsNames = mInvolvedPersonsNames;
     }
 
     public String getPersonsCorp() {
         return mPersonsCorp;
     }
 
-    public void setPersonsCorp(String mPersonsCorp) {
-        this.mPersonsCorp = mPersonsCorp;
-    }
-
     public boolean getCombineImage() {
         return mCombineImage;
-    }
-
-    public void setCombineImage(boolean mCombineImage) {
-        this.mCombineImage = mCombineImage;
     }
 
     public String getCombineImageUrlFirst() {
         return mCombineImageUrlFirst;
     }
 
-    public void setCombineImageUrlFirst(String mCombineImageUrlFirst) {
-        this.mCombineImageUrlFirst = mCombineImageUrlFirst;
-    }
-
     public String getCombineImageUrlSecond() {
         return mCombineImageUrlSecond;
-    }
-
-    public void setCombineImageUrlSecond(String mCombineImageUrlSecond) {
-        this.mCombineImageUrlSecond = mCombineImageUrlSecond;
     }
 
     public String getFeedType() {
         return mFeedType;
     }
 
-    public void setFeedType(String mFeedType) {
-        this.mFeedType = mFeedType;
-    }
-
     public boolean isFromOrganization() {
         return mFromOrganization;
-    }
-
-    public void setFromOrganization(boolean mFromOrganization) {
-        this.mFromOrganization = mFromOrganization;
     }
 
     public String getConversationId() {
         return mConversationId;
     }
 
-    public void setConversationId(String mConversationId) {
-        this.mConversationId = mConversationId;
-    }
-
     public String getPersonId() {
         return mPersonId;
-    }
-
-    public void setPersonId(String mPersonId) {
-        this.mPersonId = mPersonId;
     }
 
     public boolean getConversationChat() {
         return mConversationChat;
     }
 
-    public void setConversationChat(boolean mConversationChat) {
-        this.mConversationChat = mConversationChat;
+    public String getPersonPictureUrl() {
+        return mPersonPictureUrl;
     }
 
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[17];
+        String[] data = new String[18];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -219,6 +158,7 @@ public class CropStreamMessage implements Parcelable {
         this.mConversationId = data[14];
         this.mPersonId = data[15];
         this.mConversationChat = Boolean.getBoolean(data[16]);
+        this.mPersonPictureUrl = data[16];
     }
 
     @Override
@@ -245,7 +185,8 @@ public class CropStreamMessage implements Parcelable {
                 String.valueOf(this.mFromOrganization),
                 this.mConversationId,
                 this.mPersonId,
-                String.valueOf(this.mConversationChat)
+                String.valueOf(this.mConversationChat),
+                this.mPersonPictureUrl
         });
     }
 
