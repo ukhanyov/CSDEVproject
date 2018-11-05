@@ -58,6 +58,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            style="@style/TextViewGeneralBlack"
             android:id="@+id/tv_toolbar_profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,8 +84,8 @@
 
         <ImageView
             android:id="@+id/iv_toolbar_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"

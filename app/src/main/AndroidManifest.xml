@@ -40,6 +40,7 @@
             android:name=".StartChatActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:parentActivityName=".AuthActivity"
             android:name=".ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

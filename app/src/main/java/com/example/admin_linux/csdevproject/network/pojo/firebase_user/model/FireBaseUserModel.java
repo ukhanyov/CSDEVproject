@@ -30,6 +30,14 @@ public class FireBaseUserModel {
     @Expose
     private String mProfileImageUrl;
 
+    @SerializedName("EmailAddress")
+    @Expose
+    private String mEmailAddress;
+
+    @SerializedName("MobilePhoneNumber")
+    @Expose
+    private String mMobilePhoneNumber;
+
     public String getAuthorizeToken() {
         return mAuthorizeToken;
     }
@@ -52,5 +60,13 @@ public class FireBaseUserModel {
 
     public String getProfileImageUrl() {
         return mProfileImageUrl;
+    }
+
+    public String getEmailAddress() {
+        return mEmailAddress;
+    }
+
+    public String getMobilePhoneNumber() {
+        return mMobilePhoneNumber;
     }
 }

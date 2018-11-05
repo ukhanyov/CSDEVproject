@@ -2,6 +2,7 @@ package com.example.admin_linux.csdevproject;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +35,9 @@ import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseU
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.model.FireBaseUserModel;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
+import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.example.admin_linux.csdevproject.utils.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements
         ChatFragment.OnFragmentInteractionListener,
         FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener{
+
+    // TODO: make textview scrolable in start conversation
+    // TODO: fix bug with image resizing when using default token
+    // TODO: disable "back navigation"
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;
@@ -83,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements
     private CropStreamMessageViewModel viewModel;
     private CropStreamFragment fragmentCropStreamTransaction;
 
-    private Toolbar mToolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +105,13 @@ public class MainActivity extends AppCompatActivity implements
             // old user root
             isNotDefaultUser = false;
 
+            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.clear();
+            editor.putBoolean(Constants.PREF_PROFILE_DEFAULT, true);
+            editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
+            editor.apply();
+
         } else if (mUserFirebaseId != null && !mUserFirebaseId.equals("") &&
                 mUserFirebasePhoneNumber != null && !mUserFirebasePhoneNumber.equals("")) {
             // new user root
@@ -110,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         // Toolbar
-        mToolbar = mBinding.layoutToolbar.toolbar;
+        Toolbar mToolbar = mBinding.layoutToolbar.toolbar;
         setSupportActionBar(mToolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
@@ -188,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements
                         .replace(R.id.frame_layout_content_main, new ChatFragment())
                         .commit();
 
-                mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_chat));
                 makeChatToolbarVisible();
 
                 break;
@@ -446,6 +457,18 @@ public class MainActivity extends AppCompatActivity implements
             if(person.getPersonId() == yourId){
                 mFullName = person.getPersonFullName();
                 mProfileUrl = person.getIconPath();
+
+                SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+                if(preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)){
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(Constants.PREF_PROFILE_IMAGE_URL, person.getIconPath());
+                    editor.putString(Constants.PREF_PROFILE_FULL_NAME, person.getPersonFullName());
+                    editor.putString(Constants.PREF_PROFILE_EMAIL, "A default email");
+                    editor.putString(Constants.PREF_PROFILE_PHONE_NUMBER, "A default number");
+                    editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
+                    editor.apply();
+                }
+
             }
         }
         return people;
@@ -509,6 +532,18 @@ public class MainActivity extends AppCompatActivity implements
                     mBearer = "Bearer " + userModel.getAuthorizeToken();
                     mProfileUrl = userModel.getProfileImageUrl();
                     mFullName = userModel.getFirstName() + " " + userModel.getLastName();
+
+                    SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.clear();
+                    editor.putString(Constants.PREF_PROFILE_IMAGE_URL, userModel.getProfileImageUrl());
+                    editor.putString(Constants.PREF_PROFILE_FULL_NAME, userModel.getFirstName() + " " + userModel.getLastName());
+                    editor.putString(Constants.PREF_PROFILE_EMAIL, userModel.getEmailAddress());
+                    editor.putString(Constants.PREF_PROFILE_PHONE_NUMBER, userModel.getMobilePhoneNumber());
+                    editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
+                    editor.putBoolean(Constants.PREF_PROFILE_DEFAULT, false);
+                    editor.apply();
+
                     fetchData(mBearer, mUserId);
                 }
 
@@ -567,5 +602,15 @@ public class MainActivity extends AppCompatActivity implements
         mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setVisibility(View.VISIBLE);
         mBinding.layoutToolbar.contentCropStream.tvToolbarArrow.setVisibility(View.VISIBLE);
         mBinding.layoutToolbar.contentCropStream.ivToolbarSettings.setVisibility(View.VISIBLE);
+
+        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+
+        mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture.setBackground(null);
+        Picasso.with(this).load(preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null)).fit().centerInside()
+                .placeholder(getDrawable(R.drawable.ic_profile_default))
+                .error(Objects.requireNonNull(getDrawable(R.drawable.ic_error_red)))
+                .transform(new CircleTransform())
+                .into(mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture);
+        mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
     }
 }

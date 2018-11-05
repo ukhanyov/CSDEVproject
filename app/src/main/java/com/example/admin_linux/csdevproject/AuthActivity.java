@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -293,11 +294,21 @@ public class AuthActivity extends AppCompatActivity{
 //    }
 
     public void btnUsePhoneNumberClicked(View view) {
+        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
         Intent intent = new Intent(this, EnterPhoneActivity.class);
         startActivity(intent);
     }
 
     public void btnUseTokenClicked(View view) {
+        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(Constants.KEY_INTENT_USER_ID, Constants.PERSON_ID);
         intent.putExtra(Constants.KEY_INTENT_BEARER, Constants.BEARER);
