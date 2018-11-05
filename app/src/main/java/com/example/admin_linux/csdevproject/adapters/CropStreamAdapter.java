@@ -307,7 +307,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     public void setCorpStreamMessages(List<CropStreamMessage> list) {
         this.mList = list;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     class CorpStreamViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

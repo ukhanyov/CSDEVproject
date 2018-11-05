@@ -133,7 +133,7 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
             public void onLoadMore(int offset, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi();
+                loadNextDataFromApi(mAdapter);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -142,10 +142,12 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         if (transferList != null) {
             mAdapter.setCorpStreamMessages(transferList);
             recyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
             recyclerView.setLayoutManager(linearLayoutManager);
         } else {
             transferList = Objects.requireNonNull(getArguments()).getParcelableArrayList("transferList");
             mAdapter.setCorpStreamMessages(transferList);
+            mAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(linearLayoutManager);
         }
@@ -168,12 +170,14 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         loadRecyclerViewData();
     }
 
-    private void loadNextDataFromApi(){
+    private void loadNextDataFromApi(CropStreamAdapter adapter){
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         ((MainActivity) Objects.requireNonNull(getActivity())).fetchMoreData(
                 preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                 preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
                 transferList.get(transferList.size() - 2).getMessageTime());
+
+        //adapter.notifyDataSetChanged();
     }
 
     private void loadRecyclerViewData() {
