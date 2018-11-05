@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,9 +27,9 @@ import com.example.admin_linux.csdevproject.adapters.CropStreamClickListener;
 import com.example.admin_linux.csdevproject.data.models.ConversationPerson;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.Constants;
+import com.example.admin_linux.csdevproject.utils.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +50,9 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
     private List<CropStreamMessage> transferList;
 
     ProgressBar progressBar;
+
+    // Store a member variable for the listener
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     public CropStreamFragment() {
         // Required empty public constructor
@@ -117,22 +121,33 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
                 intent.putExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT, person);
                 startActivity(intent);
             }
-
-
         };
 
-        final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
+
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int offset, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi();
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        recyclerView.addOnScrollListener(scrollListener);
 
         if (transferList != null) {
             mAdapter.setCorpStreamMessages(transferList);
             recyclerView.setAdapter(mAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setLayoutManager(linearLayoutManager);
         } else {
             transferList = Objects.requireNonNull(getArguments()).getParcelableArrayList("transferList");
             mAdapter.setCorpStreamMessages(transferList);
             recyclerView.setAdapter(mAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setLayoutManager(linearLayoutManager);
         }
 
         // SwipeRefreshLayout
@@ -153,19 +168,21 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         loadRecyclerViewData();
     }
 
+    private void loadNextDataFromApi(){
+        SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        ((MainActivity) Objects.requireNonNull(getActivity())).fetchMoreData(
+                preferences.getString(Constants.PREF_PROFILE_BEARER, null),
+                preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
+                transferList.get(transferList.size() - 2).getMessageTime());
+    }
+
     private void loadRecyclerViewData() {
         // Showing refresh animation before making http call
         mSwipeRefreshLayout.setRefreshing(true);
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        ((MainActivity)Objects.requireNonNull(getActivity())).fetchData(
+        ((MainActivity) Objects.requireNonNull(getActivity())).fetchData(
                 preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                 preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
-
-        //((MainActivity)Objects.requireNonNull(getActivity())).starCropStreamFragment();
-
-        // Stopping swipe refresh
-        //mSwipeRefreshLayout.setRefreshing(false);
-
     }
 
     public void onButtonPressed(Uri uri) {

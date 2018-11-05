@@ -86,12 +86,15 @@ public class MainActivity extends AppCompatActivity implements
 
     private CropStreamMessageViewModel viewModel;
     private CropStreamFragment fragmentCropStreamTransaction;
+    List<CropStreamMessage> listToFeedIntoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        listToFeedIntoViewModel = new ArrayList<>();
 
         Intent intent = getIntent();
         mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
@@ -306,7 +309,6 @@ public class MainActivity extends AppCompatActivity implements
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
-                List<CropStreamMessage> listToFeedIntoViewModel = new ArrayList<>();
 
                 for (FeedEventItemModel event : listOfEvents) {
                     FEIMPerson person = event.getPerson();
@@ -572,5 +574,139 @@ public class MainActivity extends AppCompatActivity implements
                 .transform(new CircleTransform())
                 .into(mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture);
         mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
+    }
+
+    public void fetchMoreData(String bearer, int yourPersonId, String date){
+        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPersonAndTimeOfLastMessage(
+                bearer,
+                yourPersonId,
+                Constants.MAX_EVENT_COUNT,
+                date);
+
+        parsedJSON.enqueue(new Callback<ApiResultOfFeedEventsModel>() {
+            @Override
+            public void onResponse(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Response<ApiResultOfFeedEventsModel> response) {
+
+                // Tips "Comments" -> text displayed on CropStreamMessage instance
+                // Tips "FeedType": "ConversationMessage" -> bottom of CropStreamMessage is "View message"
+                // Tips "FeedType": "CatalogEntryPosted" -> some image or whatever
+
+                // Possible roots |1|: organization -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
+                // Possible roots |2|: organization -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
+                // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
+                // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
+
+                ApiResultOfFeedEventsModel feedEventsModel = response.body();
+                List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
+
+                for (FeedEventItemModel event : listOfEvents) {
+                    FEIMPerson person = event.getPerson();
+                    if (event.getOrganization() != null) {
+                        if (event.getInvolvedPersons() == null) {
+                            // Go root |1|
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getOrganization().getImageUrl(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getOrganization().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    "you",
+                                    event.getPerson().getOrganizationName(),
+                                    false,
+                                    null,
+                                    null,
+                                    event.getFeedType(),
+                                    true,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
+                            );
+                        } else {
+                            // Go root |2|
+                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getOrganization().getImageUrl(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getOrganization().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
+                                    event.getPerson().getOrganizationName(),
+                                    true,
+                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
+                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    event.getFeedType(),
+                                    true,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
+                            );
+                        }
+                    } else {
+                        if (event.getInvolvedPersons() == null) {
+                            // Go root |3|
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getPerson().getIconPath(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getPerson().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    "you",
+                                    event.getPerson().getOrganizationName(),
+                                    false,
+                                    null,
+                                    null,
+                                    event.getFeedType(),
+                                    false,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
+                            );
+                        } else {
+                            // Go root |4|
+                            List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
+                            listToFeedIntoViewModel.add(instantiateCropStreamMessage(
+                                    event.getPerson().getIconPath(),
+                                    event.getPerson().getPersonFullName(),
+                                    event.getPerson().getOrganizationName(),
+                                    event.getComments(),
+                                    event.getOnDate(),
+                                    null,
+                                    event.isConversationFirstMessage(),
+                                    (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
+                                    event.getPerson().getOrganizationName(),
+                                    true,
+                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
+                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    event.getFeedType(),
+                                    false,
+                                    String.valueOf(event.getConversationId()),
+                                    String.valueOf(yourPersonId),
+                                    event.getConversationId() != 0,
+                                    event.getPerson().getIconPath())
+                            );
+                        }
+                    }
+                }
+
+                viewModel.setList(listToFeedIntoViewModel);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
+                Log.d("Error: ", t.getMessage());
+                Toast.makeText(MainActivity.this, "Oh no... Error fetching more data!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

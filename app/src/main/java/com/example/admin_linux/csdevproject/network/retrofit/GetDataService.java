@@ -23,6 +23,15 @@ public interface GetDataService {
 
     );
 
+    @Headers({ "Content-Type: application/json;charset=UTF-8"})
+    @GET("api/v1/ActivityCard/FeedEvents")
+    Call<ApiResultOfFeedEventsModel> getActivityCardFeedEventsByPersonAndTimeOfLastMessage(
+            @Header("Authorization") String BEARER,
+            @Query("PersonId") int personId,
+            @Query("MaxEventCount") int maxEventCount,
+            @Query("StartDateUTC") String date
+    );
+
     // "api/v1/User/GetByFireBaseId?FireBaseId={FireBaseId}&MobilePhoneNumber={MobilePhoneNumber}"
     @GET("api/v1/User/GetByFireBaseId")
     Call<FirebaseUserReturnValue> getUserGetByFireBaseId(
