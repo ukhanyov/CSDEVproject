@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class StartChatActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(R.string.new_message);
+
+        mBinding.tvActivityStartChatMessage.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent = getIntent();
         ConversationPerson person = intent.getParcelableExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT);

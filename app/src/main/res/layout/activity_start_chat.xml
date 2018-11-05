@@ -20,6 +20,7 @@
             app:layout_constraintGuide_percent="0.3" />
 
         <TextView
+            android:scrollbars = "vertical"
             android:id="@+id/tv_activity_start_chat_message"
             style="@style/TextViewGeneralBlack"
             android:layout_width="0dp"
@@ -28,7 +29,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:singleLine="false"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -166,19 +166,18 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_activity_start_chat_your_message" />
 
         <ImageView
-            android:onClick="imgPickPhotoSCClicked"
             android:id="@+id/iv_activity_start_chat_pick_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:contentDescription="@string/pick_picture_to_send"
+            android:onClick="imgPickPhotoSCClicked"
             android:src="@drawable/ic_camera"
             app:layout_constraintBottom_toBottomOf="@+id/et_activity_start_chat_input_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_activity_start_chat_input_text"
-            android:contentDescription="@string/pick_picture_to_send" />
+            app:layout_constraintTop_toTopOf="@+id/et_activity_start_chat_input_text" />
 
         <EditText
-            android:padding="4dp"
             android:id="@+id/et_activity_start_chat_input_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -188,21 +187,22 @@
             android:background="@drawable/edit_text_c_d_background"
             android:hint="@string/enter_message"
             android:inputType="text"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_activity_start_chat_send_message"
             app:layout_constraintStart_toEndOf="@+id/iv_activity_start_chat_pick_image" />
 
         <ImageView
-            android:onClick="imgSendMessageOnSCClicked"
             android:id="@+id/iv_activity_start_chat_send_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:contentDescription="@string/send_message"
+            android:onClick="imgSendMessageOnSCClicked"
             android:src="@drawable/ic_send_message"
             app:layout_constraintBottom_toBottomOf="@+id/et_activity_start_chat_input_text"
             app:layout_constraintEnd_toEndOf="@+id/v_activity_start_chat_bottom"
-            app:layout_constraintTop_toTopOf="@+id/et_activity_start_chat_input_text"
-            android:contentDescription="@string/send_message" />
+            app:layout_constraintTop_toTopOf="@+id/et_activity_start_chat_input_text" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
