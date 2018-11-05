@@ -32,20 +32,12 @@ public class EnterPhoneActivity extends AppCompatActivity {
 
     private static final String TAG = "Check_Auth";
 
-    private LayoutInflater mInf;
-
-    private static final String KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress";
-
     // Firebase auth stuff
     private FirebaseAuth mAuth;
-
-    private boolean mVerificationInProgress = false;
     private String mVerificationId;
-    private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     private String mPhoneNumber;
-    private String mVerificationCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,18 +82,12 @@ public class EnterPhoneActivity extends AppCompatActivity {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e);
-                //mVerificationInProgress = false;
 
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    // Invalid request
-                    // ...
+                    Toast.makeText(EnterPhoneActivity.this, "Invalid request", Toast.LENGTH_SHORT).show();
                 } else if (e instanceof FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
-                    // ...
+                    Toast.makeText(EnterPhoneActivity.this, "SMS quota has been exceeded", Toast.LENGTH_SHORT).show();
                 }
-
-                // Show a message and update the UI
-                // ...
             }
 
             @Override
@@ -113,50 +99,20 @@ public class EnterPhoneActivity extends AppCompatActivity {
 
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
-                mResendToken = token;
 
                 showUiForEnteringVerificationCode();
             }
         };
-
     }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//
-//        // [START_EXCLUDE]
-//        if (mVerificationInProgress ) {
-//            sendVerificationCode(mBinding.etActivityEnterPhoneCountryCode.getText().toString() + mBinding.etActivityEnterPhone.getText().toString());
-//        }
-//        // [END_EXCLUDE]
-//    }
-
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putBoolean(KEY_VERIFY_IN_PROGRESS, mVerificationInProgress);
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS);
-//    }
 
     // Send a verification code to the user's phone
     private void sendVerificationCode(String phone) {
-        // TODO: Set flag, that verification is in progress (in case activity is destroyed) (onSaveInstanceState)
-
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phone,           // Phone number to verify
                 60,                  // Timeout duration
                 TimeUnit.SECONDS,       // Unit of timeout
                 this,           // Activity (for callback binding)
                 mCallbacks);            // OnVerificationStateChangedCallbacks
-
     }
 
     // Sign in without necessity of entering verification code
@@ -253,14 +209,14 @@ public class EnterPhoneActivity extends AppCompatActivity {
                 !mBinding.etActivityEnterPhoneVerification5.getText().toString().equals("") &&
                 !mBinding.etActivityEnterPhoneVerification6.getText().toString().equals("")) {
 
-            mVerificationCode = mBinding.etActivityEnterPhoneVerification1.getText().toString() +
+            String verificationCode = mBinding.etActivityEnterPhoneVerification1.getText().toString() +
                     mBinding.etActivityEnterPhoneVerification2.getText().toString() +
                     mBinding.etActivityEnterPhoneVerification3.getText().toString() +
                     mBinding.etActivityEnterPhoneVerification4.getText().toString() +
                     mBinding.etActivityEnterPhoneVerification5.getText().toString() +
                     mBinding.etActivityEnterPhoneVerification6.getText().toString();
 
-            signInWithVerificationIdAndToken(mVerificationId, mVerificationCode);
+            signInWithVerificationIdAndToken(mVerificationId, verificationCode);
         } else {
             Toast.makeText(this, "Please enter verification code", Toast.LENGTH_SHORT).show();
         }
