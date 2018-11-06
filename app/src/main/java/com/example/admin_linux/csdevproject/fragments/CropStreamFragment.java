@@ -13,10 +13,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
 import com.example.admin_linux.csdevproject.MainActivity;
@@ -125,15 +127,29 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
 
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+            @Override
+            public void onChanged() {
+                Toast.makeText(getActivity(), "a", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
         // Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+
             @Override
-            public void onLoadMore(int offset, int totalItemsCount, RecyclerView view) {
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                loadNextDataFromApi(mAdapter);
+                //int position = linearLayoutManager.findLastVisibleItemPosition();
+                loadNextDataFromApi();
+                //linearLayoutManager.scrollToPosition(position);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -141,15 +157,9 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
 
         if (transferList != null) {
             mAdapter.setCorpStreamMessages(transferList);
-            recyclerView.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
-            recyclerView.setLayoutManager(linearLayoutManager);
         } else {
             transferList = Objects.requireNonNull(getArguments()).getParcelableArrayList("transferList");
             mAdapter.setCorpStreamMessages(transferList);
-            mAdapter.notifyDataSetChanged();
-            recyclerView.setAdapter(mAdapter);
-            recyclerView.setLayoutManager(linearLayoutManager);
         }
 
         // SwipeRefreshLayout
@@ -170,14 +180,14 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         loadRecyclerViewData();
     }
 
-    private void loadNextDataFromApi(CropStreamAdapter adapter){
+    private void loadNextDataFromApi(){
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         ((MainActivity) Objects.requireNonNull(getActivity())).fetchMoreData(
                 preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                 preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
                 transferList.get(transferList.size() - 2).getMessageTime());
 
-        //adapter.notifyDataSetChanged();
+        Log.d("fetchMoreData", "called");
     }
 
     private void loadRecyclerViewData() {

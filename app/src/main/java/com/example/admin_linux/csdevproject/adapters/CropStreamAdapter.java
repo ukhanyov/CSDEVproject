@@ -2,8 +2,10 @@ package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +31,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private List<CropStreamMessage> mList;
     private Context mContext;
     private CropStreamClickListener mListener;
+    private int position = 0;
 
     public CropStreamAdapter(Context context, CropStreamClickListener listener) {
         mInflater = LayoutInflater.from(context);
@@ -307,8 +311,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     public void setCorpStreamMessages(List<CropStreamMessage> list) {
         this.mList = list;
-        //notifyDataSetChanged();
+        position = mList.size();
     }
+
+    public List<CropStreamMessage> getCorpStreamMessages() {
+        return this.mList;
+    }
+
 
     class CorpStreamViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

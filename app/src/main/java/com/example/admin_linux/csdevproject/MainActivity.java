@@ -13,6 +13,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.data.CropStreamMessageViewModel;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
@@ -86,15 +89,15 @@ public class MainActivity extends AppCompatActivity implements
 
     private CropStreamMessageViewModel viewModel;
     private CropStreamFragment fragmentCropStreamTransaction;
-    List<CropStreamMessage> listToFeedIntoViewModel;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-        listToFeedIntoViewModel = new ArrayList<>();
 
         Intent intent = getIntent();
         mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
@@ -309,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
-
+                List<CropStreamMessage> listToFeedIntoViewModel = new ArrayList<>();
                 for (FeedEventItemModel event : listOfEvents) {
                     FEIMPerson person = event.getPerson();
                     if (event.getOrganization() != null) {
@@ -599,7 +602,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
-
+                List<CropStreamMessage> listToFeedIntoViewModel= new ArrayList<>();
                 for (FeedEventItemModel event : listOfEvents) {
                     FEIMPerson person = event.getPerson();
                     if (event.getOrganization() != null) {
@@ -699,7 +702,9 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 }
 
-                viewModel.setList(listToFeedIntoViewModel);
+                List<CropStreamMessage> oldList = viewModel.getNormalList();
+                oldList.addAll(listToFeedIntoViewModel);
+                viewModel.setList(oldList);
             }
 
             @Override
@@ -707,6 +712,8 @@ public class MainActivity extends AppCompatActivity implements
                 Log.d("Error: ", t.getMessage());
                 Toast.makeText(MainActivity.this, "Oh no... Error fetching more data!", Toast.LENGTH_SHORT).show();
             }
+
+
         });
     }
 }

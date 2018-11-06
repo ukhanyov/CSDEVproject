@@ -17,11 +17,15 @@ public class CropStreamMessageViewModel extends AndroidViewModel {
         super(application);
     }
 
+    public List<CropStreamMessage> getNormalList(){
+        return mList.getValue();
+    }
+
     public MutableLiveData<List<CropStreamMessage>> getList() {
         return mList;
     }
 
     public void setList(List<CropStreamMessage> mList) {
-        this.mList.setValue(mList);
+        this.mList.postValue(mList);
     }
 }
