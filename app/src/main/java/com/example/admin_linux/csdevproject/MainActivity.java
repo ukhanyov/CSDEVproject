@@ -579,7 +579,7 @@ public class MainActivity extends AppCompatActivity implements
         mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
     }
 
-    public void fetchMoreData(String bearer, int yourPersonId, String date, CropStreamAdapter mAdapter){
+    public void fetchMoreData(String bearer, int yourPersonId, String date, int position){
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPersonAndTimeOfLastMessage(
                 bearer,
@@ -705,7 +705,14 @@ public class MainActivity extends AppCompatActivity implements
                 List<CropStreamMessage> oldList = viewModel.getNormalList();
                 oldList.addAll(listToFeedIntoViewModel);
                 viewModel.setList(oldList);
-                mAdapter.notifyItemRangeInserted(oldList.size() - listToFeedIntoViewModel.size(), listToFeedIntoViewModel.size());
+
+                SharedPreferences preferences = getSharedPreferences(Constants.PREF_ADAPTER_SETTINGS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.putBoolean(Constants.PREF_ADAPTER_LOADED_MORE, true);
+                editor.putInt(Constants.PREF_ADAPTER_POSITION, position);
+                editor.apply();
+
             }
 
             @Override

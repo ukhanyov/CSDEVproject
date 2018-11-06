@@ -149,7 +149,7 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 //int position = linearLayoutManager.findLastVisibleItemPosition();
-                loadNextDataFromApi(mAdapter);
+                loadNextDataFromApi(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
                 //linearLayoutManager.scrollToPosition(position);
             }
         };
@@ -173,6 +173,15 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
                 android.R.color.holo_blue_dark);
 
         progressBar.setVisibility(View.INVISIBLE);
+
+        SharedPreferences preferencesAdapter = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_ADAPTER_SETTINGS, MODE_PRIVATE);
+        if(preferencesAdapter.getBoolean(Constants.PREF_ADAPTER_LOADED_MORE, false)){
+            recyclerView.scrollToPosition(preferencesAdapter.getInt(Constants.PREF_ADAPTER_POSITION, 5));
+            SharedPreferences.Editor editor = preferencesAdapter.edit();
+            editor.clear();
+            editor.apply();
+        }
+
         return rootView;
     }
 
@@ -181,13 +190,13 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         loadRecyclerViewData();
     }
 
-    private void loadNextDataFromApi(CropStreamAdapter mAdapter){
+    private void loadNextDataFromApi(int position){
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         ((MainActivity) Objects.requireNonNull(getActivity())).fetchMoreData(
                 preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                 preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
                 transferList.get(transferList.size() - 2).getMessageTime(),
-                mAdapter);
+                position);
 
         Log.d("fetchMoreData", "called");
     }
