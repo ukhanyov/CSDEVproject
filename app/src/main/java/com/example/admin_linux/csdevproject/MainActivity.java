@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements
         fragmentManager = getSupportFragmentManager();
         viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
 
+        // TODO: check if maybe bug can be here (or copy right code)
+        // TODO: rotation load more
         if (savedInstanceState != null) {
             //Restore the fragment's instance
             fragmentCropStreamTransaction = (CropStreamFragment) getSupportFragmentManager().getFragment(savedInstanceState, "CropStreamFragment");
@@ -161,12 +163,17 @@ public class MainActivity extends AppCompatActivity implements
 //                if (viewModel.getList().getValue() == null) {
 //                    fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
 //                }
-                fetchData(mBearer, mUserId);
+                //fetchData(mBearer, mUserId);
 //                SharedPreferences preferencesAdapter = getSharedPreferences(Constants.PREF_ADAPTER_SETTINGS, MODE_PRIVATE);
 //                SharedPreferences.Editor editor = preferencesAdapter.edit();
 //                editor.clear();
 //                editor.apply();
-                starCropStreamFragment();
+                //starCropStreamFragment();
+
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
+                        .commit();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
                 makeDefaultToolbarVisible();

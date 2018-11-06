@@ -131,14 +131,6 @@ public class CropStreamFragment extends Fragment {
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
         Log.d("adapter_version", mAdapter.toString());
 
-        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-
-            @Override
-            public void onChanged() {
-                Toast.makeText(getActivity(), "a", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
         // Retain an instance so that you can call `resetState()` for fresh searches
@@ -146,8 +138,6 @@ public class CropStreamFragment extends Fragment {
 
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
                 loadNextDataFromApi(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
             }
         };
@@ -164,6 +154,7 @@ public class CropStreamFragment extends Fragment {
         // SwipeRefreshLayout
         mSwipeRefreshLayout = rootView.findViewById(R.id.srl_crop_stream_fragment);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
+
             mSwipeRefreshLayout.setRefreshing(true);
             SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
             ((MainActivity) Objects.requireNonNull(getActivity())).fetchData(
