@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements
             if (person.getPersonId() == yourId) {
                 mFullName = person.getPersonFullName();
                 mProfileUrl = person.getIconPath();
-                            }
+            }
         }
         return people;
     }
@@ -579,7 +579,7 @@ public class MainActivity extends AppCompatActivity implements
         mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
     }
 
-    public void fetchMoreData(String bearer, int yourPersonId, String date){
+    public void fetchMoreData(String bearer, int yourPersonId, String date, CropStreamAdapter mAdapter){
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPersonAndTimeOfLastMessage(
                 bearer,
@@ -705,6 +705,7 @@ public class MainActivity extends AppCompatActivity implements
                 List<CropStreamMessage> oldList = viewModel.getNormalList();
                 oldList.addAll(listToFeedIntoViewModel);
                 viewModel.setList(oldList);
+                mAdapter.notifyItemRangeInserted(oldList.size() - listToFeedIntoViewModel.size(), listToFeedIntoViewModel.size());
             }
 
             @Override

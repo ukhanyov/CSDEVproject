@@ -129,6 +129,7 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
         final CropStreamAdapter mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
+        Log.d("adapter_version", mAdapter.toString());
 
         mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
 
@@ -148,7 +149,7 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 //int position = linearLayoutManager.findLastVisibleItemPosition();
-                loadNextDataFromApi();
+                loadNextDataFromApi(mAdapter);
                 //linearLayoutManager.scrollToPosition(position);
             }
         };
@@ -180,12 +181,13 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         loadRecyclerViewData();
     }
 
-    private void loadNextDataFromApi(){
+    private void loadNextDataFromApi(CropStreamAdapter mAdapter){
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         ((MainActivity) Objects.requireNonNull(getActivity())).fetchMoreData(
                 preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                 preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
-                transferList.get(transferList.size() - 2).getMessageTime());
+                transferList.get(transferList.size() - 2).getMessageTime(),
+                mAdapter);
 
         Log.d("fetchMoreData", "called");
     }
