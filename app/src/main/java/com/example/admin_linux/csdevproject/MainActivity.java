@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity implements
         FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
 
-    // TODO: pull to refresh
-    // TODO: paging (after you scrolled 70-80 percent download more feed events)
-
     // Fancy dataBinding
     ActivityMainBinding mBinding;
 
@@ -161,10 +158,14 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
-                if (viewModel.getList().getValue() == null) {
-                    fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
-
-                }
+//                if (viewModel.getList().getValue() == null) {
+//                    fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
+//                }
+                fetchData(mBearer, mUserId);
+//                SharedPreferences preferencesAdapter = getSharedPreferences(Constants.PREF_ADAPTER_SETTINGS, MODE_PRIVATE);
+//                SharedPreferences.Editor editor = preferencesAdapter.edit();
+//                editor.clear();
+//                editor.apply();
                 starCropStreamFragment();
 
                 mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
@@ -525,6 +526,7 @@ public class MainActivity extends AppCompatActivity implements
     public void starCropStreamFragment() {
         viewModel.getList().observe(this, listArray -> {
             if (listArray != null) {
+
                 List<CropStreamMessage> transferList = new ArrayList<>(listArray);
 
                 Bundle bundle = new Bundle();
@@ -708,7 +710,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 SharedPreferences preferences = getSharedPreferences(Constants.PREF_ADAPTER_SETTINGS, MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
+                //editor.clear();
                 editor.putBoolean(Constants.PREF_ADAPTER_LOADED_MORE, true);
                 editor.putInt(Constants.PREF_ADAPTER_POSITION, position);
                 editor.apply();

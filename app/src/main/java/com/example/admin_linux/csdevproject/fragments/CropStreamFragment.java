@@ -38,7 +38,7 @@ import java.util.Objects;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class CropStreamFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -148,9 +148,7 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                //int position = linearLayoutManager.findLastVisibleItemPosition();
                 loadNextDataFromApi(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                //linearLayoutManager.scrollToPosition(position);
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -165,7 +163,13 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
 
         // SwipeRefreshLayout
         mSwipeRefreshLayout = rootView.findViewById(R.id.srl_crop_stream_fragment);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            mSwipeRefreshLayout.setRefreshing(true);
+            SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+            ((MainActivity) Objects.requireNonNull(getActivity())).fetchData(
+                    preferences.getString(Constants.PREF_PROFILE_BEARER, null),
+                    preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
+        });
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.black,
                 android.R.color.holo_green_dark,
@@ -185,11 +189,6 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
         return rootView;
     }
 
-    @Override
-    public void onRefresh() {
-        loadRecyclerViewData();
-    }
-
     private void loadNextDataFromApi(int position){
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         ((MainActivity) Objects.requireNonNull(getActivity())).fetchMoreData(
@@ -199,15 +198,6 @@ public class CropStreamFragment extends Fragment implements SwipeRefreshLayout.O
                 position);
 
         Log.d("fetchMoreData", "called");
-    }
-
-    private void loadRecyclerViewData() {
-        // Showing refresh animation before making http call
-        mSwipeRefreshLayout.setRefreshing(true);
-        SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        ((MainActivity) Objects.requireNonNull(getActivity())).fetchData(
-                preferences.getString(Constants.PREF_PROFILE_BEARER, null),
-                preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
     }
 
     public void onButtonPressed(Uri uri) {
