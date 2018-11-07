@@ -158,16 +158,6 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_cropstream:
-//                if (viewModel.getList().getValue() == null) {
-//                    fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
-//                }
-                //fetchData(mBearer, mUserId);
-//                SharedPreferences preferencesAdapter = getSharedPreferences(Constants.PREF_ADAPTER_SETTINGS, MODE_PRIVATE);
-//                SharedPreferences.Editor editor = preferencesAdapter.edit();
-//                editor.clear();
-//                editor.apply();
-                //starCropStreamFragment();
-
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
@@ -315,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements
                 // Possible roots |2|: organization -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
                 // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
                 // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
+                // Possible roots |5|: FeedEvents -> FeedEventItemModel-> CardRenderDataId(not null) ->
+                // -> FeedEventItemModel -> CardRenderDataModel -> CardRenderDataId -> CardRenderTypes = CardMessage -> CardMessage
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
