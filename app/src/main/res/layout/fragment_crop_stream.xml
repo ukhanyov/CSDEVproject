@@ -27,7 +27,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:scrollbarStyle="outsideInset"
-                android:scrollbarSize="5dp"
+                android:scrollbarSize="4dp"
                 android:scrollbarThumbVertical="@color/green"
                 android:scrollbars="vertical"
                 android:id="@+id/rv_corp_stream_fragment"
