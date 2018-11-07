@@ -122,8 +122,6 @@ public class MainActivity extends AppCompatActivity implements
         fragmentManager = getSupportFragmentManager();
         viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
 
-        // TODO: check if maybe bug can be here (or copy right code)
-        // TODO: rotation load more
         if (savedInstanceState != null) {
             //Restore the fragment's instance
             fragmentCropStreamTransaction = (CropStreamFragment) getSupportFragmentManager().getFragment(savedInstanceState, "CropStreamFragment");
