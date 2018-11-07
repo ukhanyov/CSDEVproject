@@ -246,7 +246,7 @@
     <WebView
         android:id="@+id/list_item_wv_card_render"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:visibility="gone"
         android:layout_marginTop="8dp"
