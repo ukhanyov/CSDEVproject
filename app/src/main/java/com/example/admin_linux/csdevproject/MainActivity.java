@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements
                 // Possible roots |2|: organization -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
                 // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
                 // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
-                // Possible roots |5|: FeedEvents -> FeedEventItemModel-> CardRenderDataId(not null) ->
+                // Sub root (for all main roots) |5|: FeedEvents -> FeedEventItemModel-> CardRenderDataId(not null) ->
                 // -> FeedEventItemModel -> CardRenderDataModel -> CardRenderDataId -> CardRenderTypes = CardMessage -> CardMessage
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
@@ -334,7 +334,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         } else {
                             // Go root |2|
@@ -357,7 +358,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         }
                     } else {
@@ -381,7 +383,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         } else {
                             // Go root |4|
@@ -404,7 +407,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         }
                     }
@@ -450,9 +454,25 @@ public class MainActivity extends AppCompatActivity implements
         return null;
     }
 
-    private CropStreamMessage instantiateCropStreamMessage(String pictureUrl, String fullName, String corpName, String textToDisplay, String onDate, String messagePicture, boolean isFirstMessage,
-                                                           String involvedPersons, String organizationName, boolean isCombinedImage, String firstImageUrl, String secondImageUrl, String feedType,
-                                                           boolean isFromOrganization, String conversationId, String personId, boolean isConversation, String personPictureUrl) {
+    private CropStreamMessage instantiateCropStreamMessage(String pictureUrl,
+                                                           String fullName,
+                                                           String corpName,
+                                                           String textToDisplay,
+                                                           String onDate,
+                                                           String messagePicture,
+                                                           boolean isFirstMessage,
+                                                           String involvedPersons,
+                                                           String organizationName,
+                                                           boolean isCombinedImage,
+                                                           String firstImageUrl,
+                                                           String secondImageUrl,
+                                                           String feedType,
+                                                           boolean isFromOrganization,
+                                                           String conversationId,
+                                                           String personId,
+                                                           boolean isConversation,
+                                                           String personPictureUrl,
+                                                           int cardRenderDataId) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -471,8 +491,8 @@ public class MainActivity extends AppCompatActivity implements
                 conversationId,
                 personId,
                 isConversation,
-                personPictureUrl
-
+                personPictureUrl,
+                cardRenderDataId
         );
     }
 
@@ -625,7 +645,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         } else {
                             // Go root |2|
@@ -648,7 +669,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         }
                     } else {
@@ -672,7 +694,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         } else {
                             // Go root |4|
@@ -695,7 +718,8 @@ public class MainActivity extends AppCompatActivity implements
                                     String.valueOf(event.getConversationId()),
                                     String.valueOf(yourPersonId),
                                     event.getConversationId() != 0,
-                                    event.getPerson().getIconPath())
+                                    event.getPerson().getIconPath(),
+                                    event.getCardRenderDataId())
                             );
                         }
                     }

@@ -1,6 +1,5 @@
 package com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item;
 
-import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMFeedEventTypes;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMFeedImage;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMlOrganization;
@@ -80,9 +79,9 @@ public class FeedEventItemModel {
 //    @Expose
 //    private int defaultConversationUserId;
 
-//    @SerializedName("CardRenderDataId")
-//    @Expose
-//    private int cardRenderDataId;
+    @SerializedName("CardRenderDataId")
+    @Expose
+    private int mCardRenderDataId;
 
 //    @SerializedName("FeedSourceinFavorites")
 //    @Expose
@@ -160,9 +159,9 @@ public class FeedEventItemModel {
 //        return defaultConversationUserId;
 //    }
 //
-//    public int getCardRenderDataId() {
-//        return cardRenderDataId;
-//    }
+    public int getCardRenderDataId() {
+        return mCardRenderDataId;
+    }
 //
 //    public boolean isFeedSourceinFavorites() {
 //        return feedSourceinFavorites;

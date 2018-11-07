@@ -23,6 +23,7 @@ public class CropStreamMessage implements Parcelable {
     private String mPersonId;
     private boolean mConversationChat;
     private String mPersonPictureUrl;
+    private int mCardRenderDataId;
 
     public CropStreamMessage(
             String profilePicture,
@@ -42,7 +43,8 @@ public class CropStreamMessage implements Parcelable {
             String conversationId,
             String personId,
             boolean conversationChat,
-            String personPictureUrl) {
+            String personPictureUrl,
+            int cardRenderDataId) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -62,6 +64,7 @@ public class CropStreamMessage implements Parcelable {
         this.mPersonId = personId;
         this.mConversationChat = conversationChat;
         this.mPersonPictureUrl = personPictureUrl;
+        this.mCardRenderDataId = cardRenderDataId;
     }
 
     public String getProfilePicture() {
@@ -136,9 +139,13 @@ public class CropStreamMessage implements Parcelable {
         return mPersonPictureUrl;
     }
 
+    public int getCardRenderDataId() {
+        return mCardRenderDataId;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[18];
+        String[] data = new String[19];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -158,7 +165,8 @@ public class CropStreamMessage implements Parcelable {
         this.mConversationId = data[14];
         this.mPersonId = data[15];
         this.mConversationChat = Boolean.getBoolean(data[16]);
-        this.mPersonPictureUrl = data[16];
+        this.mPersonPictureUrl = data[17];
+        this.mCardRenderDataId = Integer.valueOf(data[18]);
     }
 
     @Override
@@ -186,7 +194,8 @@ public class CropStreamMessage implements Parcelable {
                 this.mConversationId,
                 this.mPersonId,
                 String.valueOf(this.mConversationChat),
-                this.mPersonPictureUrl
+                this.mPersonPictureUrl,
+                String.valueOf(this.mCardRenderDataId)
         });
     }
 
