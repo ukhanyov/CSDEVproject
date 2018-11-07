@@ -246,12 +246,8 @@
     <WebView
         android:id="@+id/list_item_wv_card_render"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:visibility="gone"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:padding="4dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_text_message" />

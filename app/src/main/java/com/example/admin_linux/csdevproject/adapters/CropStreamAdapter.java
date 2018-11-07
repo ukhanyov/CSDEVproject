@@ -1,7 +1,9 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -10,9 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
@@ -76,12 +82,15 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             // Sub root |5| universal for all roots
             if(current.getMessageHttp() != null && !current.getMessageHttp().equals("")){
-                // TODO: maybe change to UTF-8 in loadData()
                 // TODO: webView auto height
-                holder.wvCardRenderData.loadUrl(Constants.ASSETS_EMPTY);
-                String unEncodedHtml = current.getMessageHttp();
-                String encodedHtml = Base64.encodeToString(unEncodedHtml.getBytes(), Base64.NO_PADDING);
-                holder.wvCardRenderData.loadData(encodedHtml, "text/html; charset=utf-8", "base64");
+                //ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                //holder.wvCardRenderData.setLayoutParams(lp);
+                holder.wvCardRenderData.loadData(current.getMessageHttp(), "text/html; charset=utf-8", "utf-8");
+                //holder.wvCardRenderData.loadDataWithBaseURL("file:///android_asset/", current.getMessageHttp(), "text/html", "utf-8", null);
+
+                holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
+                holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+
                 holder.wvCardRenderData.setVisibility(View.VISIBLE);
             }else {
                 holder.wvCardRenderData.setVisibility(View.GONE);
