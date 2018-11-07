@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/hint_text_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
@@ -137,12 +137,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:background="@color/white"
         android:contentDescription="@string/content_description_reply_button"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_wv_card_render"
         app:srcCompat="@drawable/ic_chat_bubble_outline_reply_list_item" />
 
     <TextView
@@ -233,15 +233,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/view_message"
         android:text="@string/view_message"
         android:textColor="@color/green"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_ib_start_chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image" />
+        app:layout_constraintTop_toTopOf="@+id/list_item_ib_start_chat" />
+
+    <WebView
+        android:id="@+id/list_item_wv_card_render"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_text_message" />
 
 
 </android.support.constraint.ConstraintLayout>

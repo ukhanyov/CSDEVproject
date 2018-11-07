@@ -4,11 +4,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -70,6 +72,19 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 } else {
                     bindViewsRootFour(current, holder);  // root |4|
                 }
+            }
+
+            // Sub root |5| universal for all roots
+            if(current.getMessageHttp() != null && !current.getMessageHttp().equals("")){
+                // TODO: maybe change to UTF-8 in loadData()
+                // TODO: webView auto height
+                holder.wvCardRenderData.loadUrl(Constants.ASSETS_EMPTY);
+                String unEncodedHtml = current.getMessageHttp();
+                String encodedHtml = Base64.encodeToString(unEncodedHtml.getBytes(), Base64.NO_PADDING);
+                holder.wvCardRenderData.loadData(encodedHtml, "text/html; charset=utf-8", "base64");
+                holder.wvCardRenderData.setVisibility(View.VISIBLE);
+            }else {
+                holder.wvCardRenderData.setVisibility(View.GONE);
             }
 
         } else {
@@ -334,6 +349,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         ImageButton ibUnderProfile;
         TextView tvUnderProfile;
         TextView tvViewMessage;
+        WebView wvCardRenderData;
 
         private CropStreamClickListener mListener;
 
@@ -354,6 +370,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             ibUnderProfile = itemView.findViewById(R.id.list_item_ib_start_chat);
             tvUnderProfile = itemView.findViewById(R.id.list_item_tv_start_shat);
             tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
+            wvCardRenderData = itemView.findViewById(R.id.list_item_wv_card_render);
 
             mListener = listener;
             tvTypeOfConversation.setOnClickListener(this);

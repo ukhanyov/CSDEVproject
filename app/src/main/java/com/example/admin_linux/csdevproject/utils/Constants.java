@@ -31,4 +31,6 @@ public class Constants {
     public static final String PREF_ADAPTER_POSITION = "pref_adapter_position";
     public static final String PREF_ADAPTER_LOADED_MORE = "pref_profile_person_id";
 
+    public static final String ASSETS_EMPTY = "file:///android_asset/Empty.html";
+
 }
