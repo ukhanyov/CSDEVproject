@@ -24,6 +24,7 @@ public class CropStreamMessage implements Parcelable {
     private boolean mConversationChat;
     private String mPersonPictureUrl;
     private int mCardRenderDataId;
+    private String mMessageHttp;
 
     public CropStreamMessage(
             String profilePicture,
@@ -44,7 +45,8 @@ public class CropStreamMessage implements Parcelable {
             String personId,
             boolean conversationChat,
             String personPictureUrl,
-            int cardRenderDataId) {
+            int cardRenderDataId,
+            String messageHttp) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -65,6 +67,7 @@ public class CropStreamMessage implements Parcelable {
         this.mConversationChat = conversationChat;
         this.mPersonPictureUrl = personPictureUrl;
         this.mCardRenderDataId = cardRenderDataId;
+        this.mMessageHttp = messageHttp;
     }
 
     public String getProfilePicture() {
@@ -143,9 +146,13 @@ public class CropStreamMessage implements Parcelable {
         return mCardRenderDataId;
     }
 
+    public String getMessageHttp() {
+        return mMessageHttp;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[19];
+        String[] data = new String[20];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -167,6 +174,7 @@ public class CropStreamMessage implements Parcelable {
         this.mConversationChat = Boolean.getBoolean(data[16]);
         this.mPersonPictureUrl = data[17];
         this.mCardRenderDataId = Integer.valueOf(data[18]);
+        this.mMessageHttp = data[19];
     }
 
     @Override
@@ -195,7 +203,8 @@ public class CropStreamMessage implements Parcelable {
                 this.mPersonId,
                 String.valueOf(this.mConversationChat),
                 this.mPersonPictureUrl,
-                String.valueOf(this.mCardRenderDataId)
+                String.valueOf(this.mCardRenderDataId),
+                this.mMessageHttp
         });
     }
 
