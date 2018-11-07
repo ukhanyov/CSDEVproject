@@ -15,7 +15,7 @@ public class CRMCardMessageModel {
 
     @SerializedName("MessageType")
     @Expose
-    private int mMessageType;
+    private String mMessageType;
 
     @SerializedName("ProcessLinks")
     @Expose
@@ -29,7 +29,7 @@ public class CRMCardMessageModel {
         return mAspectRatio;
     }
 
-    public int getMessageType() {
+    public String getMessageType() {
         return mMessageType;
     }
 
