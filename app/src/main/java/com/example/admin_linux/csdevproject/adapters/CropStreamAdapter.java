@@ -78,7 +78,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
 
                 holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getmAspectRatio());
-
                 holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
                 holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
             } else {
