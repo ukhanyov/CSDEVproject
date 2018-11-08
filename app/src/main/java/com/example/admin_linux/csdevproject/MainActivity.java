@@ -338,7 +338,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         } else {
                             // Go root |2|
@@ -364,7 +365,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         }
                     } else {
@@ -391,7 +393,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         } else {
                             // Go root |4|
@@ -417,7 +420,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         }
                     }
@@ -483,6 +487,16 @@ public class MainActivity extends AppCompatActivity implements
         return 0;
     }
 
+    private String getMessageType(List<FeedEventCardRenderItems> list, double id){
+        for (FeedEventCardRenderItems item : list){
+            if(item.getCardRenderDataId() == id){
+                if(item.getCardMessage() != null)
+                    return item.getCardMessage().getMessageType();
+            }
+        }
+        return null;
+    }
+
     private CropStreamMessage instantiateCropStreamMessage(String pictureUrl,
                                                            String fullName,
                                                            String corpName,
@@ -503,7 +517,8 @@ public class MainActivity extends AppCompatActivity implements
                                                            String personPictureUrl,
                                                            int cardRenderDataId,
                                                            String messageHttp,
-                                                           double aspectRatio) {
+                                                           double aspectRatio,
+                                                           String messageType) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -525,7 +540,8 @@ public class MainActivity extends AppCompatActivity implements
                 personPictureUrl,
                 cardRenderDataId,
                 messageHttp,
-                aspectRatio
+                aspectRatio,
+                messageType
         );
     }
 
@@ -681,7 +697,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         } else {
                             // Go root |2|
@@ -707,7 +724,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         }
                     } else {
@@ -734,7 +752,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         } else {
                             // Go root |4|
@@ -760,7 +779,8 @@ public class MainActivity extends AppCompatActivity implements
                                     event.getPerson().getIconPath(),
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
+                                    getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
                             );
                         }
                     }

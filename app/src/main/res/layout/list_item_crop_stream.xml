@@ -142,7 +142,7 @@
         android:contentDescription="@string/content_description_reply_button"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_wv_card_render"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text"
         app:srcCompat="@drawable/ic_chat_bubble_outline_reply_list_item" />
 
     <TextView
@@ -247,10 +247,10 @@
         android:scrollbars="none"
         android:id="@+id/list_item_wv_card_render"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image" />
@@ -264,8 +264,17 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_mash_two" />
 
     <TextView
+        style="@style/TextViewGeneralBlack"
+        android:id="@+id/list_item_tv_web_plain_text"
         android:layout_width="0dp"
-        android:layout_height="" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_wv_card_render" />
+
 
 
 </android.support.constraint.ConstraintLayout>

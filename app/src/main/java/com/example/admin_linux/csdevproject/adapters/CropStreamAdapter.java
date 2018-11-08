@@ -8,7 +8,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -73,16 +72,24 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             }
 
             // Sub root |5| universal for all roots
-            if (current.getMessageHttp() != null && !current.getMessageHttp().equals("")) {
-                holder.wvCardRenderData.setVisibility(View.VISIBLE);
-                holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
+            if (current.getMessageHttp() != null) {
+                if (current.getMessageType().equals("PlainText")) {
+                    holder.tvWebPlainText.setText(current.getMessageHttp());
+                    holder.tvWebPlainText.setVisibility(View.VISIBLE);
+                    holder.wvCardRenderData.setVisibility(View.GONE);
+                } else {
+//                if (current.getMessageType().equals("Image") ||
+//                        current.getMessageType().equals("Message") ||
+//                        current.getMessageType().equals("MessageWithImage")) {
+                    holder.tvWebPlainText.setVisibility(View.GONE);
+                    holder.wvCardRenderData.setVisibility(View.VISIBLE);
+                    holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
 
-                holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getmAspectRatio());
-                holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
-                holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-            } else {
-                holder.wvCardRenderData.setVisibility(View.GONE);
-            }
+                    holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
+                    holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
+                    holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+                }
+            } else { holder.wvCardRenderData.setVisibility(View.GONE); holder.tvWebPlainText.setVisibility(View.GONE); }
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
@@ -348,6 +355,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvViewMessage;
         WebView wvCardRenderData;
         View vWidth;
+        TextView tvWebPlainText;
 
         private CropStreamClickListener mListener;
 
@@ -370,6 +378,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
             wvCardRenderData = itemView.findViewById(R.id.list_item_wv_card_render);
             vWidth = itemView.findViewById(R.id.list_item_v_width);
+            tvWebPlainText = itemView.findViewById(R.id.list_item_tv_web_plain_text);
 
             mListener = listener;
             tvTypeOfConversation.setOnClickListener(this);

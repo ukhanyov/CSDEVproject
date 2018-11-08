@@ -26,6 +26,7 @@ public class CropStreamMessage implements Parcelable {
     private int mCardRenderDataId;
     private String mMessageHttp;
     private double mAspectRatio;
+    private String mMessageType;
 
     public CropStreamMessage(
             String profilePicture,
@@ -48,7 +49,8 @@ public class CropStreamMessage implements Parcelable {
             String personPictureUrl,
             int cardRenderDataId,
             String messageHttp,
-            double aspectRatio) {
+            double aspectRatio,
+            String messageType) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -71,6 +73,7 @@ public class CropStreamMessage implements Parcelable {
         this.mCardRenderDataId = cardRenderDataId;
         this.mMessageHttp = messageHttp;
         this.mAspectRatio = aspectRatio;
+        this.mMessageType = messageType;
     }
 
     public String getProfilePicture() {
@@ -153,11 +156,15 @@ public class CropStreamMessage implements Parcelable {
         return mMessageHttp;
     }
 
-    public double getmAspectRatio() { return mAspectRatio; }
+    public double getAspectRatio() { return mAspectRatio; }
+
+    public String getMessageType() {
+        return mMessageType;
+    }
 
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[21];
+        String[] data = new String[22];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -181,6 +188,7 @@ public class CropStreamMessage implements Parcelable {
         this.mCardRenderDataId = Integer.valueOf(data[18]);
         this.mMessageHttp = data[19];
         this.mAspectRatio = Double.valueOf(data[20]);
+        this.mMessageType = data[21];
     }
 
     @Override
@@ -211,7 +219,8 @@ public class CropStreamMessage implements Parcelable {
                 this.mPersonPictureUrl,
                 String.valueOf(this.mCardRenderDataId),
                 this.mMessageHttp,
-                String.valueOf(this.mAspectRatio)
+                String.valueOf(this.mAspectRatio),
+                this.mMessageType
         });
     }
 
