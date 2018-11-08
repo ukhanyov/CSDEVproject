@@ -398,10 +398,24 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         @Override
         public void onClick(View view) {
             if (mList.get(getAdapterPosition()).getConversationChat()) {
-                mListener.onClick(view, mList.get(getAdapterPosition()), Constants.CLICK_KEY_CONVERSATION_DETAILS);
+                mListener.onClick(view,
+                        Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
+                        Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
+                        mList.get(getAdapterPosition()).getProfileName(),
+                        mList.get(getAdapterPosition()).getPersonsCorp(),
+                        mList.get(getAdapterPosition()).getPersonPictureUrl(),
+                        mList.get(getAdapterPosition()).getMessageText(),
+                        Constants.CLICK_KEY_CONVERSATION_DETAILS);
             }
             if (view.getId() == R.id.list_item_ib_start_chat || view.getId() == R.id.list_item_tv_start_shat) {
-                mListener.onClick(view, mList.get(getAdapterPosition()), Constants.CLICK_KEY_START_CHAT);
+                mListener.onClick(view,
+                        Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
+                        Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
+                        mList.get(getAdapterPosition()).getProfileName(),
+                        mList.get(getAdapterPosition()).getPersonsCorp(),
+                        mList.get(getAdapterPosition()).getPersonPictureUrl(),
+                        mList.get(getAdapterPosition()).getMessageText(),
+                        Constants.CLICK_KEY_START_CHAT);
             }
         }
     }

@@ -93,7 +93,8 @@ public class CropStreamFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         // List item click stuff
-        CropStreamClickListener listener = (view, cropStreamMessage, key) -> {
+        // -------------------------------------------------------------------------------------------
+        CropStreamClickListener listener = (view, conversationId, personId, profileName, personsCorp, personsPictureUrl, messageText, key) -> {
 
             String bearer = Objects.requireNonNull(getArguments()).getString("transferBearerToFragment");
             String mProfileFullName = Objects.requireNonNull(getArguments()).getString("transferFullNameToFragment");
@@ -104,26 +105,28 @@ public class CropStreamFragment extends Fragment {
                 intent.putExtra("transfer_profile_url", mProfileUrl);
                 intent.putExtra("transfer_full_name", mProfileFullName);
                 intent.putExtra("transfer_bearer", bearer);
-                intent.putExtra("transfer_message", cropStreamMessage);
+                intent.putExtra("transfer_conversation_id", conversationId);
+                intent.putExtra("transfer_person_id", personId);
                 startActivity(intent);
             }
 
             if (key.equals(Constants.CLICK_KEY_START_CHAT)) {
                 ConversationPerson person = new ConversationPerson(
-                        Integer.valueOf(cropStreamMessage.getPersonId()),
+                        personId,
                         null,
                         null,
-                        cropStreamMessage.getProfileName(),
+                        profileName,
                         false,
-                        cropStreamMessage.getPersonsCorp(),
-                        cropStreamMessage.getPersonPictureUrl(),
-                        cropStreamMessage.getMessageText()
+                        personsCorp,
+                        personsPictureUrl,
+                        messageText
                 );
                 Intent intent = new Intent(getActivity(), StartChatActivity.class);
                 intent.putExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT, person);
                 startActivity(intent);
             }
         };
+        // -------------------------------------------------------------------------------------------
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

@@ -57,7 +57,8 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
-        CropStreamMessage cropStreamMessage = intent.getParcelableExtra("transfer_message");
+        int conversationId = intent.getIntExtra("transfer_conversation_id", 0);
+        int personId = intent.getIntExtra("transfer_person_id", 0);
         String bearer = intent.getStringExtra("transfer_bearer");
         mProfileUrl = intent.getStringExtra("transfer_profile_url");
         mProfileName = intent.getStringExtra("transfer_full_name");
@@ -81,18 +82,17 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         viewModel.getListOfMessages().observe(this, mMessageAdapter::setConversationDetailsMessages);
 
-        if (cropStreamMessage != null && bearer != null) {
-            fetchConversationDetails(cropStreamMessage, bearer);
+        if (conversationId != 0 && bearer != null) {
+            fetchConversationDetails(conversationId, personId, bearer);
         }
     }
 
-    // TODO : get rid of transferring CropStreamMessage object
-    private void fetchConversationDetails(CropStreamMessage cropStreamMessage, String bearer) {
+    private void fetchConversationDetails(int conversationId, int personId, String bearer) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ConversationDetailsReturnValue> parsedJSON = service.geConversationDetail(
                 bearer,
-                Integer.valueOf(cropStreamMessage.getConversationId()),
-                Integer.valueOf(cropStreamMessage.getPersonId()));
+                conversationId,
+                personId);
 
         parsedJSON.enqueue(new Callback<ConversationDetailsReturnValue>() {
             @Override
