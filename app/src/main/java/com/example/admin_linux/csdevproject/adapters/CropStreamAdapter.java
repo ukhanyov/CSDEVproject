@@ -74,27 +74,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             // Sub root |5| universal for all roots
             if (current.getMessageHttp() != null && !current.getMessageHttp().equals("")) {
-                // TODO: webView auto height
-                WebView.enableSlowWholeDocumentDraw();
+                holder.wvCardRenderData.setVisibility(View.VISIBLE);
                 holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
-                //holder.wvCardRenderData.loadData(current.getMessageHttp(), "text/html; charset=utf-8", "utf-8");
-                ViewTreeObserver vto = holder.wvCardRenderData.getViewTreeObserver();
-                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        holder.wvCardRenderData.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                        int width = holder.wvCardRenderData.getMeasuredWidth();
-                        int height = holder.wvCardRenderData.getMeasuredHeight();
-
-                        holder.wvCardRenderData.getLayoutParams().height = (int) (width / current.getmAspectRatio());
-
-                    }
-                });
+                holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getmAspectRatio());
 
                 holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
                 holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-                holder.wvCardRenderData.setVisibility(View.VISIBLE);
             } else {
                 holder.wvCardRenderData.setVisibility(View.GONE);
             }
@@ -362,6 +348,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvUnderProfile;
         TextView tvViewMessage;
         WebView wvCardRenderData;
+        View vWidth;
 
         private CropStreamClickListener mListener;
 
@@ -383,6 +370,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvUnderProfile = itemView.findViewById(R.id.list_item_tv_start_shat);
             tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
             wvCardRenderData = itemView.findViewById(R.id.list_item_wv_card_render);
+            vWidth = itemView.findViewById(R.id.list_item_v_width);
 
             mListener = listener;
             tvTypeOfConversation.setOnClickListener(this);

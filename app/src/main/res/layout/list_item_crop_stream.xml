@@ -243,19 +243,24 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toTopOf="@+id/list_item_ib_start_chat" />
 
+    <WebView
+        android:id="@+id/list_item_wv_card_render"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image" />
 
-        <WebView
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:visibility="visible"
-            android:id="@+id/list_item_wv_card_render"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image"/>
-
-
+    <View
+        android:id="@+id/list_item_v_width"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_mash_two" />
 
 
 </android.support.constraint.ConstraintLayout>
