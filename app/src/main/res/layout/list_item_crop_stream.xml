@@ -250,7 +250,7 @@
             android:visibility="visible"
             android:id="@+id/list_item_wv_card_render"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image"/>

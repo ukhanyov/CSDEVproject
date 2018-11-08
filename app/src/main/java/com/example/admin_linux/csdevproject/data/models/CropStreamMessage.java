@@ -25,6 +25,7 @@ public class CropStreamMessage implements Parcelable {
     private String mPersonPictureUrl;
     private int mCardRenderDataId;
     private String mMessageHttp;
+    private double mAspectRatio;
 
     public CropStreamMessage(
             String profilePicture,
@@ -46,7 +47,8 @@ public class CropStreamMessage implements Parcelable {
             boolean conversationChat,
             String personPictureUrl,
             int cardRenderDataId,
-            String messageHttp) {
+            String messageHttp,
+            double aspectRatio) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -68,6 +70,7 @@ public class CropStreamMessage implements Parcelable {
         this.mPersonPictureUrl = personPictureUrl;
         this.mCardRenderDataId = cardRenderDataId;
         this.mMessageHttp = messageHttp;
+        this.mAspectRatio = aspectRatio;
     }
 
     public String getProfilePicture() {
@@ -150,9 +153,11 @@ public class CropStreamMessage implements Parcelable {
         return mMessageHttp;
     }
 
+    public double getmAspectRatio() { return mAspectRatio; }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[20];
+        String[] data = new String[21];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -175,6 +180,7 @@ public class CropStreamMessage implements Parcelable {
         this.mPersonPictureUrl = data[17];
         this.mCardRenderDataId = Integer.valueOf(data[18]);
         this.mMessageHttp = data[19];
+        this.mAspectRatio = Double.valueOf(data[20]);
     }
 
     @Override
@@ -204,7 +210,8 @@ public class CropStreamMessage implements Parcelable {
                 String.valueOf(this.mConversationChat),
                 this.mPersonPictureUrl,
                 String.valueOf(this.mCardRenderDataId),
-                this.mMessageHttp
+                this.mMessageHttp,
+                String.valueOf(this.mAspectRatio)
         });
     }
 

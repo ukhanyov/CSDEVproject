@@ -2,26 +2,16 @@ package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
@@ -32,7 +22,6 @@ import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,25 +73,21 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             }
 
             // Sub root |5| universal for all roots
-            if(current.getMessageHttp() != null && !current.getMessageHttp().equals("")){
+            if (current.getMessageHttp() != null && !current.getMessageHttp().equals("")) {
                 // TODO: webView auto height
-
-                holder.wvCardRenderData.loadData(current.getMessageHttp(), "text/html; charset=utf-8", "utf-8");
-
+                WebView.enableSlowWholeDocumentDraw();
+                holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
+                //holder.wvCardRenderData.loadData(current.getMessageHttp(), "text/html; charset=utf-8", "utf-8");
                 ViewTreeObserver vto = holder.wvCardRenderData.getViewTreeObserver();
                 vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
                         holder.wvCardRenderData.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        int width;
-                        int height;
 
-                        width  = holder.wvCardRenderData.getMeasuredWidth();
-                        height = holder.wvCardRenderData.getMeasuredHeight();
+                        int width = holder.wvCardRenderData.getMeasuredWidth();
+                        int height = holder.wvCardRenderData.getMeasuredHeight();
 
-                        if(height < 1){
-                            holder.wvCardRenderData.getLayoutParams().height = width;
-                        }
+                        holder.wvCardRenderData.getLayoutParams().height = (int) (width / current.getmAspectRatio());
 
                     }
                 });
@@ -110,7 +95,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
                 holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
                 holder.wvCardRenderData.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.wvCardRenderData.setVisibility(View.GONE);
             }
 
@@ -377,7 +362,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvUnderProfile;
         TextView tvViewMessage;
         WebView wvCardRenderData;
-        //ScrollView svWebScrollView;
 
         private CropStreamClickListener mListener;
 
@@ -399,7 +383,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvUnderProfile = itemView.findViewById(R.id.list_item_tv_start_shat);
             tvViewMessage = itemView.findViewById(R.id.list_item_tv_view_message);
             wvCardRenderData = itemView.findViewById(R.id.list_item_wv_card_render);
-            //svWebScrollView = itemView.findViewById(R.id.list_item_sv);
 
             mListener = listener;
             tvTypeOfConversation.setOnClickListener(this);
@@ -412,7 +395,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             if (mList.get(getAdapterPosition()).getConversationChat()) {
                 mListener.onClick(view, mList.get(getAdapterPosition()), Constants.CLICK_KEY_CONVERSATION_DETAILS);
             }
-            if(view.getId() == R.id.list_item_ib_start_chat || view.getId() == R.id.list_item_tv_start_shat){
+            if (view.getId() == R.id.list_item_ib_start_chat || view.getId() == R.id.list_item_tv_start_shat) {
                 mListener.onClick(view, mList.get(getAdapterPosition()), Constants.CLICK_KEY_START_CHAT);
             }
         }
