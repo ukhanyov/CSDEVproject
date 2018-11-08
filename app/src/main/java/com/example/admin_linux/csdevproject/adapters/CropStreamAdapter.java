@@ -74,7 +74,12 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             // Sub root |5| universal for all roots
             if (current.getMessageHttp() != null) {
                 if (current.getMessageType().equals("PlainText")) {
-                    holder.tvWebPlainText.setText(current.getMessageHttp());
+                    holder.tvWebPlainText.setText(current.getMessageHttp()
+                            .replaceAll("<div>", "")
+                            .replaceAll("</div>", "")
+                            .replaceAll("<br/>", "\n")
+                            .replaceAll("&#39;", "\u2019")
+                            .trim());
                     holder.tvWebPlainText.setVisibility(View.VISIBLE);
                     holder.wvCardRenderData.setVisibility(View.GONE);
                 } else {

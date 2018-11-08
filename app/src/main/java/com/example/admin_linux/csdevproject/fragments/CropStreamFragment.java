@@ -133,7 +133,7 @@ public class CropStreamFragment extends Fragment {
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
-        // Retain an instance so that you can call `resetState()` for fresh searches
+
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
 
             // Maybe add button "go to the top"
@@ -152,7 +152,7 @@ public class CropStreamFragment extends Fragment {
 
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                loadNextDataFromApi(linearLayoutManager.findFirstCompletelyVisibleItemPosition());
+                loadNextDataFromApi(linearLayoutManager.findFirstVisibleItemPosition());
             }
         };
         // Adds the scroll listener to RecyclerView
