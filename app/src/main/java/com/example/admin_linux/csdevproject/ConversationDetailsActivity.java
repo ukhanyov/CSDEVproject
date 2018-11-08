@@ -86,6 +86,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         }
     }
 
+    // TODO : get rid of transferring CropStreamMessage object
     private void fetchConversationDetails(CropStreamMessage cropStreamMessage, String bearer) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ConversationDetailsReturnValue> parsedJSON = service.geConversationDetail(

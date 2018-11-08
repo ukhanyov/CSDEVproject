@@ -72,6 +72,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             }
 
             // Sub root |5| universal for all roots
+            // TODO : look into bug when webview is not displaying image
             if (current.getMessageHttp() != null) {
                 if (current.getMessageType().equals("PlainText")) {
                     holder.tvWebPlainText.setText(current.getMessageHttp()
@@ -94,7 +95,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
                     holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
                 }
-            } else { holder.wvCardRenderData.setVisibility(View.GONE); holder.tvWebPlainText.setVisibility(View.GONE); }
+            } else {
+                holder.wvCardRenderData.setVisibility(View.GONE);
+                holder.tvWebPlainText.setVisibility(View.GONE);
+            }
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
