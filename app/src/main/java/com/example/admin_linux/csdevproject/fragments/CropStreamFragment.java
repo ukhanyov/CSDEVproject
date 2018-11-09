@@ -254,6 +254,7 @@ public class CropStreamFragment extends Fragment {
                         } else {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
+                            List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
@@ -265,8 +266,8 @@ public class CropStreamFragment extends Fragment {
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
                                     true,
-                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
-                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
+                                    (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
@@ -312,7 +313,10 @@ public class CropStreamFragment extends Fragment {
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         } else {
                             // Go root |4|
+
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
+                            List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
@@ -324,8 +328,8 @@ public class CropStreamFragment extends Fragment {
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
                                     true,
-                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
-                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
+                                    (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),
@@ -365,18 +369,14 @@ public class CropStreamFragment extends Fragment {
         return people;
     }
 
-    private String getFirstImageUrl(List<FEIMInvolvedPerson> involvedPeople, String person) {
-        for (FEIMInvolvedPerson iterator : involvedPeople) {
-            if (iterator.getPersonFullName().equals(person)) return iterator.getIconPath();
+    private List<String> populateListOfImages(List<FEIMInvolvedPerson> involvedPeople, int yourId){
+        List<String> people = new ArrayList<>();
+        for (FEIMInvolvedPerson person : involvedPeople) {
+            if (person.getPersonId() != yourId) {
+                people.add(person.getIconPath());
+            }
         }
-        return null;
-    }
-
-    private String getSecondImageUrl(List<FEIMInvolvedPerson> involvedPeople, String person) {
-        for (FEIMInvolvedPerson iterator : involvedPeople) {
-            if (iterator.getPersonFullName().equals(person)) return iterator.getIconPath();
-        }
-        return null;
+        return people;
     }
 
     private String getMessageHttp(List<FeedEventCardRenderItems> list, int id) {
@@ -515,6 +515,7 @@ public class CropStreamFragment extends Fragment {
                         } else {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
+                            List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
@@ -526,8 +527,8 @@ public class CropStreamFragment extends Fragment {
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
                                     true,
-                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
-                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
+                                    (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
@@ -574,6 +575,7 @@ public class CropStreamFragment extends Fragment {
                         } else {
                             // Go root |4|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
+                            List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
@@ -585,8 +587,8 @@ public class CropStreamFragment extends Fragment {
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
                                     true,
-                                    (event.getInvolvedPersons().size() > 1 && involvedPeople.size() > 1) ? getFirstImageUrl(event.getInvolvedPersons(), involvedPeople.get(0)) : null,
-                                    (event.getInvolvedPersons().size() > 2 && involvedPeople.size() > 2) ? getSecondImageUrl(event.getInvolvedPersons(), involvedPeople.get(1)) : null,
+                                    (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
+                                    (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),

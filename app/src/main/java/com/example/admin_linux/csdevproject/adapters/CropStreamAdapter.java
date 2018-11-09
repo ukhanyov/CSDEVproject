@@ -39,14 +39,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         mContext = context;
     }
 
-    public void addItem(CropStreamMessage message){
-        if(this.mList == null){
+    public void addItem(CropStreamMessage message) {
+        if (this.mList == null) {
             this.mList = new ArrayList<>();
         }
         this.mList.add(message);
     }
 
-    public void removeAllItems(){
+    public void removeAllItems() {
         this.mList = null;
     }
 
@@ -85,7 +85,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 } else {
                     holder.tvWebPlainText.setVisibility(View.GONE);
                     holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
-                    holder.wvCardRenderData.setWebViewClient(new WebViewClient(){
+                    holder.wvCardRenderData.setWebViewClient(new WebViewClient() {
                         @Override
                         public void onPageFinished(WebView view, String url) {
                             super.onPageFinished(view, url);
@@ -165,12 +165,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     // root |2|
     private void bindViewsRootTwo(CropStreamMessage current, CorpStreamViewHolder holder) {
 
-        // Bind profile picture
-        if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null) {
-            bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
-        } else if (current.getCombineImageUrlFirst() != null) {
-            bindImage(holder, current.getCombineImageUrlFirst(), null);
-        }
+        bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
 
         // Bind name
         bindName(holder, current.getProfileName(), null);
@@ -228,12 +223,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     // root |4|
     private void bindViewsRootFour(CropStreamMessage current, CorpStreamViewHolder holder) {
 
-        // Bind profile picture
-        if (current.getCombineImageUrlFirst() != null && current.getCombineImageUrlSecond() != null) {
-            bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
-        } else if (current.getCombineImageUrlFirst() != null) {
-            bindImage(holder, current.getCombineImageUrlFirst(), null);
-        }
+        bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
 
         // Bind name
         bindName(holder, current.getProfileName(), current.getProfileCorpName());
