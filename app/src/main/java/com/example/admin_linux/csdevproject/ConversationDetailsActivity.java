@@ -3,6 +3,7 @@ package com.example.admin_linux.csdevproject;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.example.admin_linux.csdevproject.network.pojo.conversation_details.mo
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.model.participants.CDParticipants;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
+import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 
 import java.util.ArrayList;
@@ -63,7 +65,6 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         mProfileUrl = intent.getStringExtra("transfer_profile_url");
         mProfileName = intent.getStringExtra("transfer_full_name");
 
-
         viewModel = ViewModelProviders.of(this).get(ConversationDetailsViewModel.class);
 
         // Setup participants
@@ -82,12 +83,15 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         messageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         viewModel.getListOfMessages().observe(this, mMessageAdapter::setConversationDetailsMessages);
 
+        SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        int yourPersonId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
+
         if (conversationId != 0 && bearer != null) {
-            fetchConversationDetails(conversationId, personId, bearer);
+            fetchConversationDetails(conversationId, yourPersonId, personId, bearer);
         }
     }
 
-    private void fetchConversationDetails(int conversationId, int personId, String bearer) {
+    private void fetchConversationDetails(int conversationId, int yourPersonId, int personId, String bearer) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ConversationDetailsReturnValue> parsedJSON = service.geConversationDetail(
                 bearer,
@@ -95,16 +99,15 @@ public class ConversationDetailsActivity extends AppCompatActivity {
                 personId);
 
         parsedJSON.enqueue(new Callback<ConversationDetailsReturnValue>() {
+
             @Override
             public void onResponse(@NonNull Call<ConversationDetailsReturnValue> call, @NonNull Response<ConversationDetailsReturnValue> response) {
+
                 ConversationDetailsReturnValue returnValue = response.body();
                 CDConversationModel conversationModel = Objects.requireNonNull(returnValue).getCDConversationModel();
 
                 mBinding.tvConversationDetailsDate.setText(DateHelper.returnDate(conversationModel.getLastMessageTime()));
                 mBinding.tvConversationDetailsTime.setText(DateHelper.returnTime(conversationModel.getLastMessageTime()));
-
-                // Populate viewModel
-                viewModel.setList(conversationModel.getParticipants());
 
                 CDParticipants participant = null;
                 List<CDParticipants> participantList = conversationModel.getParticipants();
@@ -124,6 +127,14 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
                     viewModel.setListOfMessages(mMessageList);
                 }
+
+                List<CDParticipants> participantListToFeed = new ArrayList<>();
+                for (CDParticipants iterator : participantList){
+                    if(iterator.getPersonId() != yourPersonId && iterator.getPersonId() != personId){
+                        participantListToFeed.add(iterator);
+                    }
+                }
+                viewModel.setList(participantListToFeed);
 
             }
 
