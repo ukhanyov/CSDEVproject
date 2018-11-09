@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -74,6 +75,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             // Sub root |5| universal for all roots
 
+            // Sub root |6|: FeedEvents -> CatalogEntryId(not null) -> CatalogEntries -> CatalogEntryInDetailsModel ->
+            // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+            // universal for all roots
+
+            // Sub root |7|: FeedEvents -> CatalogEntryId(null) -> CardRenderDataModel -> CatalogEntries -> CatalogEntryInDetailsModel ->
+            // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+            // universal for all roots
+
             if (current.isFromOrganization()) {
                 if (current.getInvolvedPersonsNames().equals("you")) {
                     bindViewsRootOne(current, holder); // root |1|
@@ -88,7 +97,17 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 }
             }
 
+            // Sub root |5|
             bindWebView(current, holder);
+
+            // Sub root |6| & |7|
+            if(current.getTemplateItemModelBaseList() != null){
+                holder.llCatalogEntry.setVisibility(View.VISIBLE);
+                holder.tvInsideLL.setText("Booom");
+
+            }else {
+                holder.llCatalogEntry.setVisibility(View.GONE);
+            }
 
 
         } else {
@@ -381,6 +400,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         WebView wvCardRenderData;
         View vWidth;
         TextView tvWebPlainText;
+        LinearLayout llCatalogEntry;
+        TextView tvInsideLL;
 
         private CropStreamClickListener mListener;
 
@@ -404,6 +425,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             wvCardRenderData = itemView.findViewById(R.id.list_item_wv_card_render);
             vWidth = itemView.findViewById(R.id.list_item_v_width);
             tvWebPlainText = itemView.findViewById(R.id.list_item_tv_web_plain_text);
+            llCatalogEntry = itemView.findViewById(R.id.list_item_ll_catalog_entry);
+            tvInsideLL = itemView.findViewById(R.id.list_item_tv_inside_ll);
 
             mListener = listener;
             tvTypeOfConversation.setOnClickListener(this);

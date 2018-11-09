@@ -142,7 +142,7 @@
         android:contentDescription="@string/content_description_reply_button"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_ll_catalog_entry"
         app:srcCompat="@drawable/ic_chat_bubble_outline_reply_list_item" />
 
     <TextView
@@ -271,6 +271,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_wv_card_render" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/list_item_ll_catalog_entry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text">
+
+        <TextView
+            style="@style/TextViewGeneralBlack"
+            android:id="@+id/list_item_tv_inside_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 
 
