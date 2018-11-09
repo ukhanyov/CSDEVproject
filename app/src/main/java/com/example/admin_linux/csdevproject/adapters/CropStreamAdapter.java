@@ -2,6 +2,7 @@ package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
@@ -72,36 +74,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             // Sub root |5| universal for all roots
 
-            if (current.getMessageHttp() != null) {
-                if (current.getMessageType().equals("PlainText")) {
-                    holder.tvWebPlainText.setText(current.getMessageHttp()
-                            .replaceAll("<div>", "")
-                            .replaceAll("</div>", "")
-                            .replaceAll("<br/>", "\n")
-                            .replaceAll("&#39;", "\u2019")
-                            .trim());
-                    holder.tvWebPlainText.setVisibility(View.VISIBLE);
-                    holder.wvCardRenderData.setVisibility(View.GONE);
-                } else {
-                    holder.tvWebPlainText.setVisibility(View.GONE);
-                    holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
-                    holder.wvCardRenderData.setWebViewClient(new WebViewClient() {
-                        @Override
-                        public void onPageFinished(WebView view, String url) {
-                            super.onPageFinished(view, url);
-                            holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
-                            holder.wvCardRenderData.setVisibility(View.GONE);
-                            holder.wvCardRenderData.setVisibility(View.VISIBLE);
-                            holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
-                            holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-                        }
-                    });
-                }
-            } else {
-                holder.wvCardRenderData.setVisibility(View.GONE);
-                holder.tvWebPlainText.setVisibility(View.GONE);
-            }
-
             if (current.isFromOrganization()) {
                 if (current.getInvolvedPersonsNames().equals("you")) {
                     bindViewsRootOne(current, holder); // root |1|
@@ -115,6 +87,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     bindViewsRootFour(current, holder);  // root |4|
                 }
             }
+
+            bindWebView(current, holder);
+
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
@@ -326,6 +301,45 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         } else {
             holder.tvTypeOfConversation.setText(mContext.getString(R.string.send_a_message_to));
         }
+    }
+
+    private void bindWebView(CropStreamMessage current, CorpStreamViewHolder holder){
+        if (current.getMessageHttp() != null) {
+            if (current.getMessageType().equals("PlainText")) {
+                holder.tvWebPlainText.setText(current.getMessageHttp()
+                        .replaceAll("<div>", "")
+                        .replaceAll("</div>", "")
+                        .replaceAll("<br/>", "\n")
+                        .replaceAll("&#39;", "\u2019")
+                        .trim());
+                holder.tvWebPlainText.setVisibility(View.VISIBLE);
+                holder.wvCardRenderData.setVisibility(View.GONE);
+            } else {
+                holder.tvWebPlainText.setVisibility(View.GONE);
+                holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
+                holder.wvCardRenderData.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        super.onPageFinished(view, url);
+                        holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
+                        holder.wvCardRenderData.setVisibility(View.GONE);
+                        holder.wvCardRenderData.setVisibility(View.VISIBLE);
+                        holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
+                        holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+                    }
+                });
+            }
+        } else {
+            holder.wvCardRenderData.setVisibility(View.GONE);
+            holder.tvWebPlainText.setVisibility(View.GONE);
+        }
+    }
+
+    private Drawable makeCircleWithALatter(String name, String secondName){
+        // TODO: finish this to redraw image (first letters on name and second name)
+        char charName = name.charAt(0);
+        char charSecondName = secondName.charAt(0);
+        return TextDrawable.builder().buildRect(String.valueOf(charName) + String.valueOf(charSecondName), Color.RED);
     }
 
     // Old one was with feed type

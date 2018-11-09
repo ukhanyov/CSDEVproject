@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
-        android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
         android:background="@color/very_light_gray"
         tools:context=".fragments.CropStreamFragment">
 
@@ -26,13 +26,13 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-                android:scrollbarStyle="outsideInset"
-                android:scrollbarSize="4dp"
-                android:scrollbarThumbVertical="@color/green"
-                android:scrollbars="vertical"
                 android:id="@+id/rv_corp_stream_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scrollbarSize="4dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbarThumbVertical="@color/green"
+                android:scrollbars="vertical" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
