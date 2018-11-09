@@ -1,6 +1,5 @@
 package com.example.admin_linux.csdevproject;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -19,7 +18,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
-import com.example.admin_linux.csdevproject.data.CropStreamMessageViewModel;
 import com.example.admin_linux.csdevproject.databinding.ActivityMainBinding;
 import com.example.admin_linux.csdevproject.fragments.ChatFragment;
 import com.example.admin_linux.csdevproject.fragments.CropStreamFragment;
@@ -52,14 +50,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private Boolean isFabOpen = false;
 
-    private String mBearer;
-    private String mUserFirebaseId;
-    private String mUserFirebasePhoneNumber;
-    private String mProfileUrl;
-    private String mFullName;
-
-    private int mUserId;
-
     private Animation
             fab_title_open_1, fab_title_open_2, fab_title_open_3, fab_title_open_4,
             fab_open_1, fab_open_2, fab_open_3, fab_open_4,
@@ -85,11 +75,8 @@ public class MainActivity extends AppCompatActivity implements
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         Intent intent = getIntent();
-        mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
-        mUserFirebasePhoneNumber = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER);
-        mBearer = null;
-        mUserId = 0;
-        fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
+        String mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
+        String mUserFirebasePhoneNumber = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER);
 
         // Toolbar
         Toolbar mToolbar = mBinding.layoutToolbar.toolbar;
@@ -271,10 +258,6 @@ public class MainActivity extends AppCompatActivity implements
                 public void onResponse(@NonNull Call<FirebaseUserReturnValue> call, @NonNull Response<FirebaseUserReturnValue> response) {
                     FirebaseUserReturnValue returnValue = response.body();
                     FireBaseUserModel userModel = Objects.requireNonNull(returnValue).getFireBaseUserModel();
-                    mUserId = userModel.getPersonId();
-                    mBearer = "Bearer " + userModel.getAuthorizeToken();
-                    mProfileUrl = userModel.getProfileImageUrl();
-                    mFullName = userModel.getFirstName() + " " + userModel.getLastName();
 
                     SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
@@ -283,13 +266,12 @@ public class MainActivity extends AppCompatActivity implements
                     editor.putString(Constants.PREF_PROFILE_FULL_NAME, userModel.getFirstName() + " " + userModel.getLastName());
                     editor.putString(Constants.PREF_PROFILE_EMAIL, userModel.getEmailAddress());
                     editor.putString(Constants.PREF_PROFILE_PHONE_NUMBER, userModel.getMobilePhoneNumber());
-                    editor.putString(Constants.PREF_PROFILE_BEARER, mBearer);
+                    editor.putString(Constants.PREF_PROFILE_BEARER, "Bearer " + userModel.getAuthorizeToken());
                     editor.putString(Constants.PREF_PROFILE_FIREBASE_ID, String.valueOf(userFirebaseId));
                     editor.putBoolean(Constants.PREF_PROFILE_DEFAULT, false);
                     editor.putInt(Constants.PREF_PROFILE_PERSON_ID, userModel.getPersonId());
                     editor.apply();
 
-                    //fetchData(mBearer, mUserId);
                     starCropStreamFragment();
                 }
 

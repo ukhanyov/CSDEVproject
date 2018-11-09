@@ -47,8 +47,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CropStreamFragment extends Fragment {
 
-    // TODO : make proper recycler
-
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private List<CropStreamMessage> cropStreamMessages;
@@ -120,7 +118,7 @@ public class CropStreamFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
-        mAdapter = new CropStreamAdapter(rootView.getContext(), listener);
+        mAdapter = new CropStreamAdapter(cropStreamMessages, listener, rootView.getContext());
         Log.d("adapter_version", mAdapter.toString());
 
         recyclerView.setAdapter(mAdapter);
@@ -150,21 +148,21 @@ public class CropStreamFragment extends Fragment {
         // Adds the scroll listener to RecyclerView
         recyclerView.addOnScrollListener(scrollListener);
 
-        if (cropStreamMessages != null) {
-            mAdapter.setCorpStreamMessages(cropStreamMessages);
-        } else {
+        if (cropStreamMessages == null) {
             SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
             fetchData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                     preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
-            //cropStreamMessages = Objects.requireNonNull(getArguments()).getParcelableArrayList("cropStreamMessages");
-            //mAdapter.setCorpStreamMessages(cropStreamMessages);
         }
 
         // SwipeRefreshLayout
         mSwipeRefreshLayout = rootView.findViewById(R.id.srl_crop_stream_fragment);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-
             mSwipeRefreshLayout.setRefreshing(true);
+
+            mAdapter.removeAllItems();
+            mAdapter.notifyItemRangeRemoved(0, cropStreamMessages.size());
+            cropStreamMessages = null;
+
             SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
             fetchData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                             preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
@@ -174,14 +172,6 @@ public class CropStreamFragment extends Fragment {
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
-
-//        SharedPreferences preferencesAdapter = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_ADAPTER_SETTINGS, MODE_PRIVATE);
-//        if (preferencesAdapter.getBoolean(Constants.PREF_ADAPTER_LOADED_MORE, false)) {
-//            recyclerView.scrollToPosition(preferencesAdapter.getInt(Constants.PREF_ADAPTER_POSITION, 5));
-//            SharedPreferences.Editor editor = preferencesAdapter.edit();
-//            editor.clear();
-//            editor.apply();
-//        }
 
         return rootView;
     }
@@ -237,7 +227,7 @@ public class CropStreamFragment extends Fragment {
                     if (event.getOrganization() != null) {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |1|
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
                                     event.getOrganization().getOrganizationName(),
@@ -259,13 +249,14 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                                    // TODO : add item to adapter and notify changes
-                            );
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         } else {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
                                     event.getOrganization().getOrganizationName(),
@@ -287,14 +278,15 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                                    // TODO : add item to adapter and notify changes
-                            );
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         }
                     } else {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |3|
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
                                     event.getPerson().getOrganizationName(),
@@ -316,13 +308,14 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                                    // TODO : add item to adapter and notify changes
-                            );
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         } else {
                             // Go root |4|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
                                     event.getPerson().getOrganizationName(),
@@ -344,18 +337,19 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                            );
-                            // TODO : add item to adapter and notify changes
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         }
                     }
                 }
-                mAdapter.setCorpStreamMessages(cropStreamMessages);
-                mAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
                 Log.d("Error: ", t.getMessage());
                 Toast.makeText(getContext(), "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
             }
@@ -489,13 +483,12 @@ public class CropStreamFragment extends Fragment {
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
-                //List<CropStreamMessage> listToFeedIntoViewModel= new ArrayList<>();
                 for (FeedEventItemModel event : listOfEvents) {
                     FEIMPerson person = event.getPerson();
                     if (event.getOrganization() != null) {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |1|
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
                                     event.getOrganization().getOrganizationName(),
@@ -517,13 +510,14 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                            );
-                            // TODO : notify adapter
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         } else {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
                                     event.getOrganization().getOrganizationName(),
@@ -545,14 +539,15 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                            );
-                            // TODO : notify adapter
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         }
                     } else {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |3|
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
                                     event.getPerson().getOrganizationName(),
@@ -574,13 +569,14 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                            );
-                            // TODO : notify adapter
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         } else {
                             // Go root |4|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
-                            cropStreamMessages.add(instantiateCropStreamMessage(
+                            CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
                                     event.getPerson().getOrganizationName(),
@@ -602,16 +598,13 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()))
-                            );
-                            // TODO : notify adapter
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                            cropStreamMessages.add(message);
+                            mAdapter.addItem(message);
+                            mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
                         }
                     }
                 }
-
-                mAdapter.setCorpStreamMessages(cropStreamMessages);
-                mAdapter.notifyDataSetChanged();
-
             }
 
             @Override

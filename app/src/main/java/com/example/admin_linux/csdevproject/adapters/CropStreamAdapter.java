@@ -21,28 +21,40 @@ import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
 
-    private final LayoutInflater mInflater;
     private List<CropStreamMessage> mList;
     private Context mContext;
     private CropStreamClickListener mListener;
-    private int position = 0;
 
-    public CropStreamAdapter(Context context, CropStreamClickListener listener) {
-        mInflater = LayoutInflater.from(context);
-        mContext = context;
+    public CropStreamAdapter(List<CropStreamMessage> list, CropStreamClickListener listener, Context context) {
+        this.mList = new ArrayList<>();
+        this.mList = list;
         mListener = listener;
+        mContext = context;
     }
 
+    public void addItem(CropStreamMessage message){
+        if(this.mList == null){
+            this.mList = new ArrayList<>();
+        }
+        this.mList.add(message);
+    }
+
+    public void removeAllItems(){
+        this.mList = null;
+    }
 
     @NonNull
     @Override
-    public CorpStreamViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = mInflater.inflate(R.layout.list_item_crop_stream, viewGroup, false);
+    public CorpStreamViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View itemView = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.list_item_crop_stream, viewGroup, false);
+
         return new CorpStreamViewHolder(itemView, mListener);
     }
 
@@ -84,9 +96,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     holder.tvWebPlainText.setVisibility(View.VISIBLE);
                     holder.wvCardRenderData.setVisibility(View.GONE);
                 } else {
-//                if (current.getMessageType().equals("Image") ||
-//                        current.getMessageType().equals("Message") ||
-//                        current.getMessageType().equals("MessageWithImage")) {
                     holder.tvWebPlainText.setVisibility(View.GONE);
                     holder.wvCardRenderData.setVisibility(View.VISIBLE);
                     holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
@@ -335,15 +344,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         DisplayMetrics displayMetrics = mContext.getResources()
                 .getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
-    public void setCorpStreamMessages(List<CropStreamMessage> list) {
-        this.mList = list;
-        position = mList.size();
-    }
-
-    public List<CropStreamMessage> getCorpStreamMessages() {
-        return this.mList;
     }
 
 
