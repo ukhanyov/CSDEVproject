@@ -40,7 +40,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         BottomNavigationView.OnNavigationItemSelectedListener,
-        CropStreamFragment.OnFragmentInteractionListener,
         ChatFragment.OnFragmentInteractionListener,
         FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {

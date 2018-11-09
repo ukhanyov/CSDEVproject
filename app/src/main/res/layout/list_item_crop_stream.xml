@@ -247,7 +247,7 @@
         android:scrollbars="none"
         android:id="@+id/list_item_wv_card_render"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="1dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"

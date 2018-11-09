@@ -4,12 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -71,7 +71,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
 
             // Sub root |5| universal for all roots
-            // TODO : look into bug when webview is not displaying image
+
             if (current.getMessageHttp() != null) {
                 if (current.getMessageType().equals("PlainText")) {
                     holder.tvWebPlainText.setText(current.getMessageHttp()
@@ -84,12 +84,18 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     holder.wvCardRenderData.setVisibility(View.GONE);
                 } else {
                     holder.tvWebPlainText.setVisibility(View.GONE);
-                    holder.wvCardRenderData.setVisibility(View.VISIBLE);
                     holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
-
-                    holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
-                    holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
-                    holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+                    holder.wvCardRenderData.setWebViewClient(new WebViewClient(){
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            super.onPageFinished(view, url);
+                            holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
+                            holder.wvCardRenderData.setVisibility(View.GONE);
+                            holder.wvCardRenderData.setVisibility(View.VISIBLE);
+                            holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
+                            holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+                        }
+                    });
                 }
             } else {
                 holder.wvCardRenderData.setVisibility(View.GONE);
@@ -119,6 +125,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     public int getItemCount() {
         if (mList != null) return mList.size();
         else return 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     // root |1|

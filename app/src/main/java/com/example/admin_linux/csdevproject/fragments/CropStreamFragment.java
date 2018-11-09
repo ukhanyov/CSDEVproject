@@ -117,6 +117,7 @@ public class CropStreamFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
         mAdapter = new CropStreamAdapter(cropStreamMessages, listener, rootView.getContext());
+        mAdapter.setHasStableIds(true);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
@@ -143,7 +144,7 @@ public class CropStreamFragment extends Fragment {
 
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                loadNextDataFromApi(linearLayoutManager.findFirstVisibleItemPosition());
+                loadNextDataFromApi();
             }
         };
         // Adds the scroll listener to RecyclerView
@@ -177,12 +178,11 @@ public class CropStreamFragment extends Fragment {
         return rootView;
     }
 
-    private void loadNextDataFromApi(int position) {
+    private void loadNextDataFromApi() {
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         fetchMoreData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                         preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
-                        cropStreamMessages.get(cropStreamMessages.size() - 2).getMessageTime(),
-                        position);
+                        cropStreamMessages.get(cropStreamMessages.size() - 5).getMessageTime());
 
         Log.d("fetchMoreData", "called");
     }
@@ -193,9 +193,6 @@ public class CropStreamFragment extends Fragment {
         outState.putParcelableArrayList("saved_instance_transferList", (ArrayList<? extends Parcelable>) cropStreamMessages);
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
 
     public void fetchData(String bearer, int yourPersonId) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
@@ -461,7 +458,7 @@ public class CropStreamFragment extends Fragment {
     }
 
 
-    public void fetchMoreData(String bearer, int yourPersonId, String date, int position) {
+    public void fetchMoreData(String bearer, int yourPersonId, String date) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<ApiResultOfFeedEventsModel> parsedJSON = service.getActivityCardFeedEventsByPersonAndTimeOfLastMessage(
                 bearer,
