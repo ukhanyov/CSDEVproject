@@ -69,20 +69,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
             // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
 
-            if (current.isFromOrganization()) {
-                if (current.getInvolvedPersonsNames().equals("you")) {
-                    bindViewsRootOne(current, holder); // root |1|
-                } else {
-                    bindViewsRootTwo(current, holder); // root |2|
-                }
-            } else {
-                if (current.getInvolvedPersonsNames().equals("you")) {
-                    bindViewsRootThree(current, holder); // root |3|
-                } else {
-                    bindViewsRootFour(current, holder);  // root |4|
-                }
-            }
-
             // Sub root |5| universal for all roots
             // TODO : look into bug when webview is not displaying image
             if (current.getMessageHttp() != null) {
@@ -107,6 +93,20 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             } else {
                 holder.wvCardRenderData.setVisibility(View.GONE);
                 holder.tvWebPlainText.setVisibility(View.GONE);
+            }
+
+            if (current.isFromOrganization()) {
+                if (current.getInvolvedPersonsNames().equals("you")) {
+                    bindViewsRootOne(current, holder); // root |1|
+                } else {
+                    bindViewsRootTwo(current, holder); // root |2|
+                }
+            } else {
+                if (current.getInvolvedPersonsNames().equals("you")) {
+                    bindViewsRootThree(current, holder); // root |3|
+                } else {
+                    bindViewsRootFour(current, holder);  // root |4|
+                }
             }
 
         } else {

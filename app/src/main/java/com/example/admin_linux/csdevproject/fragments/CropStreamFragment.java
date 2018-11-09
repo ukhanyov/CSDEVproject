@@ -53,9 +53,6 @@ public class CropStreamFragment extends Fragment {
 
     CropStreamAdapter mAdapter;
 
-    // Store a member variable for the listener
-    private EndlessRecyclerViewScrollListener scrollListener;
-
     public CropStreamFragment() {
         // Required empty public constructor
     }
@@ -124,7 +121,8 @@ public class CropStreamFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        // Store a member variable for the listener
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
 
             // Maybe add button "go to the top"
 //            @Override
