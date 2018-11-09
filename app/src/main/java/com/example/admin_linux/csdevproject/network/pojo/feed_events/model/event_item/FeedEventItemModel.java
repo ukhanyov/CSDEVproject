@@ -47,9 +47,9 @@ public class FeedEventItemModel {
 //    @Expose
 //    private int itemId;
 
-//    @SerializedName("CatalogEntryId")
-//    @Expose
-//    private int catalogEntryId;
+    @SerializedName("CatalogEntryId")
+    @Expose
+    private int catalogEntryId;
 
 //    @SerializedName("CatalogEntryItemTemplateId")
 //    @Expose
@@ -127,9 +127,9 @@ public class FeedEventItemModel {
 //        return itemId;
 //    }
 //
-//    public int getCatalogEntryId() {
-//        return catalogEntryId;
-//    }
+    public int getCatalogEntryId() {
+        return catalogEntryId;
+    }
 //
 //    public int getCatalogEntryItemTemplateId() {
 //        return catalogEntryItemTemplateId;

@@ -3,6 +3,9 @@ package com.example.admin_linux.csdevproject.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CropStreamMessage implements Parcelable {
 
     private String mPicture;
@@ -27,6 +30,10 @@ public class CropStreamMessage implements Parcelable {
     private String mMessageHttp;
     private double mAspectRatio;
     private String mMessageType;
+    private int mCatalogEntryId;
+    private List<TemplateItemModelBase> mTemplateItemModelBaseList;
+    private String mTemplateModelName;
+    private String mTemplateModelDescription;
 
     public CropStreamMessage(
             String profilePicture,
@@ -50,7 +57,11 @@ public class CropStreamMessage implements Parcelable {
             int cardRenderDataId,
             String messageHttp,
             double aspectRatio,
-            String messageType) {
+            String messageType,
+            int catalogEntryId,
+            List<TemplateItemModelBase> templateItemModelBaseList,
+            String templateModelName,
+            String templateModelDescription) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -74,6 +85,10 @@ public class CropStreamMessage implements Parcelable {
         this.mMessageHttp = messageHttp;
         this.mAspectRatio = aspectRatio;
         this.mMessageType = messageType;
+        this.mCatalogEntryId = catalogEntryId;
+        this.mTemplateItemModelBaseList = templateItemModelBaseList;
+        this.mTemplateModelName = templateModelName;
+        this.mTemplateModelDescription = templateModelDescription;
     }
 
     public String getProfilePicture() {
@@ -162,9 +177,21 @@ public class CropStreamMessage implements Parcelable {
         return mMessageType;
     }
 
+    public List<TemplateItemModelBase> getTemplateItemModelBaseList() {
+        return mTemplateItemModelBaseList;
+    }
+
+    public String getTemplateModelName() {
+        return mTemplateModelName;
+    }
+
+    public String getTemplateModelDescription() {
+        return mTemplateModelDescription;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[22];
+        String[] data = new String[25];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -188,7 +215,14 @@ public class CropStreamMessage implements Parcelable {
         this.mCardRenderDataId = Integer.valueOf(data[18]);
         this.mMessageHttp = data[19];
         this.mAspectRatio = Double.valueOf(data[20]);
-        this.mMessageType = data[21];
+        this.mCatalogEntryId = Integer.valueOf(data[21]);
+        this.mMessageType = data[22];
+        this.mTemplateModelName = data[23];
+        this.mTemplateModelDescription = data[24];
+
+        List<TemplateItemModelBase> list = new ArrayList<>();
+        in.readTypedList(list, TemplateItemModelBase.CREATOR);
+
     }
 
     @Override
@@ -220,8 +254,12 @@ public class CropStreamMessage implements Parcelable {
                 String.valueOf(this.mCardRenderDataId),
                 this.mMessageHttp,
                 String.valueOf(this.mAspectRatio),
-                this.mMessageType
+                String.valueOf(this.mCatalogEntryId),
+                this.mMessageType,
+                this.mTemplateModelName,
+                this.mTemplateModelDescription
         });
+        dest.writeTypedList(this.mTemplateItemModelBaseList);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -232,5 +270,6 @@ public class CropStreamMessage implements Parcelable {
         public CropStreamMessage[] newArray(int size) {
             return new CropStreamMessage[size];
         }
+
     };
 }

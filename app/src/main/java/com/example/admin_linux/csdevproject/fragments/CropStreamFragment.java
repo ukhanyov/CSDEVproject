@@ -25,9 +25,13 @@ import com.example.admin_linux.csdevproject.adapters.CropStreamAdapter;
 import com.example.admin_linux.csdevproject.adapters.CropStreamClickListener;
 import com.example.admin_linux.csdevproject.data.models.ConversationPerson;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.models.TemplateItemModelBase;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventCardRenderItems;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventCatalogEntries;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventItemModel;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.catalog_entry_model.CEMFormTemplate;
+import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.catalog_entry_model.item_model.CEMFormTemplateItemModelBase;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMInvolvedPerson;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMPerson;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
@@ -81,7 +85,7 @@ public class CropStreamFragment extends Fragment {
             String mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
 
             if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
-                if(bearer != null && mProfileFullName != null && mProfileUrl != null){
+                if (bearer != null && mProfileFullName != null && mProfileUrl != null) {
                     Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
                     intent.putExtra("transfer_profile_url", mProfileUrl);
                     intent.putExtra("transfer_full_name", mProfileFullName);
@@ -89,8 +93,8 @@ public class CropStreamFragment extends Fragment {
                     intent.putExtra("transfer_conversation_id", conversationId);
                     intent.putExtra("transfer_person_id", personId);
                     startActivity(intent);
-                }else {
-                    Log.d("CropStreamFragment","Error launching ConversationDetailsActivity");
+                } else {
+                    Log.d("CropStreamFragment", "Error launching ConversationDetailsActivity");
                 }
 
             }
@@ -167,7 +171,7 @@ public class CropStreamFragment extends Fragment {
 
             SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
             fetchData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
-                            preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
+                    preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
         });
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.black,
@@ -181,8 +185,8 @@ public class CropStreamFragment extends Fragment {
     private void loadNextDataFromApi() {
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         fetchMoreData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
-                        preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
-                        cropStreamMessages.get(cropStreamMessages.size()-1).getMessageTime());
+                preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
+                cropStreamMessages.get(cropStreamMessages.size() - 1).getMessageTime());
 
         Log.d("fetchMoreData", "called");
     }
@@ -213,8 +217,15 @@ public class CropStreamFragment extends Fragment {
                 // Possible roots |2|: organization -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
                 // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
                 // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
+
                 // Sub root (for all main roots) |5|: FeedEvents -> FeedEventItemModel-> CardRenderDataId(not null) ->
                 // -> FeedEventItemModel -> CardRenderDataModel -> CardRenderDataId -> CardRenderTypes = CardMessage -> CardMessage
+
+                // Sub root (for all main roots) |6|: FeedEvents -> CatalogEntryId(not null) -> CatalogEntries -> CatalogEntryInDetailsModel ->
+                // FormTemplateModel(not null) -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+
+                // Sub root (for all main roots) |7|: FeedEvents -> CatalogEntryId(null) -> CardRenderDataModel -> CatalogEntries -> CatalogEntryInDetailsModel ->
+                // FormTemplateModel(not null) -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
@@ -225,6 +236,8 @@ public class CropStreamFragment extends Fragment {
                     if (event.getOrganization() != null) {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |1|
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
@@ -247,7 +260,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -255,6 +272,8 @@ public class CropStreamFragment extends Fragment {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
@@ -277,7 +296,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -285,6 +308,8 @@ public class CropStreamFragment extends Fragment {
                     } else {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |3|
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
@@ -307,7 +332,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -316,6 +345,7 @@ public class CropStreamFragment extends Fragment {
 
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
 
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
@@ -339,7 +369,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -369,7 +403,7 @@ public class CropStreamFragment extends Fragment {
         return people;
     }
 
-    private List<String> populateListOfImages(List<FEIMInvolvedPerson> involvedPeople, int yourId){
+    private List<String> populateListOfImages(List<FEIMInvolvedPerson> involvedPeople, int yourId) {
         List<String> people = new ArrayList<>();
         for (FEIMInvolvedPerson person : involvedPeople) {
             if (person.getPersonId() != yourId) {
@@ -409,6 +443,54 @@ public class CropStreamFragment extends Fragment {
         return null;
     }
 
+    private List<TemplateItemModelBase> getListOfTemplateItemModelBaseItems(int id, List<FeedEventCatalogEntries> catalogEntries, List<FeedEventCardRenderItems> feedEventCardRenderItems) {
+        if (id != 0) {
+            if (catalogEntries != null) {
+                for (FeedEventCatalogEntries catalogEntry : catalogEntries) {
+                    if (id == catalogEntry.getCatalogEntryId()) {
+                        List<TemplateItemModelBase> returnList = new ArrayList<>();
+                        List<CEMFormTemplateItemModelBase> list = catalogEntry.getFormTemplateModel().getFormTemplateItems();
+                        for (CEMFormTemplateItemModelBase item : list) {
+                            returnList.add(new TemplateItemModelBase(item.getItemType(), item.getLabel(), item.getResourceUrl(), item.getInnerHtml()));
+                        }
+                        return returnList;
+                    }
+                }
+            } else if (feedEventCardRenderItems != null) {
+                for (FeedEventCardRenderItems cardRenderItem : feedEventCardRenderItems) {
+                    if (id == cardRenderItem.getCatalogEntry().getCatalogEntryId()) {
+                        List<TemplateItemModelBase> returnList = new ArrayList<>();
+                        List<CEMFormTemplateItemModelBase> list = cardRenderItem.getCatalogEntry().getFormTemplateModel().getFormTemplateItems();
+                        for (CEMFormTemplateItemModelBase item : list) {
+                            returnList.add(new TemplateItemModelBase(item.getItemType(), item.getLabel(), item.getResourceUrl(), item.getInnerHtml()));
+                        }
+                        return returnList;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private CEMFormTemplate getListOfTemplateItemModel(int id, List<FeedEventCatalogEntries> catalogEntries, List<FeedEventCardRenderItems> feedEventCardRenderItems) {
+        if (id != 0) {
+            if (catalogEntries != null) {
+                for (FeedEventCatalogEntries catalogEntry : catalogEntries) {
+                    if (id == catalogEntry.getCatalogEntryId()) {
+                        return catalogEntry.getFormTemplateModel();
+                    }
+                }
+            } else if (feedEventCardRenderItems != null) {
+                for (FeedEventCardRenderItems cardRenderItem : feedEventCardRenderItems) {
+                    if (id == cardRenderItem.getCatalogEntry().getCatalogEntryId()) {
+                        return cardRenderItem.getCatalogEntry().getFormTemplateModel();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private CropStreamMessage instantiateCropStreamMessage(String pictureUrl,
                                                            String fullName,
                                                            String corpName,
@@ -430,7 +512,11 @@ public class CropStreamFragment extends Fragment {
                                                            int cardRenderDataId,
                                                            String messageHttp,
                                                            double aspectRatio,
-                                                           String messageType) {
+                                                           String messageType,
+                                                           int catalogEntryId,
+                                                           List<TemplateItemModelBase> list,
+                                                           String templateName,
+                                                           String templateDescription) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -453,7 +539,11 @@ public class CropStreamFragment extends Fragment {
                 cardRenderDataId,
                 messageHttp,
                 aspectRatio,
-                messageType
+                messageType,
+                catalogEntryId,
+                list,
+                templateName,
+                templateDescription
         );
     }
 
@@ -479,6 +569,16 @@ public class CropStreamFragment extends Fragment {
                 // Possible roots |3|: organization(null) -> "Person" -> "ConversationId"(null) -> "InvolvedPersons"(null) -> you
                 // Possible roots |4|: organization(null) -> "Person" -> "ConversationId" -> "InvolvedPersons" -> list everyone but you
 
+                // Sub root (for all main roots) |5|: FeedEvents -> FeedEventItemModel-> CardRenderDataId(not null) ->
+                // -> FeedEventItemModel -> CardRenderDataModel -> CardRenderDataId -> CardRenderTypes = CardMessage -> CardMessage
+
+                // Sub root (for all main roots) |6|: FeedEvents -> CatalogEntryId(not null) -> CatalogEntries -> CatalogEntryInDetailsModel ->
+                // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+
+                // Sub root (for all main roots) |7|: FeedEvents -> CatalogEntryId(null) -> CardRenderDataModel -> CatalogEntries -> CatalogEntryInDetailsModel ->
+                // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+
+
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
                 for (FeedEventItemModel event : listOfEvents) {
@@ -486,6 +586,8 @@ public class CropStreamFragment extends Fragment {
                     if (event.getOrganization() != null) {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |1|
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
@@ -508,7 +610,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -516,6 +622,8 @@ public class CropStreamFragment extends Fragment {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getOrganization().getImageUrl(),
                                     event.getPerson().getPersonFullName(),
@@ -538,7 +646,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -546,6 +658,8 @@ public class CropStreamFragment extends Fragment {
                     } else {
                         if (event.getInvolvedPersons() == null) {
                             // Go root |3|
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
@@ -568,7 +682,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -576,6 +694,8 @@ public class CropStreamFragment extends Fragment {
                             // Go root |4|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
+
                             CropStreamMessage message = instantiateCropStreamMessage(
                                     event.getPerson().getIconPath(),
                                     event.getPerson().getPersonFullName(),
@@ -598,7 +718,11 @@ public class CropStreamFragment extends Fragment {
                                     event.getCardRenderDataId(),
                                     getMessageHttp(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
                                     getMessageAspectRatio(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
-                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()));
+                                    getMessageType(feedEventsModel.getFeedEventsModel().getCardRenderItems(), event.getCardRenderDataId()),
+                                    event.getCatalogEntryId(),
+                                    getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
+                                    (template != null) ? template.getName() : null,
+                                    (template != null) ? template.getDescription() : null);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);

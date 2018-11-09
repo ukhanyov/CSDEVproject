@@ -27,9 +27,9 @@ public class FeedEventCardRenderItems {
 //    @Expose
 //    private CardRenderTypes CardType;
 //
-//    @SerializedName("CatalogEntry")
-//    @Expose
-//    private CatalogEntryInDetailsModel CatalogEntry;
+    @SerializedName("CatalogEntry")
+    @Expose
+    private FeedEventCatalogEntries mCatalogEntry;
 
     @SerializedName("CardMessage")
     @Expose
@@ -66,5 +66,9 @@ public class FeedEventCardRenderItems {
 
     public CRMCardMessageModel getCardMessage() {
         return mCardMessage;
+    }
+
+    public FeedEventCatalogEntries getCatalogEntry() {
+        return mCatalogEntry;
     }
 }
