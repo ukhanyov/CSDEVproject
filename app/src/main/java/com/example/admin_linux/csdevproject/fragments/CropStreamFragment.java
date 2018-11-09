@@ -47,8 +47,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CropStreamFragment extends Fragment {
 
-    // TODO : look into start chat
-    // TODO : look into conversation
     // TODO : make proper recycler
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -80,18 +78,25 @@ public class CropStreamFragment extends Fragment {
         // -------------------------------------------------------------------------------------------
         CropStreamClickListener listener = (view, conversationId, personId, profileName, personsCorp, personsPictureUrl, messageText, key) -> {
 
-            String bearer = Objects.requireNonNull(getArguments()).getString("transferBearerToFragment");
-            String mProfileFullName = Objects.requireNonNull(getArguments()).getString("transferFullNameToFragment");
-            String mProfileUrl = Objects.requireNonNull(getArguments()).getString("transferProfileUrlToFragment");
+            SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+
+            String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
+            String mProfileFullName = preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null);
+            String mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
 
             if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
-                Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
-                intent.putExtra("transfer_profile_url", mProfileUrl);
-                intent.putExtra("transfer_full_name", mProfileFullName);
-                intent.putExtra("transfer_bearer", bearer);
-                intent.putExtra("transfer_conversation_id", conversationId);
-                intent.putExtra("transfer_person_id", personId);
-                startActivity(intent);
+                if(bearer != null && mProfileFullName != null && mProfileUrl != null){
+                    Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
+                    intent.putExtra("transfer_profile_url", mProfileUrl);
+                    intent.putExtra("transfer_full_name", mProfileFullName);
+                    intent.putExtra("transfer_bearer", bearer);
+                    intent.putExtra("transfer_conversation_id", conversationId);
+                    intent.putExtra("transfer_person_id", personId);
+                    startActivity(intent);
+                }else {
+                    Log.d("CropStreamFragment","Error launching ConversationDetailsActivity");
+                }
+
             }
 
             if (key.equals(Constants.CLICK_KEY_START_CHAT)) {

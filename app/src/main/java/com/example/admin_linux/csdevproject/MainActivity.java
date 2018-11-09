@@ -109,23 +109,6 @@ public class MainActivity extends AppCompatActivity implements
 
         fragmentManager = getSupportFragmentManager();
         fragmentCropStreamTransaction = new CropStreamFragment();
-        //viewModel = ViewModelProviders.of(this).get(CropStreamMessageViewModel.class);
-
-//        if (savedInstanceState != null) {
-//            //Restore the fragment's instance
-//            fragmentCropStreamTransaction = (CropStreamFragment) getSupportFragmentManager().getFragment(savedInstanceState, "CropStreamFragment");
-//            if (fragmentCropStreamTransaction != null) {
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
-//                        .commit();
-//            }
-//        } else {
-//            if (viewModel.getList().getValue() == null) {
-//                fetchUserData(mUserFirebaseId, mUserFirebasePhoneNumber);
-//            }
-//            starCropStreamFragment();
-//        }
 
         // Toolbar title
         mBinding.layoutToolbar.contentCropStream.tvToolbarTitle.setText(getString(R.string.title_cropstream));
@@ -324,27 +307,6 @@ public class MainActivity extends AppCompatActivity implements
                 .beginTransaction()
                 .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
                 .commit();
-//        viewModel.getList().observe(this, listArray -> {
-//            if (listArray != null) {
-//
-//                List<CropStreamMessage> transferList = new ArrayList<>(listArray);
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelableArrayList("transferList", (ArrayList<? extends Parcelable>) transferList);
-//                bundle.putString("transferBearerToFragment", mBearer);
-//                bundle.putString("transferProfileUrlToFragment", mProfileUrl);
-//                bundle.putString("transferFullNameToFragment", mFullName);
-//
-//
-//                fragmentCropStreamTransaction = new CropStreamFragment();
-//                fragmentCropStreamTransaction.setArguments(bundle);
-//
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
-//                        .commit();
-//            }
-//        });
     }
 
     public void ivSettingsClicked(View view) {
