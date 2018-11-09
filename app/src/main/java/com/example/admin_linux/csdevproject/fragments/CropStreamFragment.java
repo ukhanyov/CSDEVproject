@@ -182,7 +182,7 @@ public class CropStreamFragment extends Fragment {
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         fetchMoreData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                         preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
-                        cropStreamMessages.get(cropStreamMessages.size() - 5).getMessageTime());
+                        cropStreamMessages.get(cropStreamMessages.size()-1).getMessageTime());
 
         Log.d("fetchMoreData", "called");
     }
