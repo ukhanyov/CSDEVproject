@@ -103,6 +103,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             bindWebView(current, holder);
 
             // Sub root |6| & |7|
+            // TODO: make max height of card 1.3 of width
+            // TODO: figure out what to do with radar
             bindCatalogEntry(holder, current);
 
         } else {
@@ -154,8 +156,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     // root |2|
     private void bindViewsRootTwo(CropStreamMessage current, CorpStreamViewHolder holder) {
 
-        String[] persons = current.getInvolvedPersonsNames().split(",");
-        bindImageMultiple(holder, current.getProfileName(), persons, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
+        bindImageMultiple(holder,
+                current.getCombineImageNameFirst(),
+                current.getCombineImageNameSecond(),
+                current.getCombineImageUrlFirst(),
+                current.getCombineImageUrlSecond());
 
         // Bind name
         bindName(holder, current.getProfileName(), null);
@@ -213,8 +218,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     // root |4|
     private void bindViewsRootFour(CropStreamMessage current, CorpStreamViewHolder holder) {
 
-        String[] persons = current.getInvolvedPersonsNames().split(",");
-        bindImageMultiple(holder, current.getProfileName(), persons, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
+        bindImageMultiple(holder,
+                current.getCombineImageNameFirst(),
+                current.getCombineImageNameSecond(),
+                current.getCombineImageUrlFirst(),
+                current.getCombineImageUrlSecond());
 
         // Bind name
         bindName(holder, current.getProfileName(), current.getProfileCorpName());
@@ -242,53 +250,45 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     private void bindImage(CorpStreamViewHolder holder, String name, String urlOne) {
 
-        if (urlOne != null) {
+        if (urlOne != null && !urlOne.equals("")) {
             Picasso.get().load(urlOne).fit().centerInside()
                     .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new RoundCorners(dpToPx(8), dpToPx(0)))
                     .into(holder.ivProfilePicture);
+        } else {
+            holder.ivProfilePicture.setImageDrawable(makeCircleWithALatter(name));
         }
-//        else {
-//            holder.ivProfilePicture.setImageDrawable(makeCircleWithALatter(name));
-//        }
         holder.ivProfilePictureMashTop.setVisibility(View.GONE);
         holder.ivProfilePictureMashBottom.setVisibility(View.GONE);
         holder.ivProfilePicture.setVisibility(View.VISIBLE);
     }
 
-    private void bindImageMultiple(CorpStreamViewHolder holder,String defaultName, String[] names, String urlOne, String urlTwo) {
+    private void bindImageMultiple(CorpStreamViewHolder holder, String nameOne, String nameTwo, String urlOne, String urlTwo) {
+
+        // TODO : some bug with missing name
 
         if (urlOne != null) {
-            Picasso.get().load(urlTwo).fit().centerInside()
-                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
-                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                    .transform(new CircleTransform())
-                    .into(holder.ivProfilePictureMashBottom);
-        }
-//        else {
-//            if(names.length != 0){
-//                holder.ivProfilePictureMashBottom.setImageDrawable(makeCircleWithALatter(names[0]));
-//            }else {
-//                holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(defaultName));
-//            }
-//        }
-
-        if (urlTwo != null) {
             Picasso.get().load(urlOne).fit().centerInside()
                     .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new CircleTransform())
-                    .into(holder.ivProfilePictureMashTop);
+                    .into(holder.ivProfilePictureMashBottom);
+        } else {
+            holder.ivProfilePictureMashBottom.setImageDrawable(makeCircleWithALatter(nameOne));
+            holder.ivProfilePictureMashTop.setAdjustViewBounds(true);
         }
-//          else {
-//            if(names.length > 1){
-//                holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(names[1]));
-//            }else {
-//                holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(defaultName));
-//            }
-//
-//        }
+
+        if (urlTwo != null) {
+            Picasso.get().load(urlTwo).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .transform(new CircleTransform())
+                    .into(holder.ivProfilePictureMashTop);
+        } else {
+            holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(nameTwo));
+            holder.ivProfilePictureMashTop.setAdjustViewBounds(true);
+        }
 
         holder.ivProfilePictureMashTop.setVisibility(View.VISIBLE);
         holder.ivProfilePictureMashBottom.setVisibility(View.VISIBLE);
@@ -500,19 +500,19 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         holder.llCatalogEntry.addView(textView);
     }
 
-//    private Drawable makeCircleWithALatter(String name) {
-//        if(name.length() != 0) {
-//            if (name.contains(" ")) {
-//                String[] list = name.split(" ");
-//                char charName = list[0].charAt(0);
-//                char charSecondName = list[1].charAt(0);
-//                return TextDrawable.builder().buildRound(String.valueOf(charName) + String.valueOf(charSecondName), ColorPicker.pickRandomColor());
-//            } else {
-//                char charName = name.charAt(0);
-//                return TextDrawable.builder().buildRound(String.valueOf(charName), ColorPicker.pickRandomColor());
-//            }
-//        }else return null;
-//    }
+    private Drawable makeCircleWithALatter(String name) {
+        if (name != null) {
+            if (name.contains(" ")) {
+                String[] list = name.split(" ");
+                char charName = list[0].charAt(0);
+                char charSecondName = list[1].charAt(0);
+                return TextDrawable.builder().buildRound(String.valueOf(charName) + String.valueOf(charSecondName), ColorPicker.pickRandomColor());
+            } else {
+                char charName = name.charAt(0);
+                return TextDrawable.builder().buildRound(String.valueOf(charName), ColorPicker.pickRandomColor());
+            }
+        } else return null;
+    }
 
     // Old one was with feed type
     private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChat) {

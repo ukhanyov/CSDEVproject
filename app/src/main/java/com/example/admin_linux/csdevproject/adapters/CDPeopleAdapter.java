@@ -46,7 +46,7 @@ public class CDPeopleAdapter extends RecyclerView.Adapter<CDPeopleAdapter.CDPeop
             CDParticipants current = mList.get(i);
 
             // Bind persons picture
-            if(current.getPersonImageUrl() != null){
+            if(current.getPersonImageUrl() != null && !current.getPersonImageUrl().equals("")){
                 Picasso.get().load(current.getPersonImageUrl()).fit().centerInside()
                         .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                         .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))

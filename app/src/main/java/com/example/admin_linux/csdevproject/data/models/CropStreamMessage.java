@@ -20,6 +20,8 @@ public class CropStreamMessage implements Parcelable {
     private boolean mCombineImage;
     private String mCombineImageUrlFirst;
     private String mCombineImageUrlSecond;
+    private String mCombineImageNameFirst;
+    private String mCombineImageNameSecond;
     private String mFeedType;
     private boolean mFromOrganization;
     private String mConversationId;
@@ -48,6 +50,8 @@ public class CropStreamMessage implements Parcelable {
             boolean combineImage,
             String combineImageUrlFirst,
             String combineImageUrlSecond,
+            String combineImageNameFirst,
+            String combineImageNameSecond,
             String feedType,
             boolean isFromOrganization,
             String conversationId,
@@ -75,6 +79,8 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImage = combineImage;
         this.mCombineImageUrlFirst = combineImageUrlFirst;
         this.mCombineImageUrlSecond = combineImageUrlSecond;
+        this.mCombineImageNameFirst = combineImageNameFirst;
+        this.mCombineImageNameSecond = combineImageNameSecond;
         this.mFeedType = feedType;
         this.mFromOrganization = isFromOrganization;
         this.mConversationId = conversationId;
@@ -139,6 +145,14 @@ public class CropStreamMessage implements Parcelable {
         return mCombineImageUrlSecond;
     }
 
+    public String getCombineImageNameFirst() {
+        return mCombineImageNameFirst;
+    }
+
+    public String getCombineImageNameSecond() {
+        return mCombineImageNameSecond;
+    }
+
     public String getFeedType() {
         return mFeedType;
     }
@@ -191,7 +205,7 @@ public class CropStreamMessage implements Parcelable {
 
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[25];
+        String[] data = new String[27];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -206,19 +220,21 @@ public class CropStreamMessage implements Parcelable {
         this.mCombineImage = Boolean.getBoolean(data[9]);
         this.mCombineImageUrlFirst = data[10];
         this.mCombineImageUrlSecond = data[11];
-        this.mFeedType = data[12];
-        this.mFromOrganization = Boolean.getBoolean(data[13]);
-        this.mConversationId = data[14];
-        this.mPersonId = data[15];
-        this.mConversationChat = Boolean.getBoolean(data[16]);
-        this.mPersonPictureUrl = data[17];
-        this.mCardRenderDataId = Integer.valueOf(data[18]);
-        this.mMessageHttp = data[19];
-        this.mAspectRatio = Double.valueOf(data[20]);
-        this.mCatalogEntryId = Integer.valueOf(data[21]);
-        this.mMessageType = data[22];
-        this.mTemplateModelName = data[23];
-        this.mTemplateModelDescription = data[24];
+        this.mCombineImageNameFirst = data[12];
+        this.mCombineImageNameSecond = data[13];
+        this.mFeedType = data[14];
+        this.mFromOrganization = Boolean.getBoolean(data[15]);
+        this.mConversationId = data[16];
+        this.mPersonId = data[17];
+        this.mConversationChat = Boolean.getBoolean(data[18]);
+        this.mPersonPictureUrl = data[19];
+        this.mCardRenderDataId = Integer.valueOf(data[20]);
+        this.mMessageHttp = data[21];
+        this.mAspectRatio = Double.valueOf(data[22]);
+        this.mCatalogEntryId = Integer.valueOf(data[23]);
+        this.mMessageType = data[24];
+        this.mTemplateModelName = data[25];
+        this.mTemplateModelDescription = data[26];
 
         List<TemplateItemModelBase> list = new ArrayList<>();
         in.readTypedList(list, TemplateItemModelBase.CREATOR);
@@ -245,6 +261,8 @@ public class CropStreamMessage implements Parcelable {
                 String.valueOf(this.mCombineImage),
                 this.mCombineImageUrlFirst,
                 this.mCombineImageUrlSecond,
+                this.mCombineImageNameFirst,
+                this.mCombineImageNameSecond,
                 this.mFeedType,
                 String.valueOf(this.mFromOrganization),
                 this.mConversationId,

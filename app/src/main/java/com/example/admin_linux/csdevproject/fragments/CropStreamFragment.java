@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
@@ -251,6 +252,8 @@ public class CropStreamFragment extends Fragment {
                                     false,
                                     null,
                                     null,
+                                    null,
+                                    null,
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
@@ -272,6 +275,7 @@ public class CropStreamFragment extends Fragment {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            List<String> namesOfPeople = populateListOfImagesNames(event.getInvolvedPersons(), yourPersonId);
                             CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
 
                             CropStreamMessage message = instantiateCropStreamMessage(
@@ -287,6 +291,8 @@ public class CropStreamFragment extends Fragment {
                                     true,
                                     (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
                                     (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(0) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
@@ -323,6 +329,8 @@ public class CropStreamFragment extends Fragment {
                                     false,
                                     null,
                                     null,
+                                    null,
+                                    null,
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),
@@ -345,6 +353,7 @@ public class CropStreamFragment extends Fragment {
 
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            List<String> namesOfPeople = populateListOfImagesNames(event.getInvolvedPersons(), yourPersonId);
                             CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
 
                             CropStreamMessage message = instantiateCropStreamMessage(
@@ -360,6 +369,8 @@ public class CropStreamFragment extends Fragment {
                                     true,
                                     (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
                                     (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(0) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),
@@ -411,6 +422,26 @@ public class CropStreamFragment extends Fragment {
             }
         }
         return people;
+    }
+
+    private List<String> populateListOfImagesNames(List<FEIMInvolvedPerson> involvedPeople, int yourId){
+        List<String> peopleNames = new ArrayList<>();
+        for (FEIMInvolvedPerson person : involvedPeople) {
+            if (person.getPersonId() != yourId) {
+                peopleNames.add(person.getPersonFullName());
+            }
+        }
+        List<Integer> positionList = new ArrayList<>();
+        for (String item : peopleNames){
+            if(item == null || item.equals("")) positionList.add(peopleNames.indexOf(item));
+        }
+
+        if(positionList.size() != 0){
+            for (int iterator : positionList){
+                peopleNames.remove(iterator);
+            }
+        }
+        return peopleNames;
     }
 
     private String getMessageHttp(List<FeedEventCardRenderItems> list, int id) {
@@ -503,6 +534,8 @@ public class CropStreamFragment extends Fragment {
                                                            boolean isCombinedImage,
                                                            String firstImageUrl,
                                                            String secondImageUrl,
+                                                           String firstImageName,
+                                                           String secondImageName,
                                                            String feedType,
                                                            boolean isFromOrganization,
                                                            String conversationId,
@@ -530,6 +563,8 @@ public class CropStreamFragment extends Fragment {
                 isCombinedImage,
                 firstImageUrl,
                 secondImageUrl,
+                firstImageName,
+                secondImageName,
                 feedType,
                 isFromOrganization,
                 conversationId,
@@ -601,6 +636,8 @@ public class CropStreamFragment extends Fragment {
                                     false,
                                     null,
                                     null,
+                                    null,
+                                    null,
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
@@ -622,6 +659,7 @@ public class CropStreamFragment extends Fragment {
                             // Go root |2|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            List<String> namesOfPeople = populateListOfImagesNames(event.getInvolvedPersons(), yourPersonId);
                             CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
 
                             CropStreamMessage message = instantiateCropStreamMessage(
@@ -637,6 +675,8 @@ public class CropStreamFragment extends Fragment {
                                     true,
                                     (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
                                     (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(0) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     true,
                                     String.valueOf(event.getConversationId()),
@@ -673,6 +713,8 @@ public class CropStreamFragment extends Fragment {
                                     false,
                                     null,
                                     null,
+                                    null,
+                                    null,
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),
@@ -694,6 +736,7 @@ public class CropStreamFragment extends Fragment {
                             // Go root |4|
                             List<String> involvedPeople = populateListOfInvolvedPeople(event.getInvolvedPersons(), person.getPersonIs(), yourPersonId);
                             List<String> picturesOfPeople = populateListOfImages(event.getInvolvedPersons(), yourPersonId);
+                            List<String> namesOfPeople = populateListOfImagesNames(event.getInvolvedPersons(), yourPersonId);
                             CEMFormTemplate template = getListOfTemplateItemModel(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems());
 
                             CropStreamMessage message = instantiateCropStreamMessage(
@@ -709,6 +752,8 @@ public class CropStreamFragment extends Fragment {
                                     true,
                                     (picturesOfPeople.size() > 1) ? picturesOfPeople.get(0) : null,
                                     (picturesOfPeople.size() > 2) ? picturesOfPeople.get(1) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(0) : null,
+                                    (namesOfPeople.size() > 2) ? namesOfPeople.get(1) : null,
                                     event.getFeedType(),
                                     false,
                                     String.valueOf(event.getConversationId()),

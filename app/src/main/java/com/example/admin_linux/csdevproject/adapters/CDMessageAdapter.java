@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.models.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
+import com.example.admin_linux.csdevproject.utils.ColorPicker;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -42,12 +45,15 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
             ConversationDetailsMessage current = mList.get(i);
 
             // Bind profile picture
-            Picasso.get().load(current.getProfilePictureUrl()).fit().centerInside()
-                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
-                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                    .transform(new CircleTransform())
-                    .into(holder.ivProfilePicture);
-
+            if(current.getProfilePictureUrl() != null && !current.getProfilePictureUrl().equals("")) {
+                Picasso.get().load(current.getProfilePictureUrl()).fit().centerInside()
+                        .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
+                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                        .transform(new CircleTransform())
+                        .into(holder.ivProfilePicture);
+            }else {
+                holder.ivProfilePicture.setImageDrawable(makeCircleWithALatter(current.getProfileName()));
+            }
             // Bind profile name
             holder.tvProfileName.setText(current.getProfileName());
 
@@ -68,6 +74,18 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
     public void setConversationDetailsMessages(List<ConversationDetailsMessage> list) {
         this.mList = list;
         notifyDataSetChanged();
+    }
+
+    private Drawable makeCircleWithALatter(String name) {
+        if(name.contains(" ")){
+            String[] list = name.split(" ");
+            char charName = list[0].charAt(0);
+            char charSecondName = list[1].charAt(0);
+            return TextDrawable.builder().buildRound(String.valueOf(charName) + String.valueOf(charSecondName), ColorPicker.pickRandomColor());
+        }else {
+            char charName = name.charAt(0);
+            return TextDrawable.builder().buildRound(String.valueOf(charName), ColorPicker.pickRandomColor());
+        }
     }
 
     class CDMessageViewHolder extends RecyclerView.ViewHolder{
