@@ -125,4 +125,6 @@
 
     <!--Auth stuff-->
 
+    <string name="footer_description">*%s*</string>
+
 </resources>

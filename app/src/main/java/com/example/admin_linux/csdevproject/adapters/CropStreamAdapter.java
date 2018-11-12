@@ -159,7 +159,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     TextView textView = new TextView(mContext);
                     textView.setTextSize(dpToPx(3));
                     textView.setTextColor(mContext.getColor(R.color.grey_500));
-                    textView.setText("*" + current.getTemplateModelDescription() + "*");
+                    textView.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
                     textView.setId(list.size() + 20);
                     textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     holder.llCatalogEntry.addView(textView);
