@@ -21,6 +21,7 @@ import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.data.models.TemplateItemModelBase;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
+import com.example.admin_linux.csdevproject.utils.ColorPicker;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
@@ -124,7 +125,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindViewsRootOne(CropStreamMessage current, CorpStreamViewHolder holder) {
 
         // Bind profile picture
-        bindImage(holder, current.getProfilePicture(), null);
+        bindImage(holder, current.getProfileName(), current.getProfilePicture());
 
         // Bind name
         bindName(holder, current.getProfileName(), null);
@@ -153,7 +154,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     // root |2|
     private void bindViewsRootTwo(CropStreamMessage current, CorpStreamViewHolder holder) {
 
-        bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
+        String[] persons = current.getInvolvedPersonsNames().split(",");
+        bindImageMultiple(holder, current.getProfileName(), persons, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
 
         // Bind name
         bindName(holder, current.getProfileName(), null);
@@ -183,7 +185,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindViewsRootThree(CropStreamMessage current, CorpStreamViewHolder holder) {
 
         // Bind profile picture
-        bindImage(holder, current.getProfilePicture(), null);
+        bindImage(holder, current.getProfileName(), current.getProfilePicture());
 
         // Bind name
         bindName(holder, current.getProfileName(), current.getProfileCorpName());
@@ -211,7 +213,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     // root |4|
     private void bindViewsRootFour(CropStreamMessage current, CorpStreamViewHolder holder) {
 
-        bindImage(holder, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
+        String[] persons = current.getInvolvedPersonsNames().split(",");
+        bindImageMultiple(holder, current.getProfileName(), persons, current.getCombineImageUrlFirst(), current.getCombineImageUrlSecond());
 
         // Bind name
         bindName(holder, current.getProfileName(), current.getProfileCorpName());
@@ -237,35 +240,59 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     }
 
-    private void bindImage(CorpStreamViewHolder holder, String urlOne, String urlTwo) {
+    private void bindImage(CorpStreamViewHolder holder, String name, String urlOne) {
 
-        if (urlTwo == null) {
+        if (urlOne != null) {
             Picasso.get().load(urlOne).fit().centerInside()
                     .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new RoundCorners(dpToPx(8), dpToPx(0)))
                     .into(holder.ivProfilePicture);
+        }
+//        else {
+//            holder.ivProfilePicture.setImageDrawable(makeCircleWithALatter(name));
+//        }
+        holder.ivProfilePictureMashTop.setVisibility(View.GONE);
+        holder.ivProfilePictureMashBottom.setVisibility(View.GONE);
+        holder.ivProfilePicture.setVisibility(View.VISIBLE);
+    }
 
-            holder.ivProfilePictureMashTop.setVisibility(View.GONE);
-            holder.ivProfilePictureMashBottom.setVisibility(View.GONE);
-            holder.ivProfilePicture.setVisibility(View.VISIBLE);
-        } else {
-            Picasso.get().load(urlOne).fit().centerInside()
-                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
-                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                    .transform(new CircleTransform())
-                    .into(holder.ivProfilePictureMashTop);
+    private void bindImageMultiple(CorpStreamViewHolder holder,String defaultName, String[] names, String urlOne, String urlTwo) {
 
+        if (urlOne != null) {
             Picasso.get().load(urlTwo).fit().centerInside()
                     .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new CircleTransform())
                     .into(holder.ivProfilePictureMashBottom);
-
-            holder.ivProfilePictureMashTop.setVisibility(View.VISIBLE);
-            holder.ivProfilePictureMashBottom.setVisibility(View.VISIBLE);
-            holder.ivProfilePicture.setVisibility(View.GONE);
         }
+//        else {
+//            if(names.length != 0){
+//                holder.ivProfilePictureMashBottom.setImageDrawable(makeCircleWithALatter(names[0]));
+//            }else {
+//                holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(defaultName));
+//            }
+//        }
+
+        if (urlTwo != null) {
+            Picasso.get().load(urlOne).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .transform(new CircleTransform())
+                    .into(holder.ivProfilePictureMashTop);
+        }
+//          else {
+//            if(names.length > 1){
+//                holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(names[1]));
+//            }else {
+//                holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(defaultName));
+//            }
+//
+//        }
+
+        holder.ivProfilePictureMashTop.setVisibility(View.VISIBLE);
+        holder.ivProfilePictureMashBottom.setVisibility(View.VISIBLE);
+        holder.ivProfilePicture.setVisibility(View.GONE);
     }
 
     private void bindName(CorpStreamViewHolder holder, String nameOne, String nameTwo) {
@@ -294,17 +321,17 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindMessagePicture(CorpStreamViewHolder holder, String pictureUrl) {
-        if (pictureUrl != null) {
-            holder.ivMessagePicture.setVisibility(View.VISIBLE);
-            Picasso.get().load(pictureUrl).fit().centerInside()
-                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
-                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-                    .into(holder.ivMessagePicture);
-        } else {
-            holder.ivMessagePicture.setVisibility(View.GONE);
-        }
-    }
+//    private void bindMessagePicture(CorpStreamViewHolder holder, String pictureUrl) {
+//        if (pictureUrl != null) {
+//            holder.ivMessagePicture.setVisibility(View.VISIBLE);
+//            Picasso.get().load(pictureUrl).fit().centerInside()
+//                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
+//                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+//                    .into(holder.ivMessagePicture);
+//        } else {
+//            holder.ivMessagePicture.setVisibility(View.GONE);
+//        }
+//    }
 
     private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage, boolean isAChat) {
         if (isFirstMessage) {
@@ -399,8 +426,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 TextView textView = new TextView(mContext);
                 textView.setTextSize(dpToPx(3));
                 textView.setTextColor(mContext.getColor(R.color.grey_500));
-                if(current.getTemplateModelDescription().contains("*")) textView.setText(current.getTemplateModelDescription());
-                else textView.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
+                if (current.getTemplateModelDescription().contains("*"))
+                    textView.setText(current.getTemplateModelDescription());
+                else
+                    textView.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
                 textView.setId(list.size() + 20);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(50, 0, 0, 50);
@@ -471,12 +500,19 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         holder.llCatalogEntry.addView(textView);
     }
 
-    private Drawable makeCircleWithALatter(String name, String secondName) {
-        // TODO: finish this to redraw image (first letters on name and second name)
-        char charName = name.charAt(0);
-        char charSecondName = secondName.charAt(0);
-        return TextDrawable.builder().buildRect(String.valueOf(charName) + String.valueOf(charSecondName), Color.RED);
-    }
+//    private Drawable makeCircleWithALatter(String name) {
+//        if(name.length() != 0) {
+//            if (name.contains(" ")) {
+//                String[] list = name.split(" ");
+//                char charName = list[0].charAt(0);
+//                char charSecondName = list[1].charAt(0);
+//                return TextDrawable.builder().buildRound(String.valueOf(charName) + String.valueOf(charSecondName), ColorPicker.pickRandomColor());
+//            } else {
+//                char charName = name.charAt(0);
+//                return TextDrawable.builder().buildRound(String.valueOf(charName), ColorPicker.pickRandomColor());
+//            }
+//        }else return null;
+//    }
 
     // Old one was with feed type
     private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChat) {
