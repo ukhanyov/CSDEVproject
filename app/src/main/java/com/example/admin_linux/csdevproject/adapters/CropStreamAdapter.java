@@ -390,7 +390,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 textView.setText(current.getTemplateModelName());
                 textView.setId(list.size() + 10);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(0, 50, 0, 0);
+                params.setMargins(50, 50, 0, 0);
                 textView.setLayoutParams(params);
                 holder.llCatalogEntry.addView(textView);
             }
@@ -402,7 +402,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 if(current.getTemplateModelDescription().contains("*")) textView.setText(current.getTemplateModelDescription());
                 else textView.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
                 textView.setId(list.size() + 20);
-                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(50, 0, 0, 50);
+                textView.setLayoutParams(params);
                 holder.llCatalogEntry.addView(textView);
             }
 
@@ -434,7 +436,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     private void addWebViewMessageToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(50, 0, 0, 0);
+        webView.setLayoutParams(params);
         webView.loadDataWithBaseURL(null, item.getLabel(), "text/html; charset=utf-8", "utf-8", null);
         webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
@@ -461,7 +465,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         textView.setTextColor(mContext.getColor(R.color.black));
         textView.setText(item.getLabel());
         textView.setId(list.indexOf(item));
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(50, 0, 0, 0);
+        textView.setLayoutParams(params);
         holder.llCatalogEntry.addView(textView);
     }
 
