@@ -316,8 +316,8 @@ public class MainActivity extends AppCompatActivity implements
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
 
         mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture.setBackground(null);
-        Picasso.with(this).load(preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null)).fit().centerInside()
-                .placeholder(getDrawable(R.drawable.ic_profile_default))
+        Picasso.get().load(preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null)).fit().centerInside()
+                .placeholder(Objects.requireNonNull(getDrawable(R.drawable.ic_profile_default)))
                 .error(Objects.requireNonNull(getDrawable(R.drawable.ic_error_red)))
                 .transform(new CircleTransform())
                 .into(mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture);

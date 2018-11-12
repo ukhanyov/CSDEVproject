@@ -42,8 +42,8 @@ public class CDPeopleAdapter extends RecyclerView.Adapter<CDPeopleAdapter.CDPeop
             CDParticipants current = mList.get(i);
 
             // Bind persons picture
-            Picasso.with(mContext).load(current.getPersonImageUrl()).fit().centerInside()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+            Picasso.get().load(current.getPersonImageUrl()).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new CircleTransform())
                     .into(holder.ivPersonPicture);

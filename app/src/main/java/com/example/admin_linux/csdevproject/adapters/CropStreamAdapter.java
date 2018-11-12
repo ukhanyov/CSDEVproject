@@ -3,9 +3,12 @@ package com.example.admin_linux.csdevproject.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -124,24 +128,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                         addWebViewToLinearLayout(holder, list, item);
                     }
                 }
-//
-//                for (TemplateItemModelBase item : list) {
-//                    if (item.getType().equals("HyperLink")) {
-//                        addLabelToLinearLayout(holder, list, item);
-//                    }
-//                }
-//
-//                for (TemplateItemModelBase item : list) {
-//                    if (item.getType().equals("Image")) {
-//                        addPictureToLinearLayout(holder, list, item);
-//                    }
-//                }
-//
-//                for (TemplateItemModelBase item : list) {
-//                    if (item.getType().equals("Message") || item.getType().equals("WeatherDaysOutlook") || item.getType().equals("WeatherRegionalRadar")) {
-//                        addWebViewToLinearLayout(holder, list, item);
-//                    }
-//                }
 
                 if(current.getTemplateModelName() != null){
                     TextView textView = new TextView(mContext);
@@ -196,12 +182,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     private void addPictureToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         ImageView imageView = new ImageView(mContext);
-        Picasso.with(mContext).load(item.getResourceUrl()).fit().centerInside()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
-                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+        Picasso.get().load((item.getResourceUrl())).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .into(imageView);
         imageView.setId(list.indexOf(item));
         imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         holder.llCatalogEntry.addView(imageView);
     }
 
@@ -345,8 +332,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindImage(CorpStreamViewHolder holder, String urlOne, String urlTwo) {
 
         if (urlTwo == null) {
-            Picasso.with(mContext).load(urlOne).fit().centerInside()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+            Picasso.get().load(urlOne).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new RoundCorners(dpToPx(8), dpToPx(0)))
                     .into(holder.ivProfilePicture);
@@ -355,14 +342,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.ivProfilePictureMashBottom.setVisibility(View.GONE);
             holder.ivProfilePicture.setVisibility(View.VISIBLE);
         } else {
-            Picasso.with(mContext).load(urlOne).fit().centerInside()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+            Picasso.get().load(urlOne).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new CircleTransform())
                     .into(holder.ivProfilePictureMashTop);
 
-            Picasso.with(mContext).load(urlTwo).fit().centerInside()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+            Picasso.get().load(urlTwo).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new CircleTransform())
                     .into(holder.ivProfilePictureMashBottom);
@@ -402,8 +389,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindMessagePicture(CorpStreamViewHolder holder, String pictureUrl) {
         if (pictureUrl != null) {
             holder.ivMessagePicture.setVisibility(View.VISIBLE);
-            Picasso.with(mContext).load(pictureUrl).fit().centerInside()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+            Picasso.get().load(pictureUrl).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .into(holder.ivMessagePicture);
         } else {

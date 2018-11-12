@@ -42,8 +42,8 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
             ConversationDetailsMessage current = mList.get(i);
 
             // Bind profile picture
-            Picasso.with(mContext).load(current.getProfilePictureUrl()).fit().centerInside()
-                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+            Picasso.get().load(current.getProfilePictureUrl()).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
                     .transform(new CircleTransform())
                     .into(holder.ivProfilePicture);
