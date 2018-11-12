@@ -3,12 +3,9 @@ package com.example.admin_linux.csdevproject.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +24,6 @@ import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -106,122 +102,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             bindWebView(current, holder);
 
             // Sub root |6| & |7|
-            if (current.getTemplateItemModelBaseList() != null) {
-                holder.llCatalogEntry.setVisibility(View.VISIBLE);
-                if (holder.llCatalogEntry.getChildCount() > 0)
-                    holder.llCatalogEntry.removeAllViews();
-
-                List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
-                for (TemplateItemModelBase item : list) {
-                    if (item.getType().equals("Label")) {
-                        addLabelToLinearLayout(holder, list, item);
-                    }
-
-                    if (item.getType().equals("HyperLink")) {
-                        addLabelToLinearLayout(holder, list, item);
-                    }
-
-                    if (item.getType().equals("Image")) {
-                        addPictureToLinearLayout(holder, list, item);
-                    }
-
-                    if (item.getType().equals("Message")) {
-                        addWebViewMessageToLinearLayout(holder, list, item);
-                    }
-
-                    if (item.getType().equals("WeatherDaysOutlook")) {
-                        addWebViewWeatherDaysOutlookToLinearLayout(holder, list, item);
-                    }
-
-                    if (item.getType().equals("WeatherRegionalRadar")) {
-                        addWebViewWeatherRegionalRadarToLinearLayout(holder, list, item);
-                    }
-                }
-
-                if (current.getTemplateModelName() != null) {
-                    TextView textView = new TextView(mContext);
-                    textView.setTextSize(dpToPx(3));
-                    textView.setTextColor(mContext.getColor(R.color.grey));
-                    textView.setText(current.getTemplateModelName());
-                    textView.setId(list.size() + 10);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(0, 75, 0, 0);
-                    textView.setLayoutParams(params);
-                    holder.llCatalogEntry.addView(textView);
-                }
-
-                if (current.getTemplateModelDescription() != null) {
-                    TextView textView = new TextView(mContext);
-                    textView.setTextSize(dpToPx(3));
-                    textView.setTextColor(mContext.getColor(R.color.grey_500));
-                    textView.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
-                    textView.setId(list.size() + 20);
-                    textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    holder.llCatalogEntry.addView(textView);
-                }
-
-            } else {
-                holder.llCatalogEntry.setVisibility(View.GONE);
-            }
-
+            bindCatalogEntry(holder, current);
 
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
         }
-    }
-
-    private void addWebViewWeatherRegionalRadarToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
-        WebView webView = new WebView(mContext);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
-        webView.setBackgroundColor(Color.TRANSPARENT);
-        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        webView.getLayoutParams().height = holder.vWidth.getWidth();
-        webView.setId(list.indexOf(item));
-        holder.llCatalogEntry.addView(webView);
-    }
-
-    private void addWebViewWeatherDaysOutlookToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
-        WebView webView = new WebView(mContext);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
-        webView.setBackgroundColor(Color.TRANSPARENT);
-        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        webView.setId(list.indexOf(item));
-        holder.llCatalogEntry.addView(webView);
-    }
-
-    private void addWebViewMessageToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
-        WebView webView = new WebView(mContext);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
-        webView.setBackgroundColor(Color.TRANSPARENT);
-        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        webView.setId(list.indexOf(item));
-        holder.llCatalogEntry.addView(webView);
-    }
-
-    private void addPictureToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
-        if (item.getResourceUrl() != null && !item.getResourceUrl().equals("")) {
-            ImageView imageView = new ImageView(mContext);
-            Picasso.get().load((item.getResourceUrl())).fit().centerInside()
-                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
-                    .into(imageView);
-            imageView.setId(list.indexOf(item));
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            holder.llCatalogEntry.addView(imageView);
-        }
-    }
-
-    private void addLabelToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
-        TextView textView = new TextView(mContext);
-        textView.setTextColor(mContext.getColor(R.color.black));
-        textView.setText(item.getLabel());
-        textView.setId(list.indexOf(item));
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        holder.llCatalogEntry.addView(textView);
     }
 
     @Override
@@ -431,6 +316,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
+    // Sub root |5|
     private void bindWebView(CropStreamMessage current, CorpStreamViewHolder holder) {
         if (current.getMessageHttp() != null) {
             if (current.getMessageType().equals("PlainText")) {
@@ -461,6 +347,122 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.wvCardRenderData.setVisibility(View.GONE);
             holder.tvWebPlainText.setVisibility(View.GONE);
         }
+    }
+
+    // Sub root |6| & |7|
+    private void bindCatalogEntry(@NonNull CorpStreamViewHolder holder, CropStreamMessage current) {
+        if (current.getTemplateItemModelBaseList() != null) {
+            holder.llCatalogEntry.setVisibility(View.VISIBLE);
+            if (holder.llCatalogEntry.getChildCount() > 0)
+                holder.llCatalogEntry.removeAllViews();
+
+            List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
+            for (TemplateItemModelBase item : list) {
+                if (item.getType().equals("Label")) {
+                    addLabelToLinearLayout(holder, list, item);
+                }
+
+                if (item.getType().equals("HyperLink")) {
+                    addLabelToLinearLayout(holder, list, item);
+                }
+
+                if (item.getType().equals("Image")) {
+                    addPictureToLinearLayout(holder, list, item);
+                }
+
+                if (item.getType().equals("Message")) {
+                    addWebViewMessageToLinearLayout(holder, list, item);
+                }
+
+                if (item.getType().equals("WeatherDaysOutlook")) {
+                    addWebViewWeatherDaysOutlookToLinearLayout(holder, list, item);
+                }
+
+                if (item.getType().equals("WeatherRegionalRadar")) {
+                    addWebViewWeatherRegionalRadarToLinearLayout(holder, list, item);
+                }
+            }
+
+            if (current.getTemplateModelName() != null) {
+                TextView textView = new TextView(mContext);
+                textView.setTextSize(dpToPx(4));
+                textView.setTextColor(mContext.getColor(R.color.grey));
+                textView.setText(current.getTemplateModelName());
+                textView.setId(list.size() + 10);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(0, 50, 0, 0);
+                textView.setLayoutParams(params);
+                holder.llCatalogEntry.addView(textView);
+            }
+
+            if (current.getTemplateModelDescription() != null) {
+                TextView textView = new TextView(mContext);
+                textView.setTextSize(dpToPx(3));
+                textView.setTextColor(mContext.getColor(R.color.grey_500));
+                if(current.getTemplateModelDescription().contains("*")) textView.setText(current.getTemplateModelDescription());
+                else textView.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
+                textView.setId(list.size() + 20);
+                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                holder.llCatalogEntry.addView(textView);
+            }
+
+        } else {
+            holder.llCatalogEntry.setVisibility(View.GONE);
+        }
+    }
+
+    private void addWebViewWeatherRegionalRadarToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        WebView webView = new WebView(mContext);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+        webView.getLayoutParams().height = holder.vWidth.getWidth();
+        webView.setId(list.indexOf(item) + 300);
+        holder.llCatalogEntry.addView(webView);
+    }
+
+    private void addWebViewWeatherDaysOutlookToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        WebView webView = new WebView(mContext);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+        webView.setId(list.indexOf(item) + 200);
+        holder.llCatalogEntry.addView(webView);
+    }
+
+    private void addWebViewMessageToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        WebView webView = new WebView(mContext);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        webView.loadDataWithBaseURL(null, item.getLabel(), "text/html; charset=utf-8", "utf-8", null);
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+        webView.setId(list.indexOf(item) + 1000);
+        holder.llCatalogEntry.addView(webView);
+    }
+
+    private void addPictureToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        if (item.getResourceUrl() != null && !item.getResourceUrl().equals("")) {
+            ImageView imageView = new ImageView(mContext);
+            Picasso.get().load((item.getResourceUrl())).fit().centerInside()
+                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
+                    .into(imageView);
+            imageView.setId(list.indexOf(item));
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            holder.llCatalogEntry.addView(imageView);
+        }
+    }
+
+    private void addLabelToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        TextView textView = new TextView(mContext);
+        textView.setTextColor(mContext.getColor(R.color.black));
+        textView.setText(item.getLabel());
+        textView.setId(list.indexOf(item));
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        holder.llCatalogEntry.addView(textView);
     }
 
     private Drawable makeCircleWithALatter(String name, String secondName) {
