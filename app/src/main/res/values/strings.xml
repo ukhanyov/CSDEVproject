@@ -117,6 +117,7 @@
     <string name="content_description_expand_right">Expand right</string>
     <string name="hint_organization">Organization</string>
     <string name="log_out">Log out</string>
+    <string name="content_description_catalog_entry_image">Catalog Entry Image</string>
 
     <string-array name="country_array">
         <item>+380</item>

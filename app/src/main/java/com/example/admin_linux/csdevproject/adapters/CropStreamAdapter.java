@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
+import com.example.admin_linux.csdevproject.data.models.TemplateItemModelBase;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
@@ -101,11 +102,70 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             bindWebView(current, holder);
 
             // Sub root |6| & |7|
-            if(current.getTemplateItemModelBaseList() != null){
+            if (current.getTemplateItemModelBaseList() != null) {
                 holder.llCatalogEntry.setVisibility(View.VISIBLE);
-                holder.tvInsideLL.setText("Booom");
+                if(holder.llCatalogEntry.getChildCount() > 0) holder.llCatalogEntry.removeAllViews();
 
-            }else {
+                List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
+                for (TemplateItemModelBase item : list) {
+                    if (item.getType().equals("Label")) {
+                        addLabelToLinearLayout(holder, list, item);
+                    }
+
+                    if (item.getType().equals("HyperLink")) {
+                        addLabelToLinearLayout(holder, list, item);
+                    }
+
+                    if (item.getType().equals("Image")) {
+                        addPictureToLinearLayout(holder, list, item);
+                    }
+
+                    if (item.getType().equals("Message") || item.getType().equals("WeatherDaysOutlook") || item.getType().equals("WeatherRegionalRadar")) {
+                        addWebViewToLinearLayout(holder, list, item);
+                    }
+                }
+//
+//                for (TemplateItemModelBase item : list) {
+//                    if (item.getType().equals("HyperLink")) {
+//                        addLabelToLinearLayout(holder, list, item);
+//                    }
+//                }
+//
+//                for (TemplateItemModelBase item : list) {
+//                    if (item.getType().equals("Image")) {
+//                        addPictureToLinearLayout(holder, list, item);
+//                    }
+//                }
+//
+//                for (TemplateItemModelBase item : list) {
+//                    if (item.getType().equals("Message") || item.getType().equals("WeatherDaysOutlook") || item.getType().equals("WeatherRegionalRadar")) {
+//                        addWebViewToLinearLayout(holder, list, item);
+//                    }
+//                }
+
+                if(current.getTemplateModelName() != null){
+                    TextView textView = new TextView(mContext);
+                    textView.setTextSize(dpToPx(3));
+                    textView.setTextColor(mContext.getColor(R.color.grey));
+                    textView.setText(current.getTemplateModelName());
+                    textView.setId(list.size() + 10);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(0,75,0,0);
+                    textView.setLayoutParams(params);
+                    holder.llCatalogEntry.addView(textView);
+                }
+
+                if(current.getTemplateModelDescription() != null){
+                    TextView textView = new TextView(mContext);
+                    textView.setTextSize(dpToPx(3));
+                    textView.setTextColor(mContext.getColor(R.color.grey_500));
+                    textView.setText("*" + current.getTemplateModelDescription() + "*");
+                    textView.setId(list.size() + 20);
+                    textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    holder.llCatalogEntry.addView(textView);
+                }
+
+            } else {
                 holder.llCatalogEntry.setVisibility(View.GONE);
             }
 
@@ -113,6 +173,45 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         } else {
             throw new IllegalArgumentException("Some error with binding data for CorpStream recycler view");
         }
+    }
+
+    private void addWebViewToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        WebView webView = new WebView(mContext);
+        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                //webView.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
+                webView.setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
+                webView.setBackgroundColor(Color.TRANSPARENT);
+                webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+            }
+        });
+        webView.setId(list.indexOf(item));
+        holder.llCatalogEntry.addView(webView);
+    }
+
+    private void addPictureToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        ImageView imageView = new ImageView(mContext);
+        Picasso.with(mContext).load(item.getResourceUrl()).fit().centerInside()
+                    .placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                    .into(imageView);
+        imageView.setId(list.indexOf(item));
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        holder.llCatalogEntry.addView(imageView);
+    }
+
+    private void addLabelToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+        TextView textView = new TextView(mContext);
+        textView.setTextColor(mContext.getColor(R.color.black));
+        textView.setText(item.getLabel());
+        textView.setId(list.indexOf(item));
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        holder.llCatalogEntry.addView(textView);
     }
 
     @Override
@@ -322,7 +421,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindWebView(CropStreamMessage current, CorpStreamViewHolder holder){
+    private void bindWebView(CropStreamMessage current, CorpStreamViewHolder holder) {
         if (current.getMessageHttp() != null) {
             if (current.getMessageType().equals("PlainText")) {
                 holder.tvWebPlainText.setText(current.getMessageHttp()
@@ -354,7 +453,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private Drawable makeCircleWithALatter(String name, String secondName){
+    private Drawable makeCircleWithALatter(String name, String secondName) {
         // TODO: finish this to redraw image (first letters on name and second name)
         char charName = name.charAt(0);
         char charSecondName = secondName.charAt(0);
@@ -401,7 +500,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         View vWidth;
         TextView tvWebPlainText;
         LinearLayout llCatalogEntry;
-        TextView tvInsideLL;
 
         private CropStreamClickListener mListener;
 
@@ -426,7 +524,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             vWidth = itemView.findViewById(R.id.list_item_v_width);
             tvWebPlainText = itemView.findViewById(R.id.list_item_tv_web_plain_text);
             llCatalogEntry = itemView.findViewById(R.id.list_item_ll_catalog_entry);
-            tvInsideLL = itemView.findViewById(R.id.list_item_tv_inside_ll);
 
             mListener = listener;
             tvTypeOfConversation.setOnClickListener(this);
