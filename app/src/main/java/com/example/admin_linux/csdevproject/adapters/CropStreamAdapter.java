@@ -267,6 +267,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindImageMultiple(CorpStreamViewHolder holder, String nameOne, String nameTwo, String urlOne, String urlTwo) {
 
         // TODO : some bug with missing name
+        // TODO : some weird bug with colors
 
         if (urlOne != null) {
             Picasso.get().load(urlOne).fit().centerInside()
