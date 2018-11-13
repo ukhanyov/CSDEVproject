@@ -4,11 +4,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -381,35 +386,52 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindCatalogEntry(@NonNull CorpStreamViewHolder holder, CropStreamMessage current) {
         if (current.getTemplateItemModelBaseList() != null) {
             holder.llCatalogEntry.setVisibility(View.VISIBLE);
+
+            LinearLayout linearLayout = new LinearLayout(mContext);
+            LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(holder.vWidth.getMeasuredWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setLayoutParams(paramsLL);
+            linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+                Log.d("CatalogEntry", "Height: " + linearLayout.getMeasuredHeight());
+                Log.d("CatalogEntry", "Width: " + linearLayout.getMeasuredWidth());
+                if (linearLayout.getMeasuredHeight() > linearLayout.getMeasuredWidth()){
+                    linearLayout.getLayoutParams().height = holder.vWidth.getMeasuredWidth();
+                    Log.d("CatalogEntry", "New Height: " + linearLayout.getMeasuredHeight());
+                }
+            });
+
+
             if (holder.llCatalogEntry.getChildCount() > 0)
                 holder.llCatalogEntry.removeAllViews();
 
             List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
             for (TemplateItemModelBase item : list) {
                 if (item.getType().equals("Label")) {
-                    addLabelToLinearLayout(holder, list, item);
+                    addLabelToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("HyperLink")) {
-                    addLabelToLinearLayout(holder, list, item);
+                    addLabelToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("Image")) {
-                    addPictureToLinearLayout(holder, list, item);
+                    addPictureToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("Message")) {
-                    addWebViewMessageToLinearLayout(holder, list, item);
+                    addWebViewMessageToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("WeatherDaysOutlook")) {
-                    addWebViewWeatherDaysOutlookToLinearLayout(holder, list, item);
+                    addWebViewWeatherDaysOutlookToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("WeatherRegionalRadar")) {
-                    addWebViewWeatherRegionalRadarToLinearLayout(holder, list, item);
+                    addWebViewWeatherRegionalRadarToLinearLayout(linearLayout, list, item);
                 }
             }
+
+            holder.llCatalogEntry.addView(linearLayout);
 
             if (current.getTemplateModelName() != null) {
                 TextView textView = new TextView(mContext);
@@ -418,7 +440,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 textView.setText(current.getTemplateModelName());
                 textView.setId(list.size() + 10);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(50, 50, 0, 0);
+                params.setMargins(25, 50, 0, 0);
                 textView.setLayoutParams(params);
                 holder.llCatalogEntry.addView(textView);
             }
@@ -433,7 +455,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     textView.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
                 textView.setId(list.size() + 20);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(50, 0, 0, 50);
+                params.setMargins(25, 10, 0, 50);
                 textView.setLayoutParams(params);
                 holder.llCatalogEntry.addView(textView);
             }
@@ -443,40 +465,39 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void addWebViewWeatherRegionalRadarToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addWebViewWeatherRegionalRadarToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
         webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        webView.getLayoutParams().height = holder.vWidth.getWidth();
+        //webView.getLayoutParams().height = linearLayout.getWidth();
         webView.setId(list.indexOf(item) + 300);
-        holder.llCatalogEntry.addView(webView);
+        linearLayout.addView(webView);
     }
 
-    private void addWebViewWeatherDaysOutlookToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addWebViewWeatherDaysOutlookToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
         webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         webView.setId(list.indexOf(item) + 200);
-        holder.llCatalogEntry.addView(webView);
+        linearLayout.addView(webView);
     }
 
-    private void addWebViewMessageToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addWebViewMessageToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(50, 0, 0, 0);
         webView.setLayoutParams(params);
         webView.loadDataWithBaseURL(null, item.getLabel(), "text/html; charset=utf-8", "utf-8", null);
         webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         webView.setId(list.indexOf(item) + 1000);
-        holder.llCatalogEntry.addView(webView);
+        linearLayout.addView(webView);
     }
 
-    private void addPictureToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addPictureToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         if (item.getResourceUrl() != null && !item.getResourceUrl().equals("")) {
             ImageView imageView = new ImageView(mContext);
             Picasso.get().load((item.getResourceUrl())).fit().centerInside()
@@ -485,20 +506,19 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             imageView.setId(list.indexOf(item));
             imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            holder.llCatalogEntry.addView(imageView);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            linearLayout.addView(imageView);
         }
     }
 
-    private void addLabelToLinearLayout(@NonNull CorpStreamViewHolder holder, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addLabelToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         TextView textView = new TextView(mContext);
         textView.setTextColor(mContext.getColor(R.color.black));
         textView.setText(item.getLabel());
         textView.setId(list.indexOf(item));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(50, 0, 0, 0);
         textView.setLayoutParams(params);
-        holder.llCatalogEntry.addView(textView);
+        linearLayout.addView(textView);
     }
 
     private Drawable makeCircleWithALatter(String name) {
@@ -515,9 +535,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         } else return null;
     }
 
-    // Old one was with feed type
     private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChat) {
-        //if (feedType.equals("ConversationMessage")) {
         if (isChat) {
             holder.ibUnderProfile.setVisibility(View.INVISIBLE);
             holder.tvUnderProfile.setVisibility(View.INVISIBLE);
