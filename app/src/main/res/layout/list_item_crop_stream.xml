@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/very_light_gray">
@@ -284,7 +285,33 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text">
+
+        <ScrollView
+            android:id="@+id/list_item_sw_catalog_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="1dp" />
+
+        <TextView
+            android:id="@+id/list_item_tv_catalog_entry_footer_top"
+            style="@style/TextViewGeneral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/grey"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/list_item_tv_catalog_entry_footer_bot"
+            style="@style/TextViewGeneral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_500"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>
