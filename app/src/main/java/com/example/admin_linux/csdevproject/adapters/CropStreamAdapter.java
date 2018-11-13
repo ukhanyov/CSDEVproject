@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -69,7 +70,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     @Override
     public void onBindViewHolder(@NonNull CorpStreamViewHolder holder, int i) {
-        // TODO : Look into strange bug in radar footer
         if (mList != null) {
             CropStreamMessage current = mList.get(i);
 
@@ -384,22 +384,33 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         if (current.getTemplateItemModelBaseList() != null) {
             holder.llCatalogEntry.setVisibility(View.VISIBLE);
 
-            int eWidth = holder.llCatalogEntry.getMeasuredWidth();
-
-            int accumulatedHeight = 0;
-
             if (holder.swCatalogEntry.getChildCount() > 0) holder.swCatalogEntry.removeAllViews();
 
-            holder.swCatalogEntry.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-                //holder.swCatalogEntry.measure(0 ,0);
+            ViewTreeObserver viewTreeObserver = holder.swCatalogEntry.getViewTreeObserver();
+            if (viewTreeObserver.isAlive()) {
+                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        holder.swCatalogEntry.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        int viewW = holder.swCatalogEntry.getWidth();
+                        int viewH = holder.swCatalogEntry.getHeight();
+                        Log.d("tree_obs", "viewWidth " + viewW);
+                        Log.d("tree_obs", "viewHeight " + viewH);
 
-                if (holder.swCatalogEntry.getMeasuredHeight() > eWidth) {
-                    holder.swCatalogEntry.getLayoutParams().height = (int) (eWidth + eWidth * 0.15);
-                } else {
-                    holder.swCatalogEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                }
-
-            });
+                        if(viewH > viewW){
+                            holder.swCatalogEntry.getLayoutParams().height = viewW;
+                            holder.swCatalogEntry.setVisibility(View.GONE);
+                            holder.swCatalogEntry.setVisibility(View.VISIBLE);
+                            Log.d("tree_obs", "new viewHeight " + holder.swCatalogEntry.getLayoutParams().height);
+                        }else {
+                            holder.swCatalogEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            holder.swCatalogEntry.setVisibility(View.GONE);
+                            holder.swCatalogEntry.setVisibility(View.VISIBLE);
+                        }
+                        Log.d("tree_obs", "---------------------------------------------");
+                    }
+                });
+            }
 
             LinearLayout linearLayout = new LinearLayout(mContext);
             LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -409,29 +420,29 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
             for (TemplateItemModelBase item : list) {
                 if (item.getType().equals("Label")) {
-                    addLabelToLinearLayout(linearLayout, list, item, accumulatedHeight);
+                    addLabelToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("HyperLink")) {
-                    addLabelToLinearLayout(linearLayout, list, item, accumulatedHeight);
+                    addLabelToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("Image")) {
-                    addPictureToLinearLayout(linearLayout, list, item, accumulatedHeight);
+                    addPictureToLinearLayout(linearLayout, list, item);
                 }
 
                 if (item.getType().equals("Message")) {
-                    addWebViewMessageToLinearLayout(linearLayout, list, item, accumulatedHeight);
+                    addWebViewMessageToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "Message: " + item.getLabel());
                 }
 
                 if (item.getType().equals("WeatherDaysOutlook")) {
-                    addWebViewWeatherDaysOutlookToLinearLayout(linearLayout, list, item, accumulatedHeight);
+                    addWebViewWeatherDaysOutlookToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "WeatherDaysOutlook: " + item.getInnerHtml());
                 }
 
                 if (item.getType().equals("WeatherRegionalRadar")) {
-                    addWebViewWeatherRegionalRadarToLinearLayout(linearLayout, list, item, accumulatedHeight);
+                    addWebViewWeatherRegionalRadarToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "WeatherRegionalRadar: " + item.getInnerHtml());
                 }
             }
@@ -455,7 +466,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         return head + htmlText + closedTag;
     }
 
-    private void addWebViewWeatherRegionalRadarToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item, int accumulatedHeight) {
+    private void addWebViewWeatherRegionalRadarToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -468,15 +479,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         String changeFontHtml = changedHeaderHtml(item.getInnerHtml());
         webView.loadDataWithBaseURL(null, changeFontHtml, "text/html", "UTF-8", null);
 
-        //webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
-
         webView.setId(list.indexOf(item) + 300);
         linearLayout.addView(webView);
-        accumulatedHeight += webView.getMeasuredHeight();
-        Log.d("sw_test", "H: " + accumulatedHeight);
     }
 
-    private void addWebViewWeatherDaysOutlookToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item, int accumulatedHeight) {
+    private void addWebViewWeatherDaysOutlookToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -490,32 +497,24 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         webView.loadDataWithBaseURL(null, changeFontHtml, "text/html", "UTF-8", null);
         webView.setId(list.indexOf(item) + 200);
         linearLayout.addView(webView);
-        accumulatedHeight += webView.getMeasuredHeight();
-        Log.d("sw_test", "H: " + accumulatedHeight);
     }
 
-    private void addWebViewMessageToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item, int accumulatedHeight) {
+    private void addWebViewMessageToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         if (item.getLabel() != null && !item.getLabel().equals("")) {
             WebView webView = new WebView(mContext);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             webView.setLayoutParams(params);
-
-//            webView.setWebChromeClient(new WebChromeClient());
-//            String changeFontHtml = changedHeaderHtml(item.getLabel());
-//            webView.loadDataWithBaseURL(null, changeFontHtml, "text/html", "UTF-8", null);
 
             webView.loadDataWithBaseURL(null, item.getLabel(), "text/html; charset=utf-8", "utf-8", null);
             webView.setBackgroundColor(Color.TRANSPARENT);
             webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
             webView.setId(list.indexOf(item) + 1000);
             linearLayout.addView(webView);
-            accumulatedHeight += webView.getMeasuredHeight();
-            Log.d("sw_test", "H: " + accumulatedHeight);
         }
 
     }
 
-    private void addPictureToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item, int accumulatedHeight) {
+    private void addPictureToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         if (item.getResourceUrl() != null && !item.getResourceUrl().equals("")) {
             ImageView imageView = new ImageView(mContext);
 
@@ -525,17 +524,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             imageView.setId(list.indexOf(item));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            //params.setMargins(0, 10, 60, 0);
             imageView.setLayoutParams(params);
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             linearLayout.addView(imageView);
-            accumulatedHeight += imageView.getMeasuredHeight();
-            Log.d("sw_test", "H: " + accumulatedHeight);
         }
     }
 
-    private void addLabelToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item, int accumulatedHeight) {
+    private void addLabelToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         TextView textView = new TextView(mContext);
         textView.setTextColor(mContext.getColor(R.color.black));
         textView.setText(item.getLabel());
@@ -545,8 +541,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         else params.setMargins(50, 0, 0, 0);
         textView.setLayoutParams(params);
         linearLayout.addView(textView);
-        accumulatedHeight += textView.getMeasuredHeight();
-        Log.d("sw_test", "H: " + accumulatedHeight);
     }
 
     private Drawable makeCircleWithALatter(String name) {
