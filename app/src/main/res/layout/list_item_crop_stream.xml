@@ -298,18 +298,21 @@
             style="@style/TextViewGeneral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/grey"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <TextView
+            android:layout_marginTop="1dp"
             android:id="@+id/list_item_tv_catalog_entry_footer_bot"
             style="@style/TextViewGeneral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/grey_500"
-            android:textSize="10sp"
-            tools:ignore="SmallSp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
