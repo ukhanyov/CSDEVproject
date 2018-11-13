@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -387,18 +388,19 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         if (current.getTemplateItemModelBaseList() != null) {
             holder.llCatalogEntry.setVisibility(View.VISIBLE);
 
-            LinearLayout linearLayout = new LinearLayout(mContext);
-            LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(holder.vWidth.getMeasuredWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.setLayoutParams(paramsLL);
-            linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-                Log.d("CatalogEntry", "Height: " + linearLayout.getMeasuredHeight());
-                Log.d("CatalogEntry", "Width: " + linearLayout.getMeasuredWidth());
-                if (linearLayout.getMeasuredHeight() > linearLayout.getMeasuredWidth()){
-                    linearLayout.getLayoutParams().height = holder.vWidth.getMeasuredWidth();
-                    Log.d("CatalogEntry", "New Height: " + linearLayout.getMeasuredHeight());
+            ScrollView scrollView = new ScrollView(mContext);
+            LinearLayout.LayoutParams paramsSW = new LinearLayout.LayoutParams(holder.vWidth.getMeasuredWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
+            scrollView.setLayoutParams(paramsSW);
+            scrollView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+                if (scrollView.getMeasuredHeight() > scrollView.getMeasuredWidth()){
+                    scrollView.getLayoutParams().height = holder.vWidth.getMeasuredWidth();
                 }
             });
+
+            LinearLayout linearLayout = new LinearLayout(mContext);
+            LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setLayoutParams(paramsLL);
 
 
             if (holder.llCatalogEntry.getChildCount() > 0)
@@ -431,7 +433,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 }
             }
 
-            holder.llCatalogEntry.addView(linearLayout);
+            scrollView.addView(linearLayout);
+            holder.llCatalogEntry.addView(scrollView);
 
             if (current.getTemplateModelName() != null) {
                 TextView textView = new TextView(mContext);
@@ -507,7 +510,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             imageView.setId(list.indexOf(item));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 10, 80, 0);
+            params.setMargins(0, 10, 70, 0);
             imageView.setLayoutParams(params);
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
