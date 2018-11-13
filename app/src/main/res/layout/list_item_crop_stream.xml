@@ -287,11 +287,18 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text">
 
-        <ScrollView
-            android:id="@+id/list_item_sw_catalog_entry"
+        <LinearLayout
+            android:background="@color/fui_transparent"
+            android:id="@+id/list_item_ll_catalog_entry_scroll_view_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="1dp" />
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:id="@+id/list_item_sw_catalog_entry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="1dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/list_item_tv_catalog_entry_footer_top"
@@ -304,12 +311,12 @@
             android:textSize="14sp" />
 
         <TextView
-            android:layout_marginTop="1dp"
             android:id="@+id/list_item_tv_catalog_entry_footer_bot"
             style="@style/TextViewGeneral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="1dp"
             android:layout_marginBottom="8dp"
             android:textColor="@color/grey_500"
             android:textSize="12sp" />
