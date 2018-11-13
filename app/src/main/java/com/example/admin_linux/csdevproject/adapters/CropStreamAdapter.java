@@ -500,13 +500,17 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void addPictureToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         if (item.getResourceUrl() != null && !item.getResourceUrl().equals("")) {
             ImageView imageView = new ImageView(mContext);
+
             Picasso.get().load((item.getResourceUrl())).fit().centerInside()
                     .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
                     .into(imageView);
+
             imageView.setId(list.indexOf(item));
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 10, 80, 0);
+            imageView.setLayoutParams(params);
             imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             linearLayout.addView(imageView);
         }
     }
