@@ -457,8 +457,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     int llW = holder.llCatalogEntrySVWrapper.getWidth();
                     int llH = holder.llCatalogEntrySVWrapper.getHeight();
 
+                    int swW = holder.swCatalogEntry.getWidth();
+                    int swH = holder.swCatalogEntry.getHeight();
 
-                    holder.llCatalogEntrySVWrapper.getLayoutParams().height = llW;
+                    // TODO : figure out what to do when the size of scrollview is smaller then linearLayout wrapper
+
+                    //if(swH < llH) holder.llCatalogEntrySVWrapper.getLayoutParams().height = swH;
+                    //else
+                        holder.llCatalogEntrySVWrapper.getLayoutParams().height = llW;
 
                 }
             });
