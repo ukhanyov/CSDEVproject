@@ -4,16 +4,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -392,7 +390,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             LinearLayout.LayoutParams paramsSW = new LinearLayout.LayoutParams(holder.vWidth.getMeasuredWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
             scrollView.setLayoutParams(paramsSW);
             scrollView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-                if (scrollView.getMeasuredHeight() > scrollView.getMeasuredWidth()){
+                if (scrollView.getMeasuredHeight() > scrollView.getMeasuredWidth()) {
                     scrollView.getLayoutParams().height = holder.vWidth.getMeasuredWidth();
                 }
             });
@@ -471,12 +469,26 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void addWebViewWeatherRegionalRadarToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
-        webView.setBackgroundColor(Color.TRANSPARENT);
-        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-        //webView.getLayoutParams().height = linearLayout.getWidth();
+
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
+
+        webView.setWebChromeClient(new WebChromeClient());
+        String changeFontHtml = changedHeaderHtml(item.getInnerHtml());
+        webView.loadDataWithBaseURL(null, changeFontHtml, "text/html", "UTF-8", null);
+
+        //webView.loadDataWithBaseURL(null, item.getInnerHtml(), "text/html; charset=utf-8", "utf-8", null);
+
         webView.setId(list.indexOf(item) + 300);
         linearLayout.addView(webView);
+    }
+
+    private static String changedHeaderHtml(String htmlText) {
+        String head = "<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" /></head>";
+        String closedTag = "</body></html>";
+        return head + htmlText + closedTag;
     }
 
     private void addWebViewWeatherDaysOutlookToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
@@ -510,7 +522,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
             imageView.setId(list.indexOf(item));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 10, 70, 0);
+            params.setMargins(0, 10, 60, 0);
             imageView.setLayoutParams(params);
             imageView.setAdjustViewBounds(true);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
