@@ -1,14 +1,21 @@
 package com.example.admin_linux.csdevproject;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -64,14 +71,17 @@ public class MainActivity extends AppCompatActivity implements
     //private CropStreamMessageViewModel viewModel;
     private CropStreamFragment fragmentCropStreamTransaction;
 
-
-
+    NotificationCompat.Builder mBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        // Notification
+        createNotificationChannel();
+        notificationBuilderSetup();
 
         Intent intent = getIntent();
         String mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
@@ -108,10 +118,11 @@ public class MainActivity extends AppCompatActivity implements
         int id = v.getId();
         switch (id) {
             case R.id.fab:
+                notificationMake();
                 animateFAB();
                 break;
-        }
 
+        }
     }
 
     @Override
@@ -131,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements
                         .commit();
 
                 makeChatToolbarVisible();
-
                 break;
 
             case R.id.action_favorites:
@@ -213,10 +223,10 @@ public class MainActivity extends AppCompatActivity implements
             mBinding.tvFavTitle3.startAnimation(fab_title_close_2);
             mBinding.tvFavTitle4.startAnimation(fab_title_close_1);
 
-            mBinding.tvFavTitle1.setVisibility(View.INVISIBLE);
-            mBinding.tvFavTitle2.setVisibility(View.INVISIBLE);
-            mBinding.tvFavTitle3.setVisibility(View.INVISIBLE);
-            mBinding.tvFavTitle4.setVisibility(View.INVISIBLE);
+            mBinding.tvFavTitle1.setVisibility(View.GONE);
+            mBinding.tvFavTitle2.setVisibility(View.GONE);
+            mBinding.tvFavTitle3.setVisibility(View.GONE);
+            mBinding.tvFavTitle4.setVisibility(View.GONE);
         } else {
 
             mBinding.fab.startAnimation(rotate_forward);
@@ -323,4 +333,95 @@ public class MainActivity extends AppCompatActivity implements
                 .into(mBinding.layoutToolbar.contentCropStream.ivToolbarProfilePicture);
         mBinding.layoutToolbar.contentCropStream.tvToolbarProfileName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
     }
+
+    // TODO : make sure this is called on application start
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(Constants.NOTIFICATION_CHANEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void notificationBuilderSetup() {
+        mBuilder = new NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANEL_ID)
+                .setSmallIcon(R.drawable.ic_dummy_default)
+                .setContentTitle("Notification title")
+                .setContentText("Notification context")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+    }
+
+    private void notificationMake(){
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(105, mBuilder.build());
+    }
+
+    private void notificationTapResponse(){
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, StartChatActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANEL_ID)
+                .setSmallIcon(R.drawable.ic_dummy_default)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+    }
+
+    private void registerAppForNotifications(){
+        // TODO : register app (duh)
+    }
+
+
+//    private void notificationChannelSetup(){
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            // Configure the channel
+//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//            NotificationChannel channel = new NotificationChannel("myChannelId", "My Channel", importance);
+//            channel.setDescription("Reminders");
+//            // Register the channel with the notifications manager
+//            NotificationManager mNotificationManager =
+//                    (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.createNotificationChannel(channel);
+//        }
+//    }
+//
+//    //  createNotification(56, R.drawable.ic_launcher, "New Message",
+////      "There is a new message from Bob!");
+//    private void createNotification(int nId, int iconRes, String title, String body) {
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+//                this).setSmallIcon(iconRes)
+//                .setContentTitle(title)
+//                .setContentText(body);
+//
+//        NotificationManager mNotificationManager =
+//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        // mId allows you to update the notification later on.
+//        mNotificationManager.notify(nId, mBuilder.build());
+//    }
+
+//    private void notificationCreationSetup{
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            // Builder class for devices targeting API 26+ requires a channel ID
+//            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "myChannelId")
+//                            .setSmallIcon(R.drawable.ic_dummy_default)
+//                            .setContentTitle("My notification")
+//                            .setContentText("Hello World!");
+//        } else {
+//            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            // mId allows you to update the notification later on.
+//            mNotificationManager.notify(mId, mBuilder.build());
+//        }
+    //}
 }

@@ -127,4 +127,9 @@
 
     <string name="footer_description">*%s*</string>
 
+    <!--Notification stuff-->
+    <string name="channel_name">notification_chanel_name</string>
+    <string name="channel_description">notification_chanel_description</string>
+    <!--Notification stuff-->
+
 </resources>

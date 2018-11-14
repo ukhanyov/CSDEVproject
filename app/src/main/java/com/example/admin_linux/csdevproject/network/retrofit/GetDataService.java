@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 
@@ -41,9 +42,19 @@ public interface GetDataService {
 
     // "api/v1/Conversation/ConversationDetails?ConversationId={ConversationId}&PersonId={PersonId}"
     @GET("api/v1/Conversation/ConversationDetails")
-    Call<ConversationDetailsReturnValue> geConversationDetail(
+    Call<ConversationDetailsReturnValue> getConversationDetail(
             @Header("Authorization") String BEARER,
             @Query("ConversationId") int conversationId,
             @Query("PersonId") int personId
+    );
+
+    // notification stuff
+    // "api/v1/User/RegisterDevice"
+    @POST("api/v1/User/RegisterDevice")
+    Call<ConversationDetailsReturnValue> postRegisterDevice(
+            //@Header("Authorization") String BEARER,
+            @Query("PersonId") int personId,
+            @Query("DeviceTokenId") String DeviceTokenId,
+            @Query("DeviceType") int DeviceType
     );
 }
