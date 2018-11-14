@@ -390,8 +390,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setLayoutParams(paramsLL);
 
-            boolean checkerOfImage = false;
-
             List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
             for (TemplateItemModelBase item : list) {
                 if (item.getType().equals("Label")) {
@@ -404,7 +402,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
                 if (item.getType().equals("Image")) {
                     addPictureToLinearLayout(linearLayout, list, item);
-                    checkerOfImage = true;
+                    //checkerOfImage = true;
                 }
 
                 if (item.getType().equals("Message")) {
@@ -423,7 +421,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 }
             }
 
-//            checkerOfImage &&
             if(list.size() == 1){
                 resizeSWCatalogEntry(holder);
             } else{
@@ -450,7 +447,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 public void onGlobalLayout() {
 
                     // TODO : Figure out how shrink a card with catalog items, if there are many of them
-
                     holder.llCatalogEntrySVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     holder.llCatalogEntrySVWrapper.getLayoutParams().height = holder.llCatalogEntrySVWrapper.getWidth();
 
