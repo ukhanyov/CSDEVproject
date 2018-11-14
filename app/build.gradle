@@ -60,16 +60,12 @@ dependencies {
     // Firebase stuff
     implementation 'com.google.firebase:firebase-core:16.0.5'
     implementation 'com.google.firebase:firebase-database:16.0.4'
-    // auth stuff
     implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
-    // storage stuff
     implementation 'com.google.firebase:firebase-storage:16.0.4'
-    // messaging (notifications) stuff
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    // Remote Config stuff
     implementation 'com.google.firebase:firebase-config:16.1.0'
-    // Notification stuff
+    implementation 'com.google.firebase:firebase-iid:17.0.4'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
 
