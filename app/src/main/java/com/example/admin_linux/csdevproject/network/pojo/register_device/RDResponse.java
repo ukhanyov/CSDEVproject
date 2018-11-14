@@ -11,7 +11,7 @@ public class RDResponse {
 
     @SerializedName("ResultCodeName")
     @Expose
-    private int mResultCodeName;
+    private String mResultCodeName;
 
     @SerializedName("ErrorMessage")
     @Expose
@@ -29,7 +29,7 @@ public class RDResponse {
         return mResultCode;
     }
 
-    public int getResultCodeName() {
+    public String getResultCodeName() {
         return mResultCodeName;
     }
 

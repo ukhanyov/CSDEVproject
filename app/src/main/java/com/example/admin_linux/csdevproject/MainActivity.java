@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements
                     editor.putString(Constants.PREF_PROFILE_DEVICE_TOKEN, mFirebaseToken);
                     editor.apply();
 
-                    postRegisterDevice(userModel.getPersonId(), mFirebaseToken);
+                    postRegisterDevice("Bearer " + userModel.getAuthorizeToken(), userModel.getPersonId(), mFirebaseToken);
 
                     starCropStreamFragment();
                 }
@@ -286,19 +286,18 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void postRegisterDevice(int personId, String deviceTokenId){
+    private void postRegisterDevice(String bearer, int personId, String deviceTokenId){
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<RDResponse> responseCall = service.postRegisterDevice(personId, deviceTokenId, Constants.DEVICE_TYPE);
+        Call<RDResponse> responseCall = service.postRegisterDevice(bearer, personId, deviceTokenId, Constants.DEVICE_TYPE);
         responseCall.enqueue(new Callback<RDResponse>() {
             @Override
             public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
-                RDResponse rdResponse = response.body();
-                Log.d("RegisterDevice_test", "result: " );
+
             }
 
             @Override
             public void onFailure(@NonNull Call<RDResponse> call, @NonNull Throwable t) {
-                Log.d("RegisterDevice_test", t.getMessage());
+                Log.d("RegisterDevice", "error: " + t.getMessage());
             }
         });
     }

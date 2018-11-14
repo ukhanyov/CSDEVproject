@@ -63,6 +63,7 @@ public interface GetDataService {
     @FormUrlEncoded
     @POST("api/v1/User/RegisterDevice")
     Call<RDResponse> postRegisterDevice(
+            @Header("Authorization") String BEARER,
             @Field("PersonId") int PersonId,
             @Field("DeviceTokenId") String DeviceTokenId,
             @Field("DeviceType") int DeviceType
