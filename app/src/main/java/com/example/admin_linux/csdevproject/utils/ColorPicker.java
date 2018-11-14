@@ -10,6 +10,7 @@ public class ColorPicker {
 
     // Maybe change color rotation (amount of available colors)
     public static int pickRandomColor() {
+        //return R.color.black;
         Random r = new Random();
         int value = r.nextInt(9);
 

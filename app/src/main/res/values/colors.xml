@@ -41,6 +41,7 @@
     <color name="green_900">#1B5E20</color>
 
     <color name="green_def">#4CAF50</color>
+    <color name="indigo">#303f9f</color>
     <!--ColorPicker-->
 
 </resources>
