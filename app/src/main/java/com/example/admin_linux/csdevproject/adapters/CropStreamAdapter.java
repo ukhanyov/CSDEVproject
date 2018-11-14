@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -383,26 +382,27 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
     private void bindCatalogEntry(@NonNull CorpStreamViewHolder holder, CropStreamMessage current) {
         if (current.getTemplateItemModelBaseList() != null) {
             holder.llCatalogEntry.setVisibility(View.VISIBLE);
-            resizeSWCatalogEntry(holder);
             holder.llCatalogEntry.requestDisallowInterceptTouchEvent(true);
-            if(holder.swCatalogEntry.getChildCount() > 0) holder.swCatalogEntry.removeAllViews();
+            if (holder.swCatalogEntry.getChildCount() > 0) holder.swCatalogEntry.removeAllViews();
 
 
 //            holder.swCatalogEntry.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
 //                @Override
 //                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
 //                    if(bottom > oldBottom){
-//                        resizeSWCatalogEntry(holder);
+//                        resizeLLWCatalogEntry(holder);
 //                    }
 //                }
 //            });
 
-            //resizeSWCatalogEntry(holder);
+            //resizeLLWCatalogEntry(holder);
 
             LinearLayout linearLayout = new LinearLayout(mContext);
             LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setLayoutParams(paramsLL);
+
+            boolean checkerOfImage = false;
 
             List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
             for (TemplateItemModelBase item : list) {
@@ -416,6 +416,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
                 if (item.getType().equals("Image")) {
                     addPictureToLinearLayout(linearLayout, list, item);
+                    checkerOfImage = true;
                 }
 
                 if (item.getType().equals("Message")) {
@@ -434,16 +435,39 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 }
             }
 
+            if(checkerOfImage && list.size() == 1){
+                resizeSWCatalogEntry(holder);
+            } else{
+                resizeLLWCatalogEntry(holder);
+            }
+
+
             holder.swCatalogEntry.addView(linearLayout);
 
             holder.tvFooterTop.setText(current.getTemplateModelName());
-            if (current.getTemplateModelDescription().contains("*")) holder.tvFooterBot.setText(current.getTemplateModelDescription());
-            else holder.tvFooterBot.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
+            if (current.getTemplateModelDescription().contains("*"))
+                holder.tvFooterBot.setText(current.getTemplateModelDescription());
+            else
+                holder.tvFooterBot.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
 
-            //resizeSWCatalogEntry(holder);
+            //resizeLLWCatalogEntry(holder);
 
         } else {
             holder.llCatalogEntry.setVisibility(View.GONE);
+        }
+    }
+
+    private void resizeLLWCatalogEntry(@NonNull CorpStreamViewHolder holder) {
+        ViewTreeObserver viewTreeObserver = holder.llCatalogEntrySVWrapper.getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    holder.llCatalogEntrySVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    holder.llCatalogEntrySVWrapper.getLayoutParams().height = holder.llCatalogEntrySVWrapper.getWidth();
+
+                }
+            });
         }
     }
 
@@ -454,17 +478,12 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 @Override
                 public void onGlobalLayout() {
                     holder.llCatalogEntrySVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    int llW = holder.llCatalogEntrySVWrapper.getWidth();
-                    int llH = holder.llCatalogEntrySVWrapper.getHeight();
 
                     int swW = holder.swCatalogEntry.getWidth();
                     int swH = holder.swCatalogEntry.getHeight();
 
-                    // TODO : figure out what to do when the size of scrollview is smaller then linearLayout wrapper
-
-                    //if(swH < llH) holder.llCatalogEntrySVWrapper.getLayoutParams().height = swH;
-                    //else
-                        holder.llCatalogEntrySVWrapper.getLayoutParams().height = llW;
+                    if(swH < swW) holder.llCatalogEntrySVWrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    else holder.llCatalogEntrySVWrapper.getLayoutParams().height = swW;
 
                 }
             });
@@ -550,7 +569,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         textView.setText(item.getLabel());
         textView.setId(list.indexOf(item));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        if(list.indexOf(item) == 0) params.setMargins(50, 50, 0, 50);
+        if (list.indexOf(item) == 0) params.setMargins(50, 50, 0, 50);
         else params.setMargins(50, 0, 0, 0);
         textView.setLayoutParams(params);
         linearLayout.addView(textView);
