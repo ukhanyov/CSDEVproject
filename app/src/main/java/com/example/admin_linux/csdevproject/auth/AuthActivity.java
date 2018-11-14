@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,7 +21,9 @@ import com.example.admin_linux.csdevproject.utils.URLSpanNoUnderline;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-public class AuthActivity extends AppCompatActivity{
+import java.util.Objects;
+
+public class AuthActivity extends AppCompatActivity {
 
     ActivityAuthBinding mBinding;
 
@@ -35,32 +38,33 @@ public class AuthActivity extends AppCompatActivity{
         mBinding.tvActivityAuthPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
+        if (preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null) {
             // TODO : cleanup code here
-            Intent intent = new Intent(this, MainActivity.class);
+
+            // Get token
+            FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    Log.w("AuthActivity", "getInstanceId failed", task.getException());
+                    return;
+                }
+
+                // Get new Instance ID token
+                String token = Objects.requireNonNull(task.getResult()).getToken();
+
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
                 intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
+                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_TOKEN, token);
                 startActivity(intent);
 
-//            if(preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)){
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, Constants.DEFAULT_FIREBASE_USER_ID);
-//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
-//                startActivity(intent);
-//            }else {
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
-//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
-//                startActivity(intent);
-//            }
-
+            });
         }
     }
 
     private void stripUnderlines(TextView textView) {
         Spannable s = new SpannableString(textView.getText());
         URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
-        for (URLSpan span: spans) {
+        for (URLSpan span : spans) {
             int start = s.getSpanStart(span);
             int end = s.getSpanEnd(span);
             s.removeSpan(span);
@@ -81,9 +85,22 @@ public class AuthActivity extends AppCompatActivity{
     }
 
     public void btnUseTokenClicked(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, Constants.DEFAULT_FIREBASE_USER_ID);
-        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
-        startActivity(intent);
+        // Get token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.w("AuthActivity", "getInstanceId failed", task.getException());
+                return;
+            }
+
+            // Get new Instance ID token
+            String token = Objects.requireNonNull(task.getResult()).getToken();
+
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, Constants.DEFAULT_FIREBASE_USER_ID);
+            intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
+            intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_TOKEN, token);
+            startActivity(intent);
+
+        });
     }
 }

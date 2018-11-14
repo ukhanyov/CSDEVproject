@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +17,8 @@ import com.example.admin_linux.csdevproject.MainActivity;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.databinding.ActivityEnterPhoneBinding;
 import com.example.admin_linux.csdevproject.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -161,10 +165,24 @@ public class EnterPhoneActivity extends AppCompatActivity {
 
     // Launch activity after successful authentication
     private void launchActivityWithUser(String userUID) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, userUID);
-        intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, mPhoneNumber);
-        startActivity(intent);
+
+        // Get token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.w(TAG, "getInstanceId failed", task.getException());
+                return;
+            }
+
+            // Get new Instance ID token
+            String token = Objects.requireNonNull(task.getResult()).getToken();
+
+            Intent intent = new Intent(EnterPhoneActivity.this, MainActivity.class);
+            intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, userUID);
+            intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, mPhoneNumber);
+            intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_TOKEN, token);
+            startActivity(intent);
+
+        });
     }
 
     private void makeInputNumberViewsVisible() {
@@ -204,7 +222,7 @@ public class EnterPhoneActivity extends AppCompatActivity {
     }
 
     private void getSignInTokenFromViews() {
-        if(!mBinding.etActivityEnterPhoneVerification1.getText().toString().equals("") &&
+        if (!mBinding.etActivityEnterPhoneVerification1.getText().toString().equals("") &&
                 !mBinding.etActivityEnterPhoneVerification2.getText().toString().equals("") &&
                 !mBinding.etActivityEnterPhoneVerification3.getText().toString().equals("") &&
                 !mBinding.etActivityEnterPhoneVerification4.getText().toString().equals("") &&
@@ -236,34 +254,33 @@ public class EnterPhoneActivity extends AppCompatActivity {
 
     public class GenericTextWatcher implements TextWatcher {
         private View view;
-        private GenericTextWatcher(View view)
-        {
+
+        private GenericTextWatcher(View view) {
             this.view = view;
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
             String text = editable.toString();
-            switch(view.getId())
-            {
+            switch (view.getId()) {
                 case R.id.et_activity_enter_phone_verification_1:
-                    if(text.length()==1)
-                    mBinding.etActivityEnterPhoneVerification2.requestFocus();
+                    if (text.length() == 1)
+                        mBinding.etActivityEnterPhoneVerification2.requestFocus();
                     break;
                 case R.id.et_activity_enter_phone_verification_2:
-                    if(text.length()==1)
+                    if (text.length() == 1)
                         mBinding.etActivityEnterPhoneVerification3.requestFocus();
                     break;
                 case R.id.et_activity_enter_phone_verification_3:
-                    if(text.length()==1)
+                    if (text.length() == 1)
                         mBinding.etActivityEnterPhoneVerification4.requestFocus();
                     break;
                 case R.id.et_activity_enter_phone_verification_4:
-                    if(text.length()==1)
+                    if (text.length() == 1)
                         mBinding.etActivityEnterPhoneVerification5.requestFocus();
                     break;
                 case R.id.et_activity_enter_phone_verification_5:
-                    if(text.length()==1)
+                    if (text.length() == 1)
                         mBinding.etActivityEnterPhoneVerification6.requestFocus();
                     break;
                 case R.id.et_activity_enter_phone_verification_6:

@@ -3,8 +3,11 @@ package com.example.admin_linux.csdevproject.network.retrofit;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.ConversationDetailsReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseUserReturnValue;
+import com.example.admin_linux.csdevproject.network.pojo.register_device.RDResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -50,11 +53,19 @@ public interface GetDataService {
 
     // notification stuff
     // "api/v1/User/RegisterDevice"
+//    @POST("api/v1/User/RegisterDevice")
+//    Call<ConversationDetailsReturnValue> postRegisterDevice(
+//            @Header("Authorization") String BEARER,
+//            @Query("PersonId") int personId,
+//            @Query("DeviceTokenId") String DeviceTokenId,
+//            @Query("DeviceType") int DeviceType
+//    );
+    @FormUrlEncoded
     @POST("api/v1/User/RegisterDevice")
-    Call<ConversationDetailsReturnValue> postRegisterDevice(
-            //@Header("Authorization") String BEARER,
-            @Query("PersonId") int personId,
-            @Query("DeviceTokenId") String DeviceTokenId,
-            @Query("DeviceType") int DeviceType
+    Call<RDResponse> postRegisterDevice(
+            @Field("PersonId") int PersonId,
+            @Field("DeviceTokenId") String DeviceTokenId,
+            @Field("DeviceType") int DeviceType
     );
+
 }

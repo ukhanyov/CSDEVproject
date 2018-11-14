@@ -78,7 +78,6 @@ public class CropStreamFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
-
         // List item click stuff
         // -------------------------------------------------------------------------------------------
         CropStreamClickListener listener = (view, conversationId, personId, profileName, personsCorp, personsPictureUrl, messageText, key) -> {
@@ -88,6 +87,7 @@ public class CropStreamFragment extends Fragment {
             String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
             String mProfileFullName = preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null);
             String mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
+
 
             if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
                 if (bearer != null && mProfileFullName != null && mProfileUrl != null) {

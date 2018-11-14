@@ -11,6 +11,7 @@ public class Constants {
     //public static final String KEY_INTENT_BEARER = "key_intent_bearer";
     public static final String KEY_INTENT_USER_FIREBASE_ID = "key_intent_firebase_id";
     public static final String KEY_INTENT_USER_FIREBASE_PHONE_NUMBER = "key_intent_firebase_phone_number";
+    public static final String KEY_INTENT_USER_FIREBASE_TOKEN = "key_intent_firebase_token";
 
     public static final String CLICK_KEY_CONVERSATION_DETAILS = "conversation_details";
     public static final String CLICK_KEY_START_CHAT = "start_chat";
@@ -31,4 +32,5 @@ public class Constants {
     // Notification stuff
     public static final String NOTIFICATION_CHANEL_ID = "notification_chanel";
 
+    public static final int DEVICE_TYPE = 2;
 }

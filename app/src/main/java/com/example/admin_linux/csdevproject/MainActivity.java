@@ -1,21 +1,14 @@
 package com.example.admin_linux.csdevproject;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -32,6 +25,7 @@ import com.example.admin_linux.csdevproject.fragments.FavoritesFragment;
 import com.example.admin_linux.csdevproject.fragments.SearchFragment;
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseUserReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.model.FireBaseUserModel;
+import com.example.admin_linux.csdevproject.network.pojo.register_device.RDResponse;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.CircleTransform;
@@ -39,7 +33,6 @@ import com.example.admin_linux.csdevproject.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;
+
+    private String mFirebaseToken;
 
     private Boolean isFabOpen = false;
 
@@ -81,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         String mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
         String mUserFirebasePhoneNumber = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER);
+        mFirebaseToken = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_TOKEN);
 
         // Toolbar
         Toolbar mToolbar = mBinding.layoutToolbar.toolbar;
@@ -273,7 +269,10 @@ public class MainActivity extends AppCompatActivity implements
                     editor.putString(Constants.PREF_PROFILE_FIREBASE_ID, String.valueOf(userFirebaseId));
                     editor.putBoolean(Constants.PREF_PROFILE_DEFAULT, false);
                     editor.putInt(Constants.PREF_PROFILE_PERSON_ID, userModel.getPersonId());
+                    editor.putString(Constants.PREF_PROFILE_DEVICE_TOKEN, mFirebaseToken);
                     editor.apply();
+
+                    postRegisterDevice(userModel.getPersonId(), mFirebaseToken);
 
                     starCropStreamFragment();
                 }
@@ -285,6 +284,23 @@ public class MainActivity extends AppCompatActivity implements
                 }
             });
         }
+    }
+
+    private void postRegisterDevice(int personId, String deviceTokenId){
+        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+        Call<RDResponse> responseCall = service.postRegisterDevice(personId, deviceTokenId, Constants.DEVICE_TYPE);
+        responseCall.enqueue(new Callback<RDResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
+                RDResponse rdResponse = response.body();
+                Log.d("RegisterDevice_test", "result: " );
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RDResponse> call, @NonNull Throwable t) {
+                Log.d("RegisterDevice_test", t.getMessage());
+            }
+        });
     }
 
     private void starCropStreamFragment() {
