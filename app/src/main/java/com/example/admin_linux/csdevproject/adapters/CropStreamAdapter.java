@@ -436,7 +436,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             }
 
             if(checkerOfImage && list.size() == 1){
-                resizeSWCatalogEntry(holder);
+                resizeSWCatalogEntry(holder, linearLayout);
             } else{
                 resizeLLWCatalogEntry(holder);
             }
@@ -471,7 +471,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void resizeSWCatalogEntry(@NonNull CorpStreamViewHolder holder) {
+    private void resizeSWCatalogEntry(@NonNull CorpStreamViewHolder holder, LinearLayout linearLayout) {
         ViewTreeObserver viewTreeObserver = holder.llCatalogEntrySVWrapper.getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -482,8 +482,16 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     int swW = holder.swCatalogEntry.getWidth();
                     int swH = holder.swCatalogEntry.getHeight();
 
-                    if(swH < swW) holder.llCatalogEntrySVWrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    else holder.llCatalogEntrySVWrapper.getLayoutParams().height = swW;
+                    if(swH < swW) {
+                        holder.llCatalogEntrySVWrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        holder.swCatalogEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        //linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    }
+                    else {
+                        holder.llCatalogEntrySVWrapper.getLayoutParams().height = swW;
+                        holder.swCatalogEntry.getLayoutParams().height = swW;
+                        //linearLayout.getLayoutParams().height = swW;
+                    }
 
                 }
             });
