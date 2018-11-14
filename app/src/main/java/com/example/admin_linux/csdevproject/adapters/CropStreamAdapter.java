@@ -385,18 +385,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.llCatalogEntry.requestDisallowInterceptTouchEvent(true);
             if (holder.swCatalogEntry.getChildCount() > 0) holder.swCatalogEntry.removeAllViews();
 
-
-//            holder.swCatalogEntry.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-//                @Override
-//                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-//                    if(bottom > oldBottom){
-//                        resizeLLWCatalogEntry(holder);
-//                    }
-//                }
-//            });
-
-            //resizeLLWCatalogEntry(holder);
-
             LinearLayout linearLayout = new LinearLayout(mContext);
             LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -420,23 +408,24 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 }
 
                 if (item.getType().equals("Message")) {
-                    addWebViewMessageToLinearLayout(holder, linearLayout, list, item);
+                    addWebViewMessageToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "Message: " + item.getLabel());
                 }
 
                 if (item.getType().equals("WeatherDaysOutlook")) {
-                    addWebViewWeatherDaysOutlookToLinearLayout(holder, linearLayout, list, item);
+                    addWebViewWeatherDaysOutlookToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "WeatherDaysOutlook: " + item.getInnerHtml());
                 }
 
                 if (item.getType().equals("WeatherRegionalRadar")) {
-                    addWebViewWeatherRegionalRadarToLinearLayout(holder, linearLayout, list, item);
+                    addWebViewWeatherRegionalRadarToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "WeatherRegionalRadar: " + item.getInnerHtml());
                 }
             }
 
-            if(checkerOfImage && list.size() == 1){
-                resizeSWCatalogEntry(holder, linearLayout);
+//            checkerOfImage &&
+            if(list.size() == 1){
+                resizeSWCatalogEntry(holder);
             } else{
                 resizeLLWCatalogEntry(holder);
             }
@@ -445,12 +434,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.swCatalogEntry.addView(linearLayout);
 
             holder.tvFooterTop.setText(current.getTemplateModelName());
-            if (current.getTemplateModelDescription().contains("*"))
-                holder.tvFooterBot.setText(current.getTemplateModelDescription());
-            else
-                holder.tvFooterBot.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
-
-            //resizeLLWCatalogEntry(holder);
+            if (current.getTemplateModelDescription().contains("*")) holder.tvFooterBot.setText(current.getTemplateModelDescription());
+            else holder.tvFooterBot.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
 
         } else {
             holder.llCatalogEntry.setVisibility(View.GONE);
@@ -463,6 +448,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+
+                    // TODO : Figure out how shrink a card with catalog items, if there are many of them
+
                     holder.llCatalogEntrySVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     holder.llCatalogEntrySVWrapper.getLayoutParams().height = holder.llCatalogEntrySVWrapper.getWidth();
 
@@ -471,7 +459,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void resizeSWCatalogEntry(@NonNull CorpStreamViewHolder holder, LinearLayout linearLayout) {
+    private void resizeSWCatalogEntry(@NonNull CorpStreamViewHolder holder) {
         ViewTreeObserver viewTreeObserver = holder.llCatalogEntrySVWrapper.getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -485,12 +473,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     if(swH < swW) {
                         holder.llCatalogEntrySVWrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         holder.swCatalogEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                        //linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     }
                     else {
                         holder.llCatalogEntrySVWrapper.getLayoutParams().height = swW;
                         holder.swCatalogEntry.getLayoutParams().height = swW;
-                        //linearLayout.getLayoutParams().height = swW;
                     }
 
                 }
@@ -504,7 +490,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         return head + htmlText + closedTag;
     }
 
-    private void addWebViewWeatherRegionalRadarToLinearLayout(@NonNull CorpStreamViewHolder holder, LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addWebViewWeatherRegionalRadarToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -521,7 +507,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         linearLayout.addView(webView);
     }
 
-    private void addWebViewWeatherDaysOutlookToLinearLayout(@NonNull CorpStreamViewHolder holder, LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addWebViewWeatherDaysOutlookToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         WebView webView = new WebView(mContext);
         webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -538,7 +524,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         linearLayout.addView(webView);
     }
 
-    private void addWebViewMessageToLinearLayout(@NonNull CorpStreamViewHolder holder, LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
+    private void addWebViewMessageToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
         if (item.getLabel() != null && !item.getLabel().equals("")) {
             WebView webView = new WebView(mContext);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
