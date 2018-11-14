@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject;
+package com.example.admin_linux.csdevproject.auth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,11 +12,13 @@ import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.admin_linux.csdevproject.MainActivity;
+import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.databinding.ActivityAuthBinding;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.URLSpanNoUnderline;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class AuthActivity extends AppCompatActivity{
 
@@ -34,17 +36,23 @@ public class AuthActivity extends AppCompatActivity{
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         if(preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null){
-            if(preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)){
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, Constants.DEFAULT_FIREBASE_USER_ID);
-                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
-                startActivity(intent);
-            }else {
-                Intent intent = new Intent(this, MainActivity.class);
+            // TODO : cleanup code here
+            Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
                 intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
                 startActivity(intent);
-            }
+
+//            if(preferences.getBoolean(Constants.PREF_PROFILE_DEFAULT, false)){
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, Constants.DEFAULT_FIREBASE_USER_ID);
+//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
+//                startActivity(intent);
+//            }else {
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_ID, preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
+//                intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
+//                startActivity(intent);
+//            }
 
         }
     }

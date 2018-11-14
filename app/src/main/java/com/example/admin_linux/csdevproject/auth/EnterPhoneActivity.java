@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject;
+package com.example.admin_linux.csdevproject.auth;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.admin_linux.csdevproject.MainActivity;
+import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.databinding.ActivityEnterPhoneBinding;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.google.firebase.FirebaseException;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

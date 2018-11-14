@@ -15,7 +15,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".AuthActivity"
+            android:name=".auth.AuthActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -34,7 +34,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".EnterPhoneActivity" />
+            android:name=".auth.EnterPhoneActivity" />
 
         <activity
             android:name=".ConversationDetailsActivity"
@@ -48,6 +48,27 @@
         <activity
             android:name=".ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".notifications.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:exported="false"
+            android:name=".notifications.MyJobService" >
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_dummy_default" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/white" />
 
     </application>
 

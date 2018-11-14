@@ -26,6 +26,7 @@ public class Constants {
     public static final String PREF_PROFILE_DEFAULT = "pref_profile_default";
     public static final String PREF_PROFILE_FIREBASE_ID = "pref_profile_firebase_id";
     public static final String PREF_PROFILE_PERSON_ID = "pref_profile_person_id";
+    public static final String PREF_PROFILE_DEVICE_TOKEN = "pref_profile_device_token";
 
     // Notification stuff
     public static final String NOTIFICATION_CHANEL_ID = "notification_chanel";

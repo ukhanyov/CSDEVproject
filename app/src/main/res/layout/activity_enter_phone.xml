@@ -6,7 +6,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".EnterPhoneActivity">
+        tools:context=".auth.EnterPhoneActivity">
 
         <EditText
             android:id="@+id/et_activity_enter_phone_country_code"
