@@ -78,20 +78,27 @@ public class NotificationService extends FirebaseMessagingService {
 
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, "onMessageReceived: " + remoteMessage.getData().get("message"));
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-        String channelId = "Default";
-        NotificationCompat.Builder builder = new  NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("test")
-                .setContentText(remoteMessage.getNotification().getBody()).setAutoCancel(true).setContentIntent(pendingIntent);;
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
-            manager.createNotificationChannel(channel);
-        }
-        manager.notify(0, builder.build());
+
+        //Start MyIntentService to show it in Cropstream fragment
+        String msgToIntentService = "Android-er";
+        Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+        intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, msgToIntentService);
+        startService(intentMyIntentService);
+
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+//        String channelId = "Default";
+//        NotificationCompat.Builder builder = new  NotificationCompat.Builder(this, channelId)
+//                .setSmallIcon(R.drawable.ic_dummy_default)
+//                .setContentTitle("Cropstream")
+//                .setContentText(remoteMessage.getNotification().getBody()).setAutoCancel(true).setContentIntent(pendingIntent);
+//        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new NotificationChannel(channelId, "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
+//            manager.createNotificationChannel(channel);
+//        }
+//        manager.notify(0, builder.build());
     }
 
     @Override

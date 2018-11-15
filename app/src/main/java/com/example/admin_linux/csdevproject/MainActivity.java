@@ -134,6 +134,16 @@ public class MainActivity extends AppCompatActivity implements
                 Object value = getIntent().getExtras().get(key);
                 Log.d("NS_test_MA", "Key: " + key + " Value: " + value);
             }
+
+            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+
+            Log.d("NS_test_MA", "----------------------------");
+
+            Log.d("NS_test_MA", "Pref_Firebase_id: " + preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
+            Log.d("NS_test_MA", "Pref_phone: " + preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
+            Log.d("NS_test_MA", "Pref_firebase_token: " + preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null));
+
+            Log.d("NS_test_MA", "----------------------------");
         }
         // [END handle_data_extras]
 

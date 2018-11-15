@@ -1,6 +1,9 @@
 package com.example.admin_linux.csdevproject.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +40,7 @@ import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.event_item_sub_models.FEIMPerson;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
+import com.example.admin_linux.csdevproject.notifications.MyIntentService;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.EndlessRecyclerViewScrollListener;
 
@@ -56,6 +60,8 @@ public class CropStreamFragment extends Fragment {
     // TODO : make push notifications
     // TODO : when notification arrives (app closed) -> just make notification
     // TODO : when notification arrives (app opened) -> when on event feed fragment -> notification arrives -> make button to refresh event feed and see new messages
+
+    private MyBroadcastReceiver myBroadcastReceiver;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -121,6 +127,12 @@ public class CropStreamFragment extends Fragment {
             }
         };
         // -------------------------------------------------------------------------------------------
+
+        //register BroadcastReceiver
+        myBroadcastReceiver = new MyBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(MyIntentService.ACTION_MyIntentService);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        Objects.requireNonNull(getActivity()).registerReceiver(myBroadcastReceiver, intentFilter);
 
         RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -202,6 +214,12 @@ public class CropStreamFragment extends Fragment {
         outState.putParcelableArrayList("saved_instance_transferList", (ArrayList<? extends Parcelable>) cropStreamMessages);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //un-register BroadcastReceiver
+        if(myBroadcastReceiver != null) Objects.requireNonNull(getActivity()).unregisterReceiver(myBroadcastReceiver);
+    }
 
     public void fetchData(String bearer, int yourPersonId) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
@@ -788,6 +806,16 @@ public class CropStreamFragment extends Fragment {
 
 
         });
+    }
+
+    public class MyBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String result = intent.getStringExtra(MyIntentService.EXTRA_KEY_OUT);
+            Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+            //textResult.setText(result);
+        }
     }
 
 }

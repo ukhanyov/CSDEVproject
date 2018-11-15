@@ -7,7 +7,7 @@ import com.firebase.jobdispatcher.JobService;
 
 public class MyJobService extends JobService {
 
-    private static final String TAG = "NS_test";
+    private static final String TAG = "NS_js_test";
 
     @Override
     public boolean onStartJob(JobParameters job) {
