@@ -130,8 +130,18 @@ public class MainActivity extends AppCompatActivity implements
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
         if (getIntent().getExtras() != null) {
+            String token;
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
+                if(key.equals("key_intent_firebase_token")){
+                    if (value != null) {
+                        token = value.toString();
+                        SharedPreferences postPreferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+                        String bearer = postPreferences.getString(Constants.PREF_PROFILE_BEARER, null);
+                        int personId = postPreferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
+                        if(bearer != null && personId != 0) postRegisterDevice(bearer, personId, token);
+                    }
+                }
                 Log.d("NS_test_MA", "Key: " + key + " Value: " + value);
             }
 
@@ -144,6 +154,8 @@ public class MainActivity extends AppCompatActivity implements
             Log.d("NS_test_MA", "Pref_firebase_token: " + preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null));
 
             Log.d("NS_test_MA", "----------------------------");
+
+
         }
         // [END handle_data_extras]
 

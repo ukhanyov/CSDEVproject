@@ -22,15 +22,7 @@ public class MyIntentService extends IntentService {
 
         //get input
         extraIn = intent.getStringExtra(EXTRA_KEY_IN);
-        extraOut = "Result from MyIntentService: Hello " + extraIn;
-
-        //dummy delay for 5 sec
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } //wait 3 sec
+        extraOut = extraIn;
 
         //return result
         Intent intentResponse = new Intent();

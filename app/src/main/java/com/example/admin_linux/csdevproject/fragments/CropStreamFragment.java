@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -19,7 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
@@ -62,10 +61,10 @@ public class CropStreamFragment extends Fragment {
     // TODO : when notification arrives (app opened) -> when on event feed fragment -> notification arrives -> make button to refresh event feed and see new messages
 
     private MyBroadcastReceiver myBroadcastReceiver;
-
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
     private List<CropStreamMessage> cropStreamMessages;
+
+    private Button mButtonNewMessage;
 
     CropStreamAdapter mAdapter;
 
@@ -182,13 +181,7 @@ public class CropStreamFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(true);
 
-            mAdapter.removeAllItems();
-            mAdapter.notifyItemRangeRemoved(0, cropStreamMessages.size());
-            cropStreamMessages = null;
-
-            SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-            fetchData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
-                    preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
+            refreshData();
         });
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.black,
@@ -196,16 +189,14 @@ public class CropStreamFragment extends Fragment {
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
+        mButtonNewMessage = rootView.findViewById(R.id.btn_fragment_crop_stream_new_message);
+        mButtonNewMessage.setOnClickListener(v -> {
+            mButtonNewMessage.setVisibility(View.GONE);
+            refreshData();
+            recyclerView.scrollToPosition(0);
+        });
+
         return rootView;
-    }
-
-    private void loadNextDataFromApi() {
-        SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        fetchMoreData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
-                preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
-                cropStreamMessages.get(cropStreamMessages.size() - 1).getMessageTime());
-
-        Log.d("fetchMoreData", "called");
     }
 
     @Override
@@ -219,6 +210,24 @@ public class CropStreamFragment extends Fragment {
         super.onDestroy();
         //un-register BroadcastReceiver
         if(myBroadcastReceiver != null) Objects.requireNonNull(getActivity()).unregisterReceiver(myBroadcastReceiver);
+    }
+
+    private void refreshData() {
+        mAdapter.removeAllItems();
+        //mAdapter.notifyItemRangeRemoved(0, cropStreamMessages.size());
+        mAdapter.notifyDataSetChanged();
+        cropStreamMessages = null;
+
+        SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        fetchData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
+                preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
+    }
+
+    private void loadNextDataFromApi() {
+        SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+        fetchMoreData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
+                preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0),
+                cropStreamMessages.get(cropStreamMessages.size() - 1).getMessageTime());
     }
 
     public void fetchData(String bearer, int yourPersonId) {
@@ -813,8 +822,9 @@ public class CropStreamFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String result = intent.getStringExtra(MyIntentService.EXTRA_KEY_OUT);
-            Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
-            //textResult.setText(result);
+            if(result.equals(Constants.NOTIFICATION_FOREGROUND_RECIEVED)){
+                mButtonNewMessage.setVisibility(View.VISIBLE);
+            }
         }
     }
 

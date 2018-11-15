@@ -132,6 +132,7 @@
     <string name="channel_name">notification_chanel_name</string>
     <string name="channel_description">notification_chanel_description</string>
     <string name="notification_default_message">Default notification message</string>
+    <string name="button_feed_event_new_message">New message</string>
     <!--Notification stuff-->
 
 </resources>
