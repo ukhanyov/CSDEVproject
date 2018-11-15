@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements
         responseCall.enqueue(new Callback<RDResponse>() {
             @Override
             public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
-                Log.d("RegisterDevice", "Success");
+                Log.d("RegisterDevice_ma", "onResponse: " + response.body().getResultCodeName());
             }
 
             @Override

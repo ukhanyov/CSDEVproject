@@ -38,39 +38,11 @@ public class NotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getBody());
-//        if (remoteMessage.getData() != null){
-//            String data = remoteMessage.getData().toString();
-//
-//            //Start MyIntentService to show it in Cropstream fragment
-//            String msgToIntentService = remoteMessage.getData().get("Message text");
-//            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
-//            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, msgToIntentService);
-//            startService(intentMyIntentService);
-//        }
-//        else {
-            //String title = remoteMessage.getNotification().getTitle();
-            String message = remoteMessage.getNotification().getBody();
-            //String click_action = remoteMessage.getNotification().getClickAction();
 
-            //Start MyIntentService to show it in Cropstream fragment
-            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
-            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
-            startService(intentMyIntentService);
-        //}
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-//        String channelId = "Default";
-//        NotificationCompat.Builder builder = new  NotificationCompat.Builder(this, channelId)
-//                .setSmallIcon(R.drawable.ic_dummy_default)
-//                .setContentTitle("Cropstream")
-//                .setContentText(remoteMessage.getNotification().getBody()).setAutoCancel(true).setContentIntent(pendingIntent);
-//        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            NotificationChannel channel = new NotificationChannel(channelId, "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
-//            manager.createNotificationChannel(channel);
-//        }
-//        manager.notify(0, builder.build());
+        String message = remoteMessage.getNotification().getBody();
+        Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+        intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
+        startService(intentMyIntentService);
     }
 
     @Override
@@ -105,14 +77,14 @@ public class NotificationService extends FirebaseMessagingService {
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
         int personId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
-        String deviceTokenId = preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null);
+        //String deviceTokenId = preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null);
 
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<RDResponse> responseCall = service.postRegisterDevice(bearer, personId, deviceTokenId, Constants.DEVICE_TYPE);
+        Call<RDResponse> responseCall = service.postRegisterDevice(bearer, personId, token, Constants.DEVICE_TYPE);
         responseCall.enqueue(new Callback<RDResponse>() {
             @Override
             public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
-                Log.d("RegisterDevice_ns", "Success");
+                Log.d("RegisterDevice_ns", "onResponse: " + response.body().getResultCodeName());
             }
 
             @Override

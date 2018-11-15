@@ -39,7 +39,6 @@ public class AuthActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         if (preferences.getString(Constants.PREF_PROFILE_BEARER, null) != null) {
-            // TODO : cleanup code here
 
             // Get token
             FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
@@ -56,7 +55,6 @@ public class AuthActivity extends AppCompatActivity {
                 intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
                 intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_TOKEN, token);
                 startActivity(intent);
-
             });
         }
     }

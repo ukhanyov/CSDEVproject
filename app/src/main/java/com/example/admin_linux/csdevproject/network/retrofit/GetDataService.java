@@ -51,15 +51,6 @@ public interface GetDataService {
             @Query("PersonId") int personId
     );
 
-    // notification stuff
-    // "api/v1/User/RegisterDevice"
-//    @POST("api/v1/User/RegisterDevice")
-//    Call<ConversationDetailsReturnValue> postRegisterDevice(
-//            @Header("Authorization") String BEARER,
-//            @Query("PersonId") int personId,
-//            @Query("DeviceTokenId") String DeviceTokenId,
-//            @Query("DeviceType") int DeviceType
-//    );
     @FormUrlEncoded
     @POST("api/v1/User/RegisterDevice")
     Call<RDResponse> postRegisterDevice(

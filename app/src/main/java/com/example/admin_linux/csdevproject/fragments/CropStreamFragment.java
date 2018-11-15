@@ -57,8 +57,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class CropStreamFragment extends Fragment {
 
     // TODO : make push notifications
-    // TODO : when notification arrives (app closed) -> just make notification
-    // TODO : when notification arrives (app opened) -> when on event feed fragment -> notification arrives -> make button to refresh event feed and see new messages
 
     private MyBroadcastReceiver myBroadcastReceiver;
     private SwipeRefreshLayout mSwipeRefreshLayout;
