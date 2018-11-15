@@ -43,6 +43,8 @@ public class NotificationService extends FirebaseMessagingService {
         Intent intentMyIntentService = new Intent(this, MyIntentService.class);
         intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
         startService(intentMyIntentService);
+
+        // when app is in background -> apps receive the notification payload in the notification tray
     }
 
     @Override
@@ -79,20 +81,22 @@ public class NotificationService extends FirebaseMessagingService {
         int personId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
         //String deviceTokenId = preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null);
 
-        GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<RDResponse> responseCall = service.postRegisterDevice(bearer, personId, token, Constants.DEVICE_TYPE);
-        responseCall.enqueue(new Callback<RDResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
-                Log.d("RegisterDevice_ns", "onResponse: " + response.body().getResultCodeName());
-            }
+        if(token != null) {
 
-            @Override
-            public void onFailure(@NonNull Call<RDResponse> call, @NonNull Throwable t) {
-                Log.d("RegisterDevice_ns", "error: " + t.getMessage());
-            }
-        });
+            GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+            Call<RDResponse> responseCall = service.postRegisterDevice(bearer, personId, token, Constants.DEVICE_TYPE);
+            responseCall.enqueue(new Callback<RDResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
+                    Log.d("RegisterDevice_ns", "onResponse: " + response.body().getResultCodeName());
+                }
 
+                @Override
+                public void onFailure(@NonNull Call<RDResponse> call, @NonNull Throwable t) {
+                    Log.d("RegisterDevice_ns", "error: " + t.getMessage());
+                }
+            });
+        }
 
         Log.d(TAG, "token: " + token);
     }
