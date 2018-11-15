@@ -182,6 +182,7 @@ public class CropStreamFragment extends Fragment {
             mSwipeRefreshLayout.setRefreshing(true);
 
             refreshData();
+            recyclerView.scrollToPosition(0);
         });
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.black,
@@ -213,6 +214,7 @@ public class CropStreamFragment extends Fragment {
     }
 
     private void refreshData() {
+        // TODO : look into weird bug of recyclerView position not being the first one (jump to some position)
         mAdapter.removeAllItems();
         //mAdapter.notifyItemRangeRemoved(0, cropStreamMessages.size());
         mAdapter.notifyDataSetChanged();
@@ -822,9 +824,10 @@ public class CropStreamFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String result = intent.getStringExtra(MyIntentService.EXTRA_KEY_OUT);
-            if(result.equals(Constants.NOTIFICATION_FOREGROUND_RECIEVED)){
+            //if(result.equals(Constants.NOTIFICATION_FOREGROUND_RECIEVED)){
                 mButtonNewMessage.setVisibility(View.VISIBLE);
-            }
+            //}
+            Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
         }
     }
 

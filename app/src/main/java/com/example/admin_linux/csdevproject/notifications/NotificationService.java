@@ -37,14 +37,26 @@ public class NotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(TAG, "onMessageReceived: " + remoteMessage.getData().get("message"));
+        Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getBody());
+//        if (remoteMessage.getData() != null){
+//            String data = remoteMessage.getData().toString();
+//
+//            //Start MyIntentService to show it in Cropstream fragment
+//            String msgToIntentService = remoteMessage.getData().get("Message text");
+//            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+//            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, msgToIntentService);
+//            startService(intentMyIntentService);
+//        }
+//        else {
+            //String title = remoteMessage.getNotification().getTitle();
+            String message = remoteMessage.getNotification().getBody();
+            //String click_action = remoteMessage.getNotification().getClickAction();
 
-        //Start MyIntentService to show it in Cropstream fragment
-        String msgToIntentService = Constants.NOTIFICATION_FOREGROUND_RECIEVED;
-        Intent intentMyIntentService = new Intent(this, MyIntentService.class);
-        intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, msgToIntentService);
-        startService(intentMyIntentService);
-
+            //Start MyIntentService to show it in Cropstream fragment
+            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
+            startService(intentMyIntentService);
+        //}
 //        Intent intent = new Intent(this, MainActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
