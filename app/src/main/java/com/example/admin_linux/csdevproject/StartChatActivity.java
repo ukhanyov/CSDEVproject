@@ -40,17 +40,31 @@ public class StartChatActivity extends AppCompatActivity {
         mBinding.tvActivityStartChatMessage.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent = getIntent();
-        ConversationPerson person = intent.getParcelableExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT);
-        mBinding.tvActivityStartChatMessage.setText(person.getMessageText());
-        mBinding.tvActivityStartChatToName.setText(person.getPersonFullName());
+        if(intent.getBooleanExtra(Constants.NOTIFICATION_INTENT_START_CHAT_FROM_NOTIFICATION, false)){
+            String body = Objects.requireNonNull(getIntent().getExtras()).getString(Constants.NOTIFICATION_INTENT_START_CHAT_BODY);
+            if(body != null && body.contains(": ")) {
+                String[] split = body.split(": ");
+                mBinding.tvActivityStartChatMessage.setText(split[1]);
+                mBinding.tvActivityStartChatToName.setText(split[0]);
+            }else {
+                if(body != null && body.contains(" sent a message to you.")) {
+                    mBinding.tvActivityStartChatToName.setText(body.replace(" sent a message to you.", ""));
+                }
+            }
+
+        }else {
+            ConversationPerson person = intent.getParcelableExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT);
+            mBinding.tvActivityStartChatMessage.setText(person.getMessageText());
+            mBinding.tvActivityStartChatToName.setText(person.getPersonFullName());
+        }
+
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         mBinding.tvActivityStartChatFromName.setText(preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null));
 
-        //Initialise  interface
+        //Initialise interface
         CustomEditText.OnKeyPreImeListener onKeyPreImeListener = this::finish;
         mBinding.etActivityStartChatInputText.setOnKeyPreImeListener(onKeyPreImeListener);
-
     }
 
 
@@ -67,4 +81,6 @@ public class StartChatActivity extends AppCompatActivity {
     public void imgPickPhotoSCClicked(View view) {
         Toast.makeText(this, "Feature is under development", Toast.LENGTH_SHORT).show();
     }
+
+
 }
