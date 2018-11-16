@@ -37,13 +37,26 @@ public class NotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getBody());
 
-        String message = remoteMessage.getNotification().getBody();
-        Intent intentMyIntentService = new Intent(this, MyIntentService.class);
-        intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
-        startService(intentMyIntentService);
+        if(remoteMessage.getData() != null) {
+            Log.d(TAG, "onMessageReceived: " + remoteMessage.getData().toString());
 
+
+
+            String message = remoteMessage.getData().get("message");
+            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
+            startService(intentMyIntentService);
+        }
+
+        if(remoteMessage.getNotification() != null) {
+            Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getBody());
+
+            String message = remoteMessage.getNotification().getBody();
+            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
+            startService(intentMyIntentService);
+        }
         // when app is in background -> apps receive the notification payload in the notification tray
     }
 

@@ -109,107 +109,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    private void setupNotifications() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channel to show notifications.
-            String channelId  = getString(R.string.channel_id);
-            String channelName = getString(R.string.channel_name);
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW));
-        }
-
-        // If a notification message is tapped, any data accompanying the notification
-        // message is available in the intent extras. In this sample the launcher
-        // intent is fired when the notification is tapped, so any accompanying data would
-        // be handled here. If you want a different intent fired, set the click_action
-        // field of the notification message to the desired intent. The launcher intent
-        // is used when no click_action is specified.
-        //
-        // Handle possible data accompanying notification message.
-        // [START handle_data_extras]
-        if (getIntent().getExtras() != null) {
-            String token;
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                if(key.equals("key_intent_firebase_token")){
-                    if (value != null) {
-                        token = value.toString();
-                        SharedPreferences postPreferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-                        String bearer = postPreferences.getString(Constants.PREF_PROFILE_BEARER, null);
-                        int personId = postPreferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
-                        if(bearer != null && personId != 0) postRegisterDevice(bearer, personId, token);
-                    }
-                }
-                Log.d("NS_test_MA", "Key: " + key + " Value: " + value);
-            }
-
-            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-
-            Log.d("NS_test_MA", "----------------------------");
-
-            Log.d("NS_test_MA", "Pref_Firebase_id: " + preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
-            Log.d("NS_test_MA", "Pref_phone: " + preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
-            Log.d("NS_test_MA", "Pref_firebase_token: " + preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null));
-
-            Log.d("NS_test_MA", "----------------------------");
-
-
-        }
-        // [END handle_data_extras]
-
-//        Button subscribeButton = findViewById(R.id.subscribeButton);
-//        subscribeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d(TAG, "Subscribing to weather topic");
-//                // [START subscribe_topics]
-//                FirebaseMessaging.getInstance().subscribeToTopic("weather")
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                String msg = getString(R.string.msg_subscribed);
-//                                if (!task.isSuccessful()) {
-//                                    msg = getString(R.string.msg_subscribe_failed);
-//                                }
-//                                Log.d(TAG, msg);
-//                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                // [END subscribe_topics]
-//            }
-//        });
-
-//        Button logTokenButton = findViewById(R.id.logTokenButton);
-//        logTokenButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Get token
-//                FirebaseInstanceId.getInstance().getInstanceId()
-//                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                                if (!task.isSuccessful()) {
-//                                    Log.w(TAG, "getInstanceId failed", task.getException());
-//                                    return;
-//                                }
-//
-//                                // Get new Instance ID token
-//                                String token = task.getResult().getToken();
-//
-//                                // Log and toast
-//                                String msg = getString(R.string.msg_token_fmt, token);
-//                                Log.d(TAG, msg);
-//                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//
-//
-//            }
-//        });
-    }
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -390,6 +289,98 @@ public class MainActivity extends AppCompatActivity implements
                 }
             });
         }
+    }
+
+    private void setupNotifications() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId  = getString(R.string.channel_id);
+            String channelName = getString(R.string.channel_name);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+
+        if (getIntent().getExtras() != null) {
+            String token;
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                if(key.equals("key_intent_firebase_token")){
+                    if (value != null) {
+                        token = value.toString();
+                        SharedPreferences postPreferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+                        String bearer = postPreferences.getString(Constants.PREF_PROFILE_BEARER, null);
+                        int personId = postPreferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
+                        if(bearer != null && personId != 0) postRegisterDevice(bearer, personId, token);
+                    }
+                }
+                Log.d("NS_test_MA", "Key: " + key + " Value: " + value);
+            }
+
+            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+
+            Log.d("NS_test_MA", "----------------------------");
+
+            Log.d("NS_test_MA", "Pref_Firebase_id: " + preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
+            Log.d("NS_test_MA", "Pref_phone: " + preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
+            Log.d("NS_test_MA", "Pref_firebase_token: " + preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null));
+
+            Log.d("NS_test_MA", "----------------------------");
+
+
+        }
+        // [END handle_data_extras]
+
+//        Button subscribeButton = findViewById(R.id.subscribeButton);
+//        subscribeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d(TAG, "Subscribing to weather topic");
+//                // [START subscribe_topics]
+//                FirebaseMessaging.getInstance().subscribeToTopic("weather")
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                String msg = getString(R.string.msg_subscribed);
+//                                if (!task.isSuccessful()) {
+//                                    msg = getString(R.string.msg_subscribe_failed);
+//                                }
+//                                Log.d(TAG, msg);
+//                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                // [END subscribe_topics]
+//            }
+//        });
+
+//        Button logTokenButton = findViewById(R.id.logTokenButton);
+//        logTokenButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Get token
+//                FirebaseInstanceId.getInstance().getInstanceId()
+//                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                                if (!task.isSuccessful()) {
+//                                    Log.w(TAG, "getInstanceId failed", task.getException());
+//                                    return;
+//                                }
+//
+//                                // Get new Instance ID token
+//                                String token = task.getResult().getToken();
+//
+//                                // Log and toast
+//                                String msg = getString(R.string.msg_token_fmt, token);
+//                                Log.d(TAG, msg);
+//                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//
+//
+//            }
+//        });
     }
 
     private void postRegisterDevice(String bearer, int personId, String deviceTokenId){
