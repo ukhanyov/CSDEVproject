@@ -7,13 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.admin_linux.csdevproject.MainActivity;
+import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.network.pojo.register_device.RDResponse;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
@@ -23,6 +22,7 @@ import com.example.admin_linux.csdevproject.utils.lifecycle_callbacks.App;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Objects;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -52,8 +52,15 @@ public class NotificationService extends FirebaseMessagingService {
             } else {
                 if (remoteMessage.getData().get("ConversationType") != null) {
 
-                    sendNotification(remoteMessage.getData().get("body"));
+                    if(Objects.requireNonNull(remoteMessage.getData().get("notificationType")).equals("ConversationMessage"))
+                        sendNotificationToConversation(remoteMessage.getData().get("body"),
+                                remoteMessage.getData().get("title"),
+                                Integer.valueOf(Objects.requireNonNull(remoteMessage.getData().get("PersonId"))),
+                                Integer.valueOf(Objects.requireNonNull(remoteMessage.getData().get("ConversationId"))));
 
+                    if(remoteMessage.getData().get("notificationType").equals("CardTemplatedMessagePosted")){
+
+                    }
                 }
             }
         }
@@ -116,29 +123,32 @@ public class NotificationService extends FirebaseMessagingService {
         Log.d(TAG, "token: " + token);
     }
 
-    private void sendNotification(String messageBody) {
-        // TODO : handle logic of launching proper activity here
-        Intent intent = new Intent(this, MainActivity.class);
+    private void sendNotificationToConversation(String messageBody, String title, int personId, int ConversationId) {
+        Intent intent = new Intent(this, ConversationDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_CONVERSATION_FROM_NOTIFICATION, true);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_CONVERSATION_TITLE, title);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_CONVERSATION_PERSON_ID, personId);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_CONVERSATION_CONVERSATION_ID, ConversationId);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        String channelId = getString(R.string.channel_id);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
                         .setSmallIcon(R.drawable.ic_dummy_default)
-                        .setContentTitle(getString(R.string.notification_default_message))
+                        .setContentTitle(title)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
+            NotificationChannel channel = new NotificationChannel(
+                    getString(R.string.channel_id),
                     "Channel human readable title",
                     NotificationManager.IMPORTANCE_DEFAULT);
+
             notificationManager.createNotificationChannel(channel);
         }
 

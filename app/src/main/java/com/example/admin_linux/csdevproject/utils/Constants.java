@@ -34,4 +34,9 @@ public class Constants {
     public static final String NOTIFICATION_FOREGROUND_RECIEVED = "notification_foreground_received";
 
     public static final int DEVICE_TYPE = 2;
+
+    public static final String NOTIFICATION_INTENT_CONVERSATION_FROM_NOTIFICATION = "notification_intent_conversation_from_notification";
+    public static final String NOTIFICATION_INTENT_CONVERSATION_TITLE = "notification_intent_conversation_title";
+    public static final String NOTIFICATION_INTENT_CONVERSATION_PERSON_ID = "notification_intent_conversation_person_id";
+    public static final String NOTIFICATION_INTENT_CONVERSATION_CONVERSATION_ID = "notification_intent_conversation_conversation_id";
 }

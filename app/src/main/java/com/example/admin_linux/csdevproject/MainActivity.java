@@ -78,9 +78,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_main);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -307,22 +304,6 @@ public class MainActivity extends AppCompatActivity implements
             String channelName = getString(R.string.channel_name);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW));
-        }
-
-        if (getIntent().getExtras() != null)
-        {
-            Object title = getIntent().getExtras().get("title");
-            Object message = getIntent().getExtras().get("message");
-
-
-            String tit=title+"";
-            String msg=message+"";
-
-            if(!tit.equals("null") && !msg.equals("null")) {
-                //add your code which you want to perform on notification receive
-
-            }
-
         }
 
         if (getIntent().getExtras() != null) {

@@ -1,10 +1,13 @@
 package com.example.admin_linux.csdevproject;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -42,15 +45,17 @@ public class ConversationDetailsActivity extends AppCompatActivity {
     ActivityConversationDetailsBinding mBinding;
     private ConversationDetailsViewModel viewModel;
     private List<ConversationDetailsMessage> mMessageList;
-    private String mMessageText;
     private String mProfileUrl;
     private String mProfileName;
+    private String mBearer;
+    int mYourPersonId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_details);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_conversation_details);
+        mMessageList = new ArrayList<>();
 
         // Toolbar
         Toolbar toolbar = mBinding.layoutToolbarConversationDetails.toolbarConversationDetails;
@@ -60,7 +65,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int conversationId = intent.getIntExtra("transfer_conversation_id", 0);
         int personId = intent.getIntExtra("transfer_person_id", 0);
-        String bearer = intent.getStringExtra("transfer_bearer");
+        mBearer = intent.getStringExtra("transfer_bearer");
         mProfileUrl = intent.getStringExtra("transfer_profile_url");
         mProfileName = intent.getStringExtra("transfer_full_name");
 
@@ -83,11 +88,13 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         viewModel.getListOfMessages().observe(this, mMessageAdapter::setConversationDetailsMessages);
 
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-        int yourPersonId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
+        mYourPersonId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
 
-        if (conversationId != 0 && bearer != null) {
-            fetchConversationDetails(conversationId, yourPersonId, personId, bearer);
+        if (conversationId != 0 && mBearer != null) {
+            fetchConversationDetails(conversationId, mYourPersonId, personId, mBearer);
         }
+
+        setupNotifications();
     }
 
     private void fetchConversationDetails(int conversationId, int yourPersonId, int personId, String bearer) {
@@ -118,7 +125,6 @@ public class ConversationDetailsActivity extends AppCompatActivity {
                 }
 
                 if(participant != null){
-                    mMessageList = new ArrayList<>();
                     mMessageList.add(new ConversationDetailsMessage(
                             participant.getPersonImageUrl(),
                             participant.getPersonFullName(),
@@ -129,7 +135,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
                 List<CDParticipants> participantListToFeed = new ArrayList<>();
                 for (CDParticipants iterator : participantList){
-                    if(iterator.getPersonId() != yourPersonId && iterator.getPersonId() != personId){
+                    if(iterator.getPersonId() != yourPersonId /*&& iterator.getPersonId() != personId*/){
                         participantListToFeed.add(iterator);
                     }
                 }
@@ -147,8 +153,8 @@ public class ConversationDetailsActivity extends AppCompatActivity {
     }
 
     public void imgSendMessageOnCDClicked(View view) {
-        mMessageText = mBinding.etActivityConversationDetailsInputText.getText().toString();
-        mMessageList.add(new ConversationDetailsMessage(mProfileUrl, mProfileName, mMessageText));
+        String messageText = mBinding.etActivityConversationDetailsInputText.getText().toString();
+        mMessageList.add(new ConversationDetailsMessage(mProfileUrl, mProfileName, messageText));
 
         mBinding.etActivityConversationDetailsInputText.setText(null);
 
@@ -161,5 +167,20 @@ public class ConversationDetailsActivity extends AppCompatActivity {
 
     public void imgPickPhotoCDClicked(View view) {
         Toast.makeText(this, "Feature is under development", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setupNotifications() {
+        if (Objects.requireNonNull(getIntent().getExtras()).getBoolean(Constants.NOTIFICATION_INTENT_CONVERSATION_FROM_NOTIFICATION)) {
+            String title = getIntent().getExtras().getString(Constants.NOTIFICATION_INTENT_CONVERSATION_TITLE);
+            int personId = getIntent().getExtras().getInt(Constants.NOTIFICATION_INTENT_CONVERSATION_PERSON_ID);
+            int conversationId = getIntent().getExtras().getInt(Constants.NOTIFICATION_INTENT_CONVERSATION_CONVERSATION_ID);
+            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+            String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
+            if(mProfileName == null) mProfileName = preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null);
+            if(mProfileUrl == null) mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
+
+            if(title != null && personId != 0 && conversationId != 0 && bearer != null && mYourPersonId != 0)  fetchConversationDetails(conversationId, mYourPersonId, personId, bearer);
+        }
+
     }
 }

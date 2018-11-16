@@ -77,15 +77,17 @@ public class CDMessageAdapter extends RecyclerView.Adapter<CDMessageAdapter.CDMe
     }
 
     private Drawable makeCircleWithALatter(String name) {
-        if(name.contains(" ")){
-            String[] list = name.split(" ");
-            char charName = list[0].charAt(0);
-            char charSecondName = list[1].charAt(0);
-            return TextDrawable.builder().buildRound(String.valueOf(charName) + String.valueOf(charSecondName), ColorPicker.pickRandomColor());
-        }else {
-            char charName = name.charAt(0);
-            return TextDrawable.builder().buildRound(String.valueOf(charName), ColorPicker.pickRandomColor());
-        }
+        if(name != null) {
+            if (name.contains(" ")) {
+                String[] list = name.split(" ");
+                char charName = list[0].charAt(0);
+                char charSecondName = list[1].charAt(0);
+                return TextDrawable.builder().buildRound(String.valueOf(charName) + String.valueOf(charSecondName), ColorPicker.pickRandomColor());
+            } else {
+                char charName = name.charAt(0);
+                return TextDrawable.builder().buildRound(String.valueOf(charName), ColorPicker.pickRandomColor());
+            }
+        } return null;
     }
 
     class CDMessageViewHolder extends RecyclerView.ViewHolder{
