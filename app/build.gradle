@@ -68,7 +68,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-iid:17.0.4'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
-
     // Make circle images stuff
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }

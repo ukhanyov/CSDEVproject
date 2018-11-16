@@ -19,6 +19,7 @@ import com.example.admin_linux.csdevproject.network.pojo.register_device.RDRespo
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
+import com.example.admin_linux.csdevproject.utils.lifecycle_callbacks.App;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
@@ -38,25 +39,45 @@ public class NotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        if(remoteMessage.getData() != null) {
+        if (remoteMessage.getData() != null) {
             Log.d(TAG, "onMessageReceived: " + remoteMessage.getData().toString());
 
+            if (App.isInForeground()) {
+                if (remoteMessage.getData().get("ConversationType") != null) {
+
+                    String message = remoteMessage.getData().get("body");
+                    Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+                    intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
+                    startService(intentMyIntentService);
+                }
+            } else {
+                if (remoteMessage.getData().get("ConversationType") != null) {
 
 
-            String message = remoteMessage.getData().get("message");
-            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
-            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
-            startService(intentMyIntentService);
+//                    String message = remoteMessage.getData().get("body");
+//                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
+//                            .setSmallIcon(R.drawable.ic_dummy_default)
+//                            .setContentTitle("Cropstream")
+//                            .setContentText(message)
+//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//
+//                    // notificationId is a unique int for each notification that you must define
+//                    Random r = new Random();
+//                    int id = r.nextInt();
+//                    notificationManager.notify(id, mBuilder.build());
+                }
+            }
         }
 
-        if(remoteMessage.getNotification() != null) {
-            Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getBody());
-
-            String message = remoteMessage.getNotification().getBody();
-            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
-            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
-            startService(intentMyIntentService);
-        }
+//        if(remoteMessage.getNotification() != null) {
+//            Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getBody());
+//
+//            String message = remoteMessage.getNotification().getBody();
+//            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+//            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
+//            startService(intentMyIntentService);
+//        }
         // when app is in background -> apps receive the notification payload in the notification tray
     }
 
@@ -74,6 +95,7 @@ public class NotificationService extends FirebaseMessagingService {
         // Instance ID token to your app server.
         sendRegistrationToServer(token);
     }
+
 
     private void scheduleJob() {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
@@ -94,7 +116,7 @@ public class NotificationService extends FirebaseMessagingService {
         int personId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
         //String deviceTokenId = preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null);
 
-        if(token != null) {
+        if (token != null) {
 
             GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
             Call<RDResponse> responseCall = service.postRegisterDevice(bearer, personId, token, Constants.DEVICE_TYPE);

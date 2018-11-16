@@ -1,7 +1,10 @@
 package com.example.admin_linux.csdevproject;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.arch.lifecycle.ProcessLifecycleOwner;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -12,6 +15,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements
         FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
 
+
     // Fancy dataBinding
     ActivityMainBinding mBinding;
 
@@ -73,7 +78,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_main);
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         setupNotifications();
@@ -296,10 +305,24 @@ public class MainActivity extends AppCompatActivity implements
             // Create channel to show notifications.
             String channelId  = getString(R.string.channel_id);
             String channelName = getString(R.string.channel_name);
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW));
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+
+        if (getIntent().getExtras() != null)
+        {
+            Object title = getIntent().getExtras().get("title");
+            Object message = getIntent().getExtras().get("message");
+
+
+            String tit=title+"";
+            String msg=message+"";
+
+            if(!tit.equals("null") && !msg.equals("null")) {
+                //add your code which you want to perform on notification receive
+
+            }
+
         }
 
         if (getIntent().getExtras() != null) {
