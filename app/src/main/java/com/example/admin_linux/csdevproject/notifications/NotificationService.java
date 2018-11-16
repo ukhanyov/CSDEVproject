@@ -20,11 +20,10 @@ import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.lifecycle_callbacks.App;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,31 +52,12 @@ public class NotificationService extends FirebaseMessagingService {
             } else {
                 if (remoteMessage.getData().get("ConversationType") != null) {
 
+                    sendNotification(remoteMessage.getData().get("body"));
 
-//                    String message = remoteMessage.getData().get("body");
-//                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
-//                            .setSmallIcon(R.drawable.ic_dummy_default)
-//                            .setContentTitle("Cropstream")
-//                            .setContentText(message)
-//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//
-//                    // notificationId is a unique int for each notification that you must define
-//                    Random r = new Random();
-//                    int id = r.nextInt();
-//                    notificationManager.notify(id, mBuilder.build());
                 }
             }
         }
 
-//        if(remoteMessage.getNotification() != null) {
-//            Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getBody());
-//
-//            String message = remoteMessage.getNotification().getBody();
-//            Intent intentMyIntentService = new Intent(this, MyIntentService.class);
-//            intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
-//            startService(intentMyIntentService);
-//        }
         // when app is in background -> apps receive the notification payload in the notification tray
     }
 
@@ -97,18 +77,18 @@ public class NotificationService extends FirebaseMessagingService {
     }
 
 
-    private void scheduleJob() {
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        Job myJob = dispatcher.newJobBuilder()
-                .setService(MyJobService.class)
-                .setTag("my-job-tag")
-                .build();
-        dispatcher.schedule(myJob);
-    }
-
-    private void handleNow() {
-        Log.d(TAG, "Short lived task is done.");
-    }
+//    private void scheduleJob() {
+//        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+//        Job myJob = dispatcher.newJobBuilder()
+//                .setService(MyJobService.class)
+//                .setTag("my-job-tag")
+//                .build();
+//        dispatcher.schedule(myJob);
+//    }
+//
+//    private void handleNow() {
+//        Log.d(TAG, "Short lived task is done.");
+//    }
 
     private void sendRegistrationToServer(String token) {
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
@@ -123,7 +103,7 @@ public class NotificationService extends FirebaseMessagingService {
             responseCall.enqueue(new Callback<RDResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
-                    Log.d("RegisterDevice_ns", "onResponse: " + response.body().getResultCodeName());
+                    if(response.body() != null) Log.d("RegisterDevice_ns", "onResponse: " + response.body().getResultCodeName());
                 }
 
                 @Override
@@ -137,14 +117,14 @@ public class NotificationService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
+        // TODO : handle logic of launching proper activity here
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_dummy_default)
                         .setContentTitle(getString(R.string.notification_default_message))
                         .setContentText(messageBody)
@@ -152,8 +132,7 @@ public class NotificationService extends FirebaseMessagingService {
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -163,7 +142,8 @@ public class NotificationService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        Random random = new Random();
+        notificationManager.notify(random.nextInt(), notificationBuilder.build());
     }
 }
 
