@@ -68,10 +68,10 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_dummy_default" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/white" />
+            android:resource="@drawable/ic_notification" />
+        <!--<meta-data-->
+            <!--android:name="com.google.firebase.messaging.default_notification_color"-->
+            <!--android:resource="@color/black" />-->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/channel_id" />
