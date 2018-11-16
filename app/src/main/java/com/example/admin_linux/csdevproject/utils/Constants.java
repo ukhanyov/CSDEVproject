@@ -39,4 +39,10 @@ public class Constants {
     public static final String NOTIFICATION_INTENT_CONVERSATION_TITLE = "notification_intent_conversation_title";
     public static final String NOTIFICATION_INTENT_CONVERSATION_PERSON_ID = "notification_intent_conversation_person_id";
     public static final String NOTIFICATION_INTENT_CONVERSATION_CONVERSATION_ID = "notification_intent_conversation_conversation_id";
+
+    public static final String NOTIFICATION_INTENT_START_CHAT_FROM_NOTIFICATION = "notification_intent_start_chat_from_notification";
+    public static final String NOTIFICATION_INTENT_START_CHAT_TITLE = "notification_intent_start_chat_title";
+    public static final String NOTIFICATION_INTENT_START_CHAT_BODY = "notification_intent_start_chat_body";
+    public static final String NOTIFICATION_INTENT_START_CHAT_CARD_RENDER_ID = "notification_start_chat_card_render_id";
+    public static final String NOTIFICATION_INTENT_START_CHAT_FEED_EVENT_ID = "notification_start_chat_feed_event_id";
 }

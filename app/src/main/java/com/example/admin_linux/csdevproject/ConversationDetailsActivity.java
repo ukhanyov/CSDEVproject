@@ -47,7 +47,6 @@ public class ConversationDetailsActivity extends AppCompatActivity {
     private List<ConversationDetailsMessage> mMessageList;
     private String mProfileUrl;
     private String mProfileName;
-    private String mBearer;
     int mYourPersonId;
 
     @Override
@@ -65,7 +64,7 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int conversationId = intent.getIntExtra("transfer_conversation_id", 0);
         int personId = intent.getIntExtra("transfer_person_id", 0);
-        mBearer = intent.getStringExtra("transfer_bearer");
+        String bearer = intent.getStringExtra("transfer_bearer");
         mProfileUrl = intent.getStringExtra("transfer_profile_url");
         mProfileName = intent.getStringExtra("transfer_full_name");
 
@@ -90,8 +89,8 @@ public class ConversationDetailsActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         mYourPersonId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
 
-        if (conversationId != 0 && mBearer != null) {
-            fetchConversationDetails(conversationId, mYourPersonId, personId, mBearer);
+        if (conversationId != 0 && bearer != null) {
+            fetchConversationDetails(conversationId, mYourPersonId, personId, bearer);
         }
 
         setupNotifications();

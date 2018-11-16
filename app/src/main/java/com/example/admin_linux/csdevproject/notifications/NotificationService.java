@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
 import com.example.admin_linux.csdevproject.R;
+import com.example.admin_linux.csdevproject.StartChatActivity;
 import com.example.admin_linux.csdevproject.network.pojo.register_device.RDResponse;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 
 public class NotificationService extends FirebaseMessagingService {
 
-    private static final String TAG = "NS_test";
+    private static final String TAG = "NS_test_fcm";
 
 
     @Override
@@ -50,18 +51,21 @@ public class NotificationService extends FirebaseMessagingService {
                     startService(intentMyIntentService);
                 }
             } else {
-                if (remoteMessage.getData().get("ConversationType") != null) {
 
-                    if(Objects.requireNonNull(remoteMessage.getData().get("notificationType")).equals("ConversationMessage"))
-                        sendNotificationToConversation(remoteMessage.getData().get("body"),
-                                remoteMessage.getData().get("title"),
-                                Integer.valueOf(Objects.requireNonNull(remoteMessage.getData().get("PersonId"))),
-                                Integer.valueOf(Objects.requireNonNull(remoteMessage.getData().get("ConversationId"))));
 
-                    if(remoteMessage.getData().get("notificationType").equals("CardTemplatedMessagePosted")){
+                if (remoteMessage.getData().get("notificationType").equals("ConversationMessage"))
+                    sendNotificationToConversation(remoteMessage.getData().get("body"),
+                            remoteMessage.getData().get("title"),
+                            Integer.valueOf(Objects.requireNonNull(remoteMessage.getData().get("PersonId"))),
+                            Integer.valueOf(Objects.requireNonNull(remoteMessage.getData().get("ConversationId"))));
 
-                    }
+                if (remoteMessage.getData().get("notificationType").equals("CardTemplatedMessagePosted")) {
+                    sendNotificationToStartChat(remoteMessage.getData().get("CardRenderDataId"),
+                            remoteMessage.getData().get("body"),
+                            remoteMessage.getData().get("title"),
+                            remoteMessage.getData().get("FeedEventId"));
                 }
+
             }
         }
 
@@ -110,7 +114,8 @@ public class NotificationService extends FirebaseMessagingService {
             responseCall.enqueue(new Callback<RDResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
-                    if(response.body() != null) Log.d("RegisterDevice_ns", "onResponse: " + response.body().getResultCodeName());
+                    if (response.body() != null)
+                        Log.d("RegisterDevice_ns", "onResponse: " + response.body().getResultCodeName());
                 }
 
                 @Override
@@ -133,12 +138,46 @@ public class NotificationService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
-                        .setSmallIcon(R.drawable.ic_dummy_default)
-                        .setContentTitle(title)
-                        .setContentText(messageBody)
-                        .setAutoCancel(true)
-                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setContentIntent(pendingIntent);
+                .setSmallIcon(R.drawable.ic_dummy_default)
+                .setContentTitle(title)
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    getString(R.string.channel_id),
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Random random = new Random();
+        notificationManager.notify(random.nextInt(), notificationBuilder.build());
+    }
+
+    private void sendNotificationToStartChat(String cardRenderDataId, String body, String title, String feedEventId) {
+        Intent intent = new Intent(this, StartChatActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_START_CHAT_FROM_NOTIFICATION, true);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_START_CHAT_CARD_RENDER_ID, cardRenderDataId);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_START_CHAT_BODY, body);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_START_CHAT_TITLE, title);
+        intent.putExtra(Constants.NOTIFICATION_INTENT_START_CHAT_FEED_EVENT_ID, feedEventId);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
+                .setSmallIcon(R.drawable.ic_dummy_default)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
