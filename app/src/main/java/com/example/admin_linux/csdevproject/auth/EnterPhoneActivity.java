@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,8 +16,6 @@ import com.example.admin_linux.csdevproject.MainActivity;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.databinding.ActivityEnterPhoneBinding;
 import com.example.admin_linux.csdevproject.utils.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -185,21 +181,21 @@ public class EnterPhoneActivity extends AppCompatActivity {
         });
     }
 
-    private void makeInputNumberViewsVisible() {
-        mBinding.etActivityEnterPhoneCountryCode.setVisibility(View.VISIBLE);
-        mBinding.etActivityEnterPhone.setVisibility(View.VISIBLE);
-        mBinding.tvActivityEnterPhoneTitle.setVisibility(View.VISIBLE);
-        mBinding.btnActivityEnterPhoneVerifyNumber.setVisibility(View.VISIBLE);
-
-        mBinding.tvActivityEnterPhoneLabelVerification.setVisibility(View.GONE);
-        mBinding.etActivityEnterPhoneVerification1.setVisibility(View.GONE);
-        mBinding.etActivityEnterPhoneVerification2.setVisibility(View.GONE);
-        mBinding.etActivityEnterPhoneVerification3.setVisibility(View.GONE);
-        mBinding.etActivityEnterPhoneVerification4.setVisibility(View.GONE);
-        mBinding.etActivityEnterPhoneVerification5.setVisibility(View.GONE);
-        mBinding.etActivityEnterPhoneVerification6.setVisibility(View.GONE);
-        mBinding.btnActivityEnterPhoneVerifyCode.setVisibility(View.GONE);
-    }
+//    private void makeInputNumberViewsVisible() {
+//        mBinding.etActivityEnterPhoneCountryCode.setVisibility(View.VISIBLE);
+//        mBinding.etActivityEnterPhone.setVisibility(View.VISIBLE);
+//        mBinding.tvActivityEnterPhoneTitle.setVisibility(View.VISIBLE);
+//        mBinding.btnActivityEnterPhoneVerifyNumber.setVisibility(View.VISIBLE);
+//
+//        mBinding.tvActivityEnterPhoneLabelVerification.setVisibility(View.GONE);
+//        mBinding.etActivityEnterPhoneVerification1.setVisibility(View.GONE);
+//        mBinding.etActivityEnterPhoneVerification2.setVisibility(View.GONE);
+//        mBinding.etActivityEnterPhoneVerification3.setVisibility(View.GONE);
+//        mBinding.etActivityEnterPhoneVerification4.setVisibility(View.GONE);
+//        mBinding.etActivityEnterPhoneVerification5.setVisibility(View.GONE);
+//        mBinding.etActivityEnterPhoneVerification6.setVisibility(View.GONE);
+//        mBinding.btnActivityEnterPhoneVerifyCode.setVisibility(View.GONE);
+//    }
 
     private void makeInputCodeViewsVisible() {
         mBinding.etActivityEnterPhoneCountryCode.setVisibility(View.GONE);

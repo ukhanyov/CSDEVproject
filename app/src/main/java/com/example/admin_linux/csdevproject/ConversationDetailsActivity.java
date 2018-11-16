@@ -1,13 +1,10 @@
 package com.example.admin_linux.csdevproject;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +18,8 @@ import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.adapters.CDMessageAdapter;
 import com.example.admin_linux.csdevproject.adapters.CDPeopleAdapter;
-import com.example.admin_linux.csdevproject.data.models.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.data.ConversationDetailsViewModel;
+import com.example.admin_linux.csdevproject.data.models.ConversationDetailsMessage;
 import com.example.admin_linux.csdevproject.databinding.ActivityConversationDetailsBinding;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.ConversationDetailsReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.model.CDConversationModel;

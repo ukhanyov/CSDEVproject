@@ -40,7 +40,8 @@ public class NotificationService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         if (remoteMessage.getData() != null) {
-            Log.d(TAG, "onMessageReceived: " + remoteMessage.getData().toString());
+            Log.d(TAG, "getData: " + remoteMessage.getData().toString());
+            Log.d(TAG, "getNotification: " + remoteMessage.getNotification());
 
             if (App.isInForeground()) {
 

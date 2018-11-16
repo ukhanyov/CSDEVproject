@@ -1,7 +1,6 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

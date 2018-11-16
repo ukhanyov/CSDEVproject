@@ -1,10 +1,7 @@
 package com.example.admin_linux.csdevproject;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.arch.lifecycle.ProcessLifecycleOwner;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -15,7 +12,6 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -393,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements
         responseCall.enqueue(new Callback<RDResponse>() {
             @Override
             public void onResponse(@NonNull Call<RDResponse> call, @NonNull Response<RDResponse> response) {
+                if(response.body() != null)
                 Log.d("RegisterDevice_ma", "onResponse: " + response.body().getResultCodeName());
             }
 

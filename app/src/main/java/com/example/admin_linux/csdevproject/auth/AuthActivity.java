@@ -18,7 +18,6 @@ import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.databinding.ActivityAuthBinding;
 import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.URLSpanNoUnderline;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Objects;

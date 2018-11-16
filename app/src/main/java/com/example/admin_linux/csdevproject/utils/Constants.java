@@ -30,8 +30,8 @@ public class Constants {
     public static final String PREF_PROFILE_DEVICE_TOKEN = "pref_profile_device_token";
 
     // Notification stuff
-    public static final String NOTIFICATION_CHANEL_ID = "notification_chanel";
-    public static final String NOTIFICATION_FOREGROUND_RECIEVED = "notification_foreground_received";
+    //public static final String NOTIFICATION_CHANEL_ID = "notification_chanel";
+    //public static final String NOTIFICATION_FOREGROUND_RECIEVED = "notification_foreground_received";
 
     public static final int DEVICE_TYPE = 2;
 
