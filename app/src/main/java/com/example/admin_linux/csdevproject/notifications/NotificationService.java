@@ -43,8 +43,16 @@ public class NotificationService extends FirebaseMessagingService {
             Log.d(TAG, "onMessageReceived: " + remoteMessage.getData().toString());
 
             if (App.isInForeground()) {
-                if (remoteMessage.getData().get("ConversationType") != null) {
 
+                if (remoteMessage.getData().get("notificationType").equals("ConversationMessage")) {
+
+                    String message = remoteMessage.getData().get("body");
+                    Intent intentMyIntentService = new Intent(this, MyIntentService.class);
+                    intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
+                    startService(intentMyIntentService);
+                }
+
+                if (remoteMessage.getData().get("notificationType").equals("CardTemplatedMessagePosted")) {
                     String message = remoteMessage.getData().get("body");
                     Intent intentMyIntentService = new Intent(this, MyIntentService.class);
                     intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
