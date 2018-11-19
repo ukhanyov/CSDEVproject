@@ -2,8 +2,6 @@ package com.example.admin_linux.csdevproject.utils;
 
 import android.graphics.Color;
 
-import com.example.admin_linux.csdevproject.R;
-
 import java.util.Random;
 
 public class ColorPicker {

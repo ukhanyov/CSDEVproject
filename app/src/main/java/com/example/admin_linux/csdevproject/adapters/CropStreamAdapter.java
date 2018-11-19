@@ -36,7 +36,7 @@ import java.util.Objects;
 
 public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
 
-    // TODO : single icon in group conversation
+    // TODO : change CropStreamMessage in the way so that you can have a list of involved people, and only then, judging by it's size, bind one aor two icons in the header
 
     private List<CropStreamMessage> mList;
     private Context mContext;
@@ -269,9 +269,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
     private void bindImageMultiple(CorpStreamViewHolder holder, String nameOne, String nameTwo, String urlOne, String urlTwo) {
 
-        // TODO : some bug with missing name
-        // TODO : some weird bug with colors
-
         if (urlOne != null) {
             Picasso.get().load(urlOne).fit().centerInside()
                     .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
@@ -448,7 +445,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 @Override
                 public void onGlobalLayout() {
 
-                    // TODO : Figure out how shrink a card with catalog items, if there are many of them
                     holder.llCatalogEntrySVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     holder.llCatalogEntrySVWrapper.getLayoutParams().height = holder.llCatalogEntrySVWrapper.getWidth();
 
