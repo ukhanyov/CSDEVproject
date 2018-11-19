@@ -149,20 +149,6 @@ public class CropStreamFragment extends Fragment {
         // Store a member variable for the listener
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
 
-            // Maybe add button "go to the top"
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView view, int dx, int dy) {
-//                super.onScrolled(view, dx, dy);
-//
-//                if (linearLayoutManager.getItemCount() > 20) {
-//                    //Show FAB
-//                    Toast.makeText(rootView.getContext(), "We need to go back", Toast.LENGTH_SHORT).show();
-//                }
-//                else{
-//                    //Hide FAB
-//                }
-//            }
-
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 loadNextDataFromApi();
