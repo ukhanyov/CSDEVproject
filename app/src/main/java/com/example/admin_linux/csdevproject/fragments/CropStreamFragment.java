@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
@@ -81,6 +82,8 @@ public class CropStreamFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
+        ProgressBar progressBar = rootView.findViewById(R.id.pb_loading_indicator);
+        progressBar.setVisibility(View.VISIBLE);
         // List item click stuff
         // -------------------------------------------------------------------------------------------
         CropStreamClickListener listener = (view, conversationId, personId, profileName, personsCorp, personsPictureUrl, messageText, key) -> {
@@ -178,7 +181,7 @@ public class CropStreamFragment extends Fragment {
         mSwipeRefreshLayout = rootView.findViewById(R.id.srl_crop_stream_fragment);
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(true);
-
+            progressBar.setVisibility(View.GONE);
             refreshData();
             recyclerView.scrollToPosition(0);
         });
