@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         BottomNavigationView.OnNavigationItemSelectedListener,
         ChatFragment.OnFragmentInteractionListener,
-        FavoritesFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
 
 
