@@ -9,12 +9,14 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.admin_linux.csdevproject.ConversationDetailsActivity;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.StartChatActivity;
+import com.example.admin_linux.csdevproject.fragments.CropStreamFragment;
 import com.example.admin_linux.csdevproject.network.pojo.register_device.RDResponse;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
@@ -43,10 +45,9 @@ public class NotificationService extends FirebaseMessagingService {
             Log.d(TAG, "getData: " + remoteMessage.getData().toString());
             Log.d(TAG, "getNotification: " + remoteMessage.getNotification());
             Log.d(TAG, "toString: " + remoteMessage.toString());
-            if (App.isInForeground()) {
+            if (App.isInForeground() && CropStreamFragment.isFeedEventFragmentVisible) {
 
                 if (remoteMessage.getData().get("notificationType").equals("ConversationMessage")) {
-
                     String message = remoteMessage.getData().get("body");
                     Intent intentMyIntentService = new Intent(this, MyIntentService.class);
                     intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
@@ -59,8 +60,8 @@ public class NotificationService extends FirebaseMessagingService {
                     intentMyIntentService.putExtra(MyIntentService.EXTRA_KEY_IN, message);
                     startService(intentMyIntentService);
                 }
-            } else {
 
+            } else {
 
                 if (remoteMessage.getData().get("notificationType").equals("ConversationMessage"))
                     sendNotificationToConversation(remoteMessage.getData().get("body"),
@@ -74,7 +75,6 @@ public class NotificationService extends FirebaseMessagingService {
                             remoteMessage.getData().get("title"),
                             remoteMessage.getData().get("FeedEventId"));
                 }
-
             }
         }
 

@@ -29,6 +29,9 @@ public class Constants {
     public static final String PREF_PROFILE_PERSON_ID = "pref_profile_person_id";
     public static final String PREF_PROFILE_DEVICE_TOKEN = "pref_profile_device_token";
 
+    // Fragment TAG
+    public static final String FRAGMENT_TAG_FEED_EVENT = "fragment_tag_feed_event";
+
     // Notification stuff
     //public static final String NOTIFICATION_CHANEL_ID = "notification_chanel";
     //public static final String NOTIFICATION_FOREGROUND_RECIEVED = "notification_foreground_received";

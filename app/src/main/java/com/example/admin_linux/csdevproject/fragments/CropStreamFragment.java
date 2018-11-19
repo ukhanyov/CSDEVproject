@@ -56,7 +56,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CropStreamFragment extends Fragment {
 
-    // TODO : make push notifications
+    public  static boolean isFeedEventFragmentVisible = false;
 
     private MyBroadcastReceiver myBroadcastReceiver;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -205,16 +205,27 @@ public class CropStreamFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        isFeedEventFragmentVisible = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isFeedEventFragmentVisible = false;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         //un-register BroadcastReceiver
-        if(myBroadcastReceiver != null) Objects.requireNonNull(getActivity()).unregisterReceiver(myBroadcastReceiver);
+        if (myBroadcastReceiver != null)
+            Objects.requireNonNull(getActivity()).unregisterReceiver(myBroadcastReceiver);
     }
 
     private void refreshData() {
-        // TODO : look into weird bug of recyclerView position not being the first one (jump to some position)
         mAdapter.removeAllItems();
-        //mAdapter.notifyItemRangeRemoved(0, cropStreamMessages.size());
         mAdapter.notifyDataSetChanged();
         cropStreamMessages = null;
 
@@ -455,7 +466,7 @@ public class CropStreamFragment extends Fragment {
         return people;
     }
 
-    private List<String> populateListOfImagesNames(List<FEIMInvolvedPerson> involvedPeople, int yourId){
+    private List<String> populateListOfImagesNames(List<FEIMInvolvedPerson> involvedPeople, int yourId) {
         List<String> peopleNames = new ArrayList<>();
         for (FEIMInvolvedPerson person : involvedPeople) {
             if (person.getPersonId() != yourId) {
@@ -463,12 +474,12 @@ public class CropStreamFragment extends Fragment {
             }
         }
         List<Integer> positionList = new ArrayList<>();
-        for (String item : peopleNames){
-            if(item == null || item.equals("")) positionList.add(peopleNames.indexOf(item));
+        for (String item : peopleNames) {
+            if (item == null || item.equals("")) positionList.add(peopleNames.indexOf(item));
         }
 
-        if(positionList.size() != 0){
-            for (int iterator : positionList){
+        if (positionList.size() != 0) {
+            for (int iterator : positionList) {
                 peopleNames.remove(iterator);
             }
         }
@@ -822,9 +833,7 @@ public class CropStreamFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String result = intent.getStringExtra(MyIntentService.EXTRA_KEY_OUT);
-            //if(result.equals(Constants.NOTIFICATION_FOREGROUND_RECIEVED)){
-                mButtonNewMessage.setVisibility(View.VISIBLE);
-            //}
+            mButtonNewMessage.setVisibility(View.VISIBLE);
             Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
         }
     }
