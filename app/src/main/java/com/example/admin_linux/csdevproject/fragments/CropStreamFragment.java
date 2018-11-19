@@ -452,6 +452,9 @@ public class CropStreamFragment extends Fragment {
                     person.getPersonId() != yourId) {
                 people.add(person.getPersonFullName());
             }
+            if (person.getPersonId() != yourId && !people.contains("you")) {
+                people.add("you");
+            }
         }
         return people;
     }
