@@ -131,7 +131,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         bindImage(holder, current.getProfileName(), current.getProfilePicture());
 
         // Bind name
-        bindName(holder, current.getProfileName(), null);
+        bindName(holder, current.getProfileCorpName(), null);
 
         // Bind involved persons
         holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
@@ -164,7 +164,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 current.getCombineImageUrlSecond());
 
         // Bind name
-        bindName(holder, current.getProfileName(), null);
+        bindName(holder, current.getProfileCorpName(), null);
 
         // Bind involved persons
         holder.tvInvolvedPersons.setText(current.getInvolvedPersonsNames());
