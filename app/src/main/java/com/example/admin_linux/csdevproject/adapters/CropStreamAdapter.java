@@ -36,6 +36,8 @@ import java.util.Objects;
 
 public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
 
+    // TODO : single icon in group conversation
+
     private List<CropStreamMessage> mList;
     private Context mContext;
     private CropStreamClickListener mListener;
