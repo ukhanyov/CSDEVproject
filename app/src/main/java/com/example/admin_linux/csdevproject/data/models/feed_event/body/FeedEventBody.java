@@ -5,12 +5,12 @@ import android.os.Parcelable;
 
 public class FeedEventBody implements Parcelable {
     private String mFeedEventBodyMessage;
-    private FeedEventBodyCard mFeedEventBodyCard;
+    private FeedEventBodyCardMessage mFeedEventBodyCardMessage;
     private FeedEventBodyCatalog mFeedEventBodyCatalog;
 
-    public FeedEventBody(String feedEventBodyMessage, FeedEventBodyCard feedEventBodyCard, FeedEventBodyCatalog feedEventBodyCatalog) {
+    public FeedEventBody(String feedEventBodyMessage, FeedEventBodyCardMessage feedEventBodyCardMessage, FeedEventBodyCatalog feedEventBodyCatalog) {
         this.mFeedEventBodyMessage = feedEventBodyMessage;
-        this.mFeedEventBodyCard = feedEventBodyCard;
+        this.mFeedEventBodyCardMessage = feedEventBodyCardMessage;
         this.mFeedEventBodyCatalog = feedEventBodyCatalog;
     }
 
@@ -18,8 +18,8 @@ public class FeedEventBody implements Parcelable {
         return mFeedEventBodyMessage;
     }
 
-    public FeedEventBodyCard getFeedEventBodyCard() {
-        return mFeedEventBodyCard;
+    public FeedEventBodyCardMessage getFeedEventBodyCard() {
+        return mFeedEventBodyCardMessage;
     }
 
     public FeedEventBodyCatalog getFeedEventBodyCatalog() {
@@ -28,14 +28,14 @@ public class FeedEventBody implements Parcelable {
 
     public FeedEventBody(Parcel in){
         this.mFeedEventBodyMessage = in.readString();
-        this.mFeedEventBodyCard = in.readParcelable(FeedEventBodyCard.class.getClassLoader());
+        this.mFeedEventBodyCardMessage = in.readParcelable(FeedEventBodyCardMessage.class.getClassLoader());
         this.mFeedEventBodyCatalog = in.readParcelable(FeedEventBodyCatalog.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.mFeedEventBodyMessage);
-        dest.writeParcelable(this.mFeedEventBodyCard, flags);
+        dest.writeParcelable(this.mFeedEventBodyCardMessage, flags);
         dest.writeParcelable(this.mFeedEventBodyCatalog, flags);
     }
 
