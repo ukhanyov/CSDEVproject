@@ -114,7 +114,6 @@ public class NotificationService extends FirebaseMessagingService {
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
         int personId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
-        //String deviceTokenId = preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null);
 
         if (token != null) {
 

@@ -83,11 +83,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             // Sub root |5| universal for all roots
 
             // Sub root |6|: FeedEvents -> CatalogEntryId(not null) -> CatalogEntries -> CatalogEntryInDetailsModel ->
-            // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+            // FFTFormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
             // universal for all roots
 
             // Sub root |7|: FeedEvents -> CatalogEntryId(null) -> CardRenderDataModel -> CatalogEntries -> CatalogEntryInDetailsModel ->
-            // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+            // FFTFormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
             // universal for all roots
 
             if (current.isFromOrganization()) {

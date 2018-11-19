@@ -254,10 +254,10 @@ public class CropStreamFragment extends Fragment {
                 // -> FeedEventItemModel -> CardRenderDataModel -> CardRenderDataId -> CardRenderTypes = CardMessage -> CardMessage
 
                 // Sub root (for all main roots) |6|: FeedEvents -> CatalogEntryId(not null) -> CatalogEntries -> CatalogEntryInDetailsModel ->
-                // FormTemplateModel(not null) -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+                // FFTFormTemplateModel(not null) -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
 
                 // Sub root (for all main roots) |7|: FeedEvents -> CatalogEntryId(null) -> CardRenderDataModel -> CatalogEntries -> CatalogEntryInDetailsModel ->
-                // FormTemplateModel(not null) -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+                // FFTFormTemplateModel(not null) -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();
                 List<FeedEventItemModel> listOfEvents = Objects.requireNonNull(feedEventsModel).getFeedEventsModel().getFeedEventItemModels();
@@ -642,10 +642,10 @@ public class CropStreamFragment extends Fragment {
                 // -> FeedEventItemModel -> CardRenderDataModel -> CardRenderDataId -> CardRenderTypes = CardMessage -> CardMessage
 
                 // Sub root (for all main roots) |6|: FeedEvents -> CatalogEntryId(not null) -> CatalogEntries -> CatalogEntryInDetailsModel ->
-                // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+                // FFTFormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
 
                 // Sub root (for all main roots) |7|: FeedEvents -> CatalogEntryId(null) -> CardRenderDataModel -> CatalogEntries -> CatalogEntryInDetailsModel ->
-                // FormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
+                // FFTFormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
 
 
                 ApiResultOfFeedEventsModel feedEventsModel = response.body();

@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.network.retrofit;
 
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.ConversationDetailsReturnValue;
+import com.example.admin_linux.csdevproject.network.pojo.favorite_entries.FavoriteEntriesReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.firebase_user.FirebaseUserReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.register_device.RDResponse;
@@ -58,6 +59,13 @@ public interface GetDataService {
             @Field("PersonId") int PersonId,
             @Field("DeviceTokenId") String DeviceTokenId,
             @Field("DeviceType") int DeviceType
+    );
+
+    // "api/v1/Catalog/GetFavoriteEntries?PersonId={PersonId}"
+    @GET("api/v1/Catalog/GetFavoriteEntries")
+    Call<FavoriteEntriesReturnValue> getFavoriteEntries(
+            @Header("Authorization") String BEARER,
+            @Query("PersonId") int personId
     );
 
 }
