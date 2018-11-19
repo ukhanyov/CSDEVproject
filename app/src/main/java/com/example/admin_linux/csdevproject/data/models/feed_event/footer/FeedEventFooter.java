@@ -1,4 +1,4 @@
-package com.example.admin_linux.csdevproject.data.models.feed_event;
+package com.example.admin_linux.csdevproject.data.models.feed_event.footer;
 
 import android.os.Parcel;
 import android.os.Parcelable;

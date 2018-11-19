@@ -3,6 +3,10 @@ package com.example.admin_linux.csdevproject.data.models.feed_event;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.admin_linux.csdevproject.data.models.feed_event.body.FeedEventBody;
+import com.example.admin_linux.csdevproject.data.models.feed_event.footer.FeedEventFooter;
+import com.example.admin_linux.csdevproject.data.models.feed_event.header.FeedEventHeader;
+
 public class FeedEvent implements Parcelable {
     private FeedEventHeader mFeedEventHeader;
     private FeedEventBody mFeedEventBody;
