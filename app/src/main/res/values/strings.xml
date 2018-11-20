@@ -132,11 +132,12 @@
     <string name="channel_name">notification_chanel_name</string>
     <string name="channel_description">notification_chanel_description</string>
     <string name="notification_default_message">Default notification message</string>
+    <!--Notification stuff-->
+
     <string name="button_feed_event_new_message">New message</string>
     <string name="line_of_color_on_left">Line of color on left</string>
     <string name="star_on_the_right">Star on the right</string>
     <string name="hint_list_item_possible_manufacturer">Manufacturer</string>
     <string name="hint_list_item_possible_name">Name</string>
-    <!--Notification stuff-->
 
 </resources>

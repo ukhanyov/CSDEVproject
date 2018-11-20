@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -42,11 +41,15 @@ public class NotificationService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         // TODO : look into double notifications
+        // Possible solution play-services-x instead of just play-services
 
         if (remoteMessage.getData() != null) {
             Log.d(TAG, "getData: " + remoteMessage.getData().toString());
-            Log.d(TAG, "getNotification: " + remoteMessage.getNotification());
+            //Log.d(TAG, "getNotification: " + remoteMessage.getNotification());
             Log.d(TAG, "toString: " + remoteMessage.toString());
+            Log.d(TAG, "onMessageReceived called");
+            Log.d(TAG, "-------------------------------------------------");
+
             if (App.isInForeground() && CropStreamFragment.isFeedEventFragmentVisible) {
 
                 if (remoteMessage.getData().get("notificationType").equals("ConversationMessage")) {

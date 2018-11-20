@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        setupNotifications();
+        //setupNotifications();
 
         Intent intent = getIntent();
         String mUserFirebaseId = intent.getStringExtra(Constants.KEY_INTENT_USER_FIREBASE_ID);
@@ -292,44 +292,44 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void setupNotifications() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create channel to show notifications.
-            String channelId  = getString(R.string.channel_id);
-            String channelName = getString(R.string.channel_name);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW));
-        }
-
-        if (getIntent().getExtras() != null) {
-            String token;
-            for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
-                if(key.equals("key_intent_firebase_token")){
-                    if (value != null) {
-                        token = value.toString();
-                        SharedPreferences postPreferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-                        String bearer = postPreferences.getString(Constants.PREF_PROFILE_BEARER, null);
-                        int personId = postPreferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
-                        if(bearer != null && personId != 0) postRegisterDevice(bearer, personId, token);
-                    }
-                }
-                Log.d("NS_test_MA", "Key: " + key + " Value: " + value);
-            }
-
-            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-
-            Log.d("NS_test_MA", "----------------------------");
-
-            Log.d("NS_test_MA", "Pref_Firebase_id: " + preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
-            Log.d("NS_test_MA", "Pref_phone: " + preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
-            Log.d("NS_test_MA", "Pref_firebase_token: " + preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null));
-
-            Log.d("NS_test_MA", "----------------------------");
-
-
-        }
-    }
+//    private void setupNotifications() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            // Create channel to show notifications.
+//            String channelId  = getString(R.string.channel_id);
+//            String channelName = getString(R.string.channel_name);
+//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//            notificationManager.createNotificationChannel(new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_LOW));
+//        }
+//
+//        if (getIntent().getExtras() != null) {
+//            String token;
+//            for (String key : getIntent().getExtras().keySet()) {
+//                Object value = getIntent().getExtras().get(key);
+//                if(key.equals("key_intent_firebase_token")){
+//                    if (value != null) {
+//                        token = value.toString();
+//                        SharedPreferences postPreferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+//                        String bearer = postPreferences.getString(Constants.PREF_PROFILE_BEARER, null);
+//                        int personId = postPreferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
+//                        if(bearer != null && personId != 0) postRegisterDevice(bearer, personId, token);
+//                    }
+//                }
+//                Log.d("NS_test_MA", "Key: " + key + " Value: " + value);
+//            }
+//
+//            SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+//
+//            Log.d("NS_test_MA", "----------------------------");
+//
+//            Log.d("NS_test_MA", "Pref_Firebase_id: " + preferences.getString(Constants.PREF_PROFILE_FIREBASE_ID, null));
+//            Log.d("NS_test_MA", "Pref_phone: " + preferences.getString(Constants.PREF_PROFILE_PHONE_NUMBER, null));
+//            Log.d("NS_test_MA", "Pref_firebase_token: " + preferences.getString(Constants.PREF_PROFILE_DEVICE_TOKEN, null));
+//
+//            Log.d("NS_test_MA", "----------------------------");
+//
+//
+//        }
+//    }
 
     private void postRegisterDevice(String bearer, int personId, String deviceTokenId){
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
@@ -349,10 +349,15 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void starCropStreamFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
-                .commit();
+        try {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout_content_main, fragmentCropStreamTransaction)
+                    .commit();
+        }catch (IllegalStateException exception){
+            Log.d("MainActivity", exception.toString());
+        }
+
     }
 
     public void ivSettingsClicked(View view) {

@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -33,6 +34,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
 
@@ -239,9 +242,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         // Bind time
         holder.tvMessageTime.setText(DateHelper.normalizeDate(current.getMessageTime()));
 
-        // Bind message picture
-        //bindMessagePicture(holder, current.getMessagePicture());
-
         // Bind message order (is it first)
         bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
@@ -287,8 +287,17 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     .transform(new CircleTransform())
                     .into(holder.ivProfilePictureMashTop);
         } else {
-            holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(nameTwo));
-            holder.ivProfilePictureMashTop.setAdjustViewBounds(true);
+            if(nameTwo != null) {
+                holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(nameTwo));
+                holder.ivProfilePictureMashTop.setAdjustViewBounds(true);
+            }else {
+                SharedPreferences preferences = mContext.getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+                Picasso.get().load(preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null)).fit().centerInside()
+                        .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
+                        .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
+                        .transform(new CircleTransform())
+                        .into(holder.ivProfilePictureMashTop);
+            }
         }
 
         holder.ivProfilePictureMashTop.setVisibility(View.VISIBLE);
@@ -321,18 +330,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.tvMessageText.setVisibility(View.GONE);
         }
     }
-
-//    private void bindMessagePicture(CorpStreamViewHolder holder, String pictureUrl) {
-//        if (pictureUrl != null) {
-//            holder.ivMessagePicture.setVisibility(View.VISIBLE);
-//            Picasso.get().load(pictureUrl).fit().centerInside()
-//                    .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
-//                    .error(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_error_red)))
-//                    .into(holder.ivMessagePicture);
-//        } else {
-//            holder.ivMessagePicture.setVisibility(View.GONE);
-//        }
-//    }
 
     private void bindMessageOrder(CorpStreamViewHolder holder, boolean isFirstMessage, boolean isAChat) {
         if (isFirstMessage) {
