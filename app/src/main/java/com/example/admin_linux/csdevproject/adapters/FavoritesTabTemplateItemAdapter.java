@@ -53,14 +53,12 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
             FavoriteFormTemplate formTemplate = mList.get(position);
 
             if (formTemplate.getFavoriteFormTemplateItemList() != null) {
-//                holder.llTemplateItem.requestDisallowInterceptTouchEvent(true);
-//                if (holder.svTemplateItem.getChildCount() > 0)
-//                    holder.svTemplateItem.removeAllViews();
 
                 LinearLayout linearLayout = new LinearLayout(mContext);
                 LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 linearLayout.setLayoutParams(paramsLL);
+
 
                 List<FavoriteFormTemplateItem> list = formTemplate.getFavoriteFormTemplateItemList();
                 for (FavoriteFormTemplateItem item : list) {
@@ -89,13 +87,8 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
                     }
                 }
 
-//                if (list.size() == 1) {
-//                    resizeSWCatalogEntry(holder);
-//                } else {
-//                    resizeLLWCatalogEntry(holder);
-//                }
+                resizeLinearLayout(holder, linearLayout);
 
-                //holder.svTemplateItem.addView(linearLayout);
                 holder.cvTempleteItem.addView(linearLayout);
             }
         } else {
@@ -114,45 +107,20 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
         return position;
     }
 
-//    private void resizeLLWCatalogEntry(@NonNull ViewHolderTemplateItem holder) {
-//        ViewTreeObserver viewTreeObserver = holder.llTemplateItemSVWrapper.getViewTreeObserver();
-//        if (viewTreeObserver.isAlive()) {
-//            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                @Override
-//                public void onGlobalLayout() {
-//
-//                    holder.llTemplateItemSVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//                    holder.llTemplateItemSVWrapper.getLayoutParams().height = holder.llTemplateItemSVWrapper.getWidth();
-//
-//                }
-//            });
-//        }
-//    }
-//
-//    private void resizeSWCatalogEntry(@NonNull ViewHolderTemplateItem holder) {
-//        ViewTreeObserver viewTreeObserver = holder.llTemplateItemSVWrapper.getViewTreeObserver();
-//        if (viewTreeObserver.isAlive()) {
-//            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                @Override
-//                public void onGlobalLayout() {
-//                    holder.llTemplateItemSVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//
-//                    int swW = holder.svTemplateItem.getWidth();
-//                    int swH = holder.svTemplateItem.getHeight();
-//
-//                    if(swH < swW) {
-//                        holder.llTemplateItemSVWrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//                        holder.svTemplateItem.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//                    }
-//                    else {
-//                        holder.llTemplateItemSVWrapper.getLayoutParams().height = swW;
-//                        holder.svTemplateItem.getLayoutParams().height = swW;
-//                    }
-//
-//                }
-//            });
-//        }
-//    }
+    private void resizeLinearLayout(ViewHolderTemplateItem holder, LinearLayout linearLayout) {
+        ViewTreeObserver viewTreeObserver = holder.cvTempleteItem.getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    holder.cvTempleteItem.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    holder.cvTempleteItem.getLayoutParams().height = (int) (1.3 * linearLayout.getWidth());
+                    //linearLayout.getLayoutParams().height = (int)(linearLayout.getWidth() * 1.3);
+
+                }
+            });
+        }
+    }
 
     private static String changedHeaderHtml(String htmlText) {
         String head = "<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" /></head>";
@@ -245,16 +213,9 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
 
         CardView cvTempleteItem;
 
-        //LinearLayout llTemplateItem;
-        //ScrollView svTemplateItem;
-        //LinearLayout llTemplateItemSVWrapper;
-
         ViewHolderTemplateItem(View itemView) {
             super(itemView);
 
-            //llTemplateItem = itemView.findViewById(R.id.list_item_template_ll_catalog_entry);
-            //svTemplateItem = itemView.findViewById(R.id.list_item_template_sw_catalog_entry);
-            //llTemplateItemSVWrapper = itemView.findViewById(R.id.list_item_possible_ll_template_entry_scroll_view_wrapper);
             cvTempleteItem = itemView.findViewById(R.id.list_item_template_cv_catalog_entry);
         }
     }
