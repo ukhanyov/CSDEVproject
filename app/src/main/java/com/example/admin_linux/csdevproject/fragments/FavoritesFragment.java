@@ -60,20 +60,12 @@ public class FavoritesFragment extends Fragment {
         String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
         int id = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
 
-        if(bearer != null && id != 0) fetchData(bearer, id);
-
-//        // Get the ViewPager and set it's PagerAdapter so that it can display items
-//        ViewPager viewPager = rootView.findViewById(R.id.vp_fragment_favorites);
-//        viewPager.setAdapter(new FragmentFavoritesPagerAdapter(getActivity().getSupportFragmentManager(), getContext()));
-//
-//        // Give the TabLayout the ViewPager
-//        TabLayout tabLayout = rootView.findViewById(R.id.tl_fragment_favorites);
-//        tabLayout.setupWithViewPager(viewPager);
+        if(bearer != null && id != 0) fetchData(bearer, id, rootView);
 
         return rootView;
     }
 
-    public void fetchData(String bearer, int yourPersonId) {
+    public void fetchData(String bearer, int yourPersonId, View rootView) {
         GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
         Call<FavoriteEntriesReturnValue> parsedJSON = service.getFavoriteEntries(
                 bearer,
@@ -126,7 +118,7 @@ public class FavoritesFragment extends Fragment {
                                 }
                             }
 
-                            favoritesTabsList.add(new FavoritesTabs(favoriteFormTemplateList, favoritePossibleItemList));
+                            favoritesTabsList.add(new FavoritesTabs(favoriteEntryGroupModel.getGroupName(), favoriteFormTemplateList, favoritePossibleItemList));
 
                         }
 
@@ -134,6 +126,7 @@ public class FavoritesFragment extends Fragment {
                     }
                 }
                 Log.d("favorites_fragment", "Success");
+                initiateTabs(rootView);
             }
 
             @Override
@@ -142,6 +135,17 @@ public class FavoritesFragment extends Fragment {
                 Toast.makeText(getContext(), "Oh no... Error fetching favorites data!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initiateTabs(View rootView) {
+
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = rootView.findViewById(R.id.vp_fragment_favorites);
+        viewPager.setAdapter(new FragmentFavoritesPagerAdapter(mFavorites, Objects.requireNonNull(getActivity()).getSupportFragmentManager(), getContext()));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = rootView.findViewById(R.id.tl_fragment_favorites);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
 }

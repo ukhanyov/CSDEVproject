@@ -8,12 +8,21 @@ import java.util.List;
 
 public class FavoritesTabs implements Parcelable {
 
+    private String mTabName;
     private List<FavoriteFormTemplate> mFavoriteFormTemplateList;
     private List<FavoritePossibleItem> mFavoritePossibleItemList;
 
-    public FavoritesTabs(List<FavoriteFormTemplate> favoriteFormTemplateList, List<FavoritePossibleItem> favoritePossibleItemList) {
+    public FavoritesTabs(String tabName,
+                         List<FavoriteFormTemplate> favoriteFormTemplateList,
+                         List<FavoritePossibleItem> favoritePossibleItemList) {
+
+        this.mTabName = tabName;
         this.mFavoriteFormTemplateList = favoriteFormTemplateList;
         this.mFavoritePossibleItemList = favoritePossibleItemList;
+    }
+
+    public String getTabName() {
+        return mTabName;
     }
 
     public List<FavoriteFormTemplate> getFavoriteFormTemplateList() {
@@ -26,6 +35,9 @@ public class FavoritesTabs implements Parcelable {
 
     // Parcelling part
     public FavoritesTabs(Parcel in) {
+
+        in.readString();
+
         List<FavoriteFormTemplate> listFavoriteFormTemplate = new ArrayList<>();
         in.readTypedList(listFavoriteFormTemplate, FavoriteFormTemplate.CREATOR);
 
@@ -35,6 +47,7 @@ public class FavoritesTabs implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mTabName);
         dest.writeTypedList(this.mFavoriteFormTemplateList);
         dest.writeTypedList(this.mFavoritePossibleItemList);
     }
