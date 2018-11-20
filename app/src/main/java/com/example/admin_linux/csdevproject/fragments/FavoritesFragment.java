@@ -19,8 +19,6 @@ import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
