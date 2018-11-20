@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="8dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:elevation="8dp">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/list_item_possible_cl"
@@ -23,6 +23,7 @@
 
         <TextView
             android:id="@+id/list_item_possible_tv_name"
+            style="@style/TabGreenBigText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -36,6 +37,7 @@
 
         <TextView
             android:id="@+id/list_item_possible_tv_manufacturer"
+            style="@style/TabGeneral"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

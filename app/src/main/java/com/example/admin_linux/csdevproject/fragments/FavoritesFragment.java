@@ -74,7 +74,7 @@ public class FavoritesFragment extends Fragment {
         parsedJSON.enqueue(new Callback<FavoriteEntriesReturnValue>() {
             @Override
             public void onResponse(@NonNull Call<FavoriteEntriesReturnValue> call, @NonNull Response<FavoriteEntriesReturnValue> response) {
-                // TODO : add tab name to favoriteTabs
+                // TODO : look into app being crashed when restoring favorites fragment (main i guess)
                 FavoriteEntriesReturnValue body = response.body();
                 if(body != null) {
                     if(body.getReturnValue().getFavoriteEntriesModelGroups() != null){
