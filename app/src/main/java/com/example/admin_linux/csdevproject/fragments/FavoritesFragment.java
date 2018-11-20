@@ -14,11 +14,20 @@ import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.adapters.FragmentFavoritesPagerAdapter;
+import com.example.admin_linux.csdevproject.data.models.favorites.Favorites;
+import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoriteFormTemplate;
+import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoriteFormTemplateItem;
+import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoritePossibleItem;
+import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoritesTabs;
 import com.example.admin_linux.csdevproject.network.pojo.favorite_entries.FavoriteEntriesReturnValue;
+import com.example.admin_linux.csdevproject.network.pojo.favorite_entries.madel.group.FavoriteEntryGroupModel;
+import com.example.admin_linux.csdevproject.network.pojo.favorite_entries.madel.group.favorite_form_template.template_model.model_base.FFTFormTemplateItemModelBase;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
 import com.example.admin_linux.csdevproject.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -31,7 +40,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class FavoritesFragment extends Fragment {
 
 
-
+    private Favorites mFavorites;
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -53,13 +62,13 @@ public class FavoritesFragment extends Fragment {
 
         if(bearer != null && id != 0) fetchData(bearer, id);
 
-        // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = rootView.findViewById(R.id.vp_fragment_favorites);
-        viewPager.setAdapter(new FragmentFavoritesPagerAdapter(getActivity().getSupportFragmentManager(), getContext()));
-
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = rootView.findViewById(R.id.tl_fragment_favorites);
-        tabLayout.setupWithViewPager(viewPager);
+//        // Get the ViewPager and set it's PagerAdapter so that it can display items
+//        ViewPager viewPager = rootView.findViewById(R.id.vp_fragment_favorites);
+//        viewPager.setAdapter(new FragmentFavoritesPagerAdapter(getActivity().getSupportFragmentManager(), getContext()));
+//
+//        // Give the TabLayout the ViewPager
+//        TabLayout tabLayout = rootView.findViewById(R.id.tl_fragment_favorites);
+//        tabLayout.setupWithViewPager(viewPager);
 
         return rootView;
     }
@@ -73,7 +82,57 @@ public class FavoritesFragment extends Fragment {
         parsedJSON.enqueue(new Callback<FavoriteEntriesReturnValue>() {
             @Override
             public void onResponse(@NonNull Call<FavoriteEntriesReturnValue> call, @NonNull Response<FavoriteEntriesReturnValue> response) {
+                // TODO : add tab name to favoriteTabs
                 FavoriteEntriesReturnValue body = response.body();
+                if(body != null) {
+                    if(body.getReturnValue().getFavoriteEntriesModelGroups() != null){
+
+                        List<FavoritesTabs> favoritesTabsList = new ArrayList<>();
+
+                        for (FavoriteEntryGroupModel favoriteEntryGroupModel : body.getReturnValue().getFavoriteEntriesModelGroups()){
+
+                            List<FavoritePossibleItem> favoritePossibleItemList = new ArrayList<>();
+                            List<FavoriteFormTemplate> favoriteFormTemplateList = new ArrayList<>();
+
+                            if(favoriteEntryGroupModel.getPossibleItemsList() != null){
+                                // Manage Possible items here
+                                for (com.example.admin_linux.csdevproject.network.pojo.favorite_entries.madel.group.favorite_possible_item.FavoritePossibleItem item : favoriteEntryGroupModel.getPossibleItemsList()){
+                                    favoritePossibleItemList.add(new FavoritePossibleItem(
+                                            item.getFavoritePossibleItemItemType(),
+                                            item.getFavoritePossibleItemName(),
+                                            item.getFavoritePossibleItemManufacturer()
+                                    ));
+                                }
+                            }
+
+                            if(favoriteEntryGroupModel.getFormTemplatesList() != null){
+                                // Manage Form templates items here
+                                for(com.example.admin_linux.csdevproject.network.pojo.favorite_entries.madel.group.favorite_form_template.FavoriteFormTemplate item : favoriteEntryGroupModel.getFormTemplatesList()){
+
+                                    List<FavoriteFormTemplateItem> favoriteFormTemplateItemList = new ArrayList<>();
+
+                                    if(item.getFormTemplateModel().getFormTemplateItems() != null){
+                                        for(FFTFormTemplateItemModelBase itemModelBase : item.getFormTemplateModel().getFormTemplateItems()){
+                                            favoriteFormTemplateItemList.add(new FavoriteFormTemplateItem(
+                                                    itemModelBase.getTemplateItemModelBaseItemType(),
+                                                    itemModelBase.getTemplateItemModelBaseLabel(),
+                                                    itemModelBase.getTemplateItemModelBaseResourceUrl(),
+                                                    itemModelBase.getTemplateItemModelBaseInnerHtml()
+                                            ));
+                                        }
+                                    }
+
+                                    favoriteFormTemplateList.add(new FavoriteFormTemplate(favoriteFormTemplateItemList));
+                                }
+                            }
+
+                            favoritesTabsList.add(new FavoritesTabs(favoriteFormTemplateList, favoritePossibleItemList));
+
+                        }
+
+                        mFavorites = new Favorites(favoritesTabsList);
+                    }
+                }
                 Log.d("favorites_fragment", "Success");
             }
 

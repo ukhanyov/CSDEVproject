@@ -82,11 +82,11 @@ public class FFTFormTemplateItemModelBase {
 
     @SerializedName("ZipCode")
     @Expose
-    private int mZipCode;
+    private String mZipCode;
 
     @SerializedName("InnerHtml")
     @Expose
-    private int mInnerHtml;
+    private String mInnerHtml;
 
     public String getTemplateItemModelBaseItemType() {
         return mItemType;
@@ -160,11 +160,11 @@ public class FFTFormTemplateItemModelBase {
         return mRefreshIntervalSeconds;
     }
 
-    public int getTemplateItemModelBaseZipCode() {
+    public String getTemplateItemModelBaseZipCode() {
         return mZipCode;
     }
 
-    public int getTemplateItemModelBaseInnerHtml() {
+    public String getTemplateItemModelBaseInnerHtml() {
         return mInnerHtml;
     }
 }
