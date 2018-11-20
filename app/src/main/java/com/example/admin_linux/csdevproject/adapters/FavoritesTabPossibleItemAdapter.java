@@ -67,13 +67,6 @@ public class FavoritesTabPossibleItemAdapter extends RecyclerView.Adapter<Favori
 
             tvName = itemView.findViewById(R.id.list_item_possible_tv_name);
             tvManufacturer = itemView.findViewById(R.id.list_item_possible_tv_manufacturer);
-
         }
-
-        void showFavoritePossibleItemDetails(FavoritePossibleItem possibleItem){
-
-        }
-
-
     }
 }

@@ -382,7 +382,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         if (current.getTemplateItemModelBaseList() != null) {
             holder.llCatalogEntry.setVisibility(View.VISIBLE);
             holder.llCatalogEntry.requestDisallowInterceptTouchEvent(true);
-            if (holder.swCatalogEntry.getChildCount() > 0) holder.swCatalogEntry.removeAllViews();
+            if (holder.svCatalogEntry.getChildCount() > 0) holder.svCatalogEntry.removeAllViews();
 
             LinearLayout linearLayout = new LinearLayout(mContext);
             LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -427,7 +427,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             }
 
 
-            holder.swCatalogEntry.addView(linearLayout);
+            holder.svCatalogEntry.addView(linearLayout);
 
             holder.tvFooterTop.setText(current.getTemplateModelName());
             if (current.getTemplateModelDescription().contains("*")) holder.tvFooterBot.setText(current.getTemplateModelDescription());
@@ -461,16 +461,16 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 public void onGlobalLayout() {
                     holder.llCatalogEntrySVWrapper.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                    int swW = holder.swCatalogEntry.getWidth();
-                    int swH = holder.swCatalogEntry.getHeight();
+                    int swW = holder.svCatalogEntry.getWidth();
+                    int swH = holder.svCatalogEntry.getHeight();
 
                     if(swH < swW) {
                         holder.llCatalogEntrySVWrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                        holder.swCatalogEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        holder.svCatalogEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     }
                     else {
                         holder.llCatalogEntrySVWrapper.getLayoutParams().height = swW;
-                        holder.swCatalogEntry.getLayoutParams().height = swW;
+                        holder.svCatalogEntry.getLayoutParams().height = swW;
                     }
 
                 }
@@ -615,7 +615,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvWebPlainText;
 
         LinearLayout llCatalogEntry;
-        ScrollView swCatalogEntry;
+        ScrollView svCatalogEntry;
         TextView tvFooterTop;
         TextView tvFooterBot;
         LinearLayout llCatalogEntrySVWrapper;
@@ -644,7 +644,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvWebPlainText = itemView.findViewById(R.id.list_item_tv_web_plain_text);
 
             llCatalogEntry = itemView.findViewById(R.id.list_item_ll_catalog_entry);
-            swCatalogEntry = itemView.findViewById(R.id.list_item_sw_catalog_entry);
+            svCatalogEntry = itemView.findViewById(R.id.list_item_sw_catalog_entry);
             tvFooterTop = itemView.findViewById(R.id.list_item_tv_catalog_entry_footer_top);
             tvFooterBot = itemView.findViewById(R.id.list_item_tv_catalog_entry_footer_bot);
             llCatalogEntrySVWrapper = itemView.findViewById(R.id.list_item_ll_catalog_entry_scroll_view_wrapper);

@@ -1,33 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:id="@+id/list_item_template_ll_catalog_entry"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginStart="4dp"--><!--android:layout_marginTop="8dp"--><!--android:layout_marginEnd="8dp"--><!--android:background="@drawable/linear_layout_background"--><!--android:orientation="vertical"--><!--android:visibility="gone">-->
+
+<!--<LinearLayout--><!--android:id="@+id/list_item_possible_ll_template_entry_scroll_view_wrapper"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:background="@color/fui_transparent">-->
+
+<!--<ScrollView--><!--android:id="@+id/list_item_template_sw_catalog_entry"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:paddingTop="1dp" />--><!--</LinearLayout>-->
+
+<!--</LinearLayout>-->
+
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_item_template_cv_catalog_entry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="8dp">
-
-    <LinearLayout
-        android:id="@+id/list_item_possible_ll_catalog_entry"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/linear_layout_background"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/list_item_possible_ll_catalog_entry_scroll_view_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/fui_transparent">
-
-            <ScrollView
-                android:id="@+id/list_item_possible_sw_catalog_entry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="1dp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-</android.support.v7.widget.CardView>
+    android:layout_margin="4dp"/>
