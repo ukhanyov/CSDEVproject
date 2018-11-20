@@ -12,11 +12,13 @@ import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoritesTabs;
 
 public class FavoritesFragmentPage extends Fragment {
+
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String ARG_NAME = "ARG_NAME";
 
     private FavoritesTabs mFavoritesTab;
     private String mName;
+
 
     public static FavoritesFragmentPage newInstance(String name, FavoritesTabs favoritesTab) {
         Bundle args = new Bundle();
