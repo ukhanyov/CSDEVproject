@@ -4,4 +4,4 @@
     android:id="@+id/list_item_template_cv_catalog_entry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"/>
+    android:layout_margin="8dp"/>

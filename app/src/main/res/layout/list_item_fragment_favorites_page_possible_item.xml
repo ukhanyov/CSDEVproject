@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp">
+    android:layout_margin="8dp">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/list_item_possible_cl"
@@ -30,8 +29,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:hint="@string/hint_list_item_possible_name"
-            android:maxLines="1"
-            android:singleLine="true"
+            android:singleLine="false"
             app:layout_constraintEnd_toStartOf="@+id/list_item_possible_iv_star_right"
             app:layout_constraintStart_toEndOf="@+id/list_item_possible_iv_line_left"
             app:layout_constraintTop_toTopOf="parent" />
