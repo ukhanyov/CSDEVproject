@@ -36,7 +36,7 @@ import java.util.Objects;
 
 public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.CorpStreamViewHolder> {
 
-    // TODO : change CropStreamMessage in the way so that you can have a list of involved people, and only then, judging by it's size, bind one aor two icons in the header
+    // TODO : change CropStreamMessage in the way so that you can have a list of involved people, and only then, judging by it's size, bind one or two icons in the header
 
     private List<CropStreamMessage> mList;
     private Context mContext;

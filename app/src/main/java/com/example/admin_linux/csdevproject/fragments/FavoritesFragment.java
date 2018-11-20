@@ -74,7 +74,7 @@ public class FavoritesFragment extends Fragment {
         parsedJSON.enqueue(new Callback<FavoriteEntriesReturnValue>() {
             @Override
             public void onResponse(@NonNull Call<FavoriteEntriesReturnValue> call, @NonNull Response<FavoriteEntriesReturnValue> response) {
-                // TODO : look into app being crashed when restoring favorites fragment (main i guess)
+
                 FavoriteEntriesReturnValue body = response.body();
                 if(body != null) {
                     if(body.getReturnValue().getFavoriteEntriesModelGroups() != null){
@@ -138,14 +138,17 @@ public class FavoritesFragment extends Fragment {
     }
 
     private void initiateTabs(View rootView) {
+        try {
+            // Get the ViewPager and set it's PagerAdapter so that it can display items
+            ViewPager viewPager = rootView.findViewById(R.id.vp_fragment_favorites);
+            viewPager.setAdapter(new FragmentFavoritesPagerAdapter(mFavorites, getChildFragmentManager(), getContext()));
 
-        // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = rootView.findViewById(R.id.vp_fragment_favorites);
-        viewPager.setAdapter(new FragmentFavoritesPagerAdapter(mFavorites, Objects.requireNonNull(getActivity()).getSupportFragmentManager(), getContext()));
-
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = rootView.findViewById(R.id.tl_fragment_favorites);
-        tabLayout.setupWithViewPager(viewPager);
+            // Give the TabLayout the ViewPager
+            TabLayout tabLayout = rootView.findViewById(R.id.tl_fragment_favorites);
+            tabLayout.setupWithViewPager(viewPager);
+        }catch (IllegalStateException exception){
+            Log.d("FavoritesFragment", exception.toString());
+        }
     }
 
 }

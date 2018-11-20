@@ -13,11 +13,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
-import com.example.admin_linux.csdevproject.data.models.TemplateItemModelBase;
 import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoriteFormTemplate;
 import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoriteFormTemplateItem;
 import com.squareup.picasso.Picasso;
@@ -89,7 +87,7 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
 
                 resizeLinearLayout(holder, linearLayout);
 
-                holder.cvTempleteItem.addView(linearLayout);
+                holder.cvTemplateItem.addView(linearLayout);
             }
         } else {
             throw new IllegalArgumentException("Some error with binding data for FavoritesTabTemplateItemAdapter recycler view");
@@ -108,13 +106,13 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
     }
 
     private void resizeLinearLayout(ViewHolderTemplateItem holder, LinearLayout linearLayout) {
-        ViewTreeObserver viewTreeObserver = holder.cvTempleteItem.getViewTreeObserver();
+        ViewTreeObserver viewTreeObserver = holder.cvTemplateItem.getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    holder.cvTempleteItem.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    holder.cvTempleteItem.getLayoutParams().height = (int) (1.3 * linearLayout.getWidth());
+                    holder.cvTemplateItem.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    holder.cvTemplateItem.getLayoutParams().height = (int) (1.3 * linearLayout.getWidth());
                     //linearLayout.getLayoutParams().height = (int)(linearLayout.getWidth() * 1.3);
 
                 }
@@ -211,12 +209,12 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
     // TODO : read about "smart" viewHolders that bind data by themselves
     class ViewHolderTemplateItem extends RecyclerView.ViewHolder {
 
-        CardView cvTempleteItem;
+        CardView cvTemplateItem;
 
         ViewHolderTemplateItem(View itemView) {
             super(itemView);
 
-            cvTempleteItem = itemView.findViewById(R.id.list_item_template_cv_catalog_entry);
+            cvTemplateItem = itemView.findViewById(R.id.list_item_template_cv_catalog_entry);
         }
     }
 
