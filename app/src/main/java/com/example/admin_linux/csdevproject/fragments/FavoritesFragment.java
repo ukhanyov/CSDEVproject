@@ -3,7 +3,9 @@ package com.example.admin_linux.csdevproject.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.admin_linux.csdevproject.R;
+import com.example.admin_linux.csdevproject.adapters.FragmentFavoritesPagerAdapter;
 import com.example.admin_linux.csdevproject.network.pojo.favorite_entries.FavoriteEntriesReturnValue;
 import com.example.admin_linux.csdevproject.network.retrofit.GetDataService;
 import com.example.admin_linux.csdevproject.network.retrofit.RetrofitActivityFeedInstance;
@@ -51,6 +54,14 @@ public class FavoritesFragment extends Fragment {
         int id = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
 
         if(bearer != null && id != 0) fetchData(bearer, id);
+
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = rootView.findViewById(R.id.vp_fragment_favorites);
+        viewPager.setAdapter(new FragmentFavoritesPagerAdapter(getActivity().getSupportFragmentManager(), getContext()));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = rootView.findViewById(R.id.tl_fragment_favorites);
+        tabLayout.setupWithViewPager(viewPager);
 
         return rootView;
     }
