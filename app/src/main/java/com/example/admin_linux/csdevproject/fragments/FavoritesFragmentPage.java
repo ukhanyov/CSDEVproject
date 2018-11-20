@@ -66,8 +66,6 @@ public class FavoritesFragmentPage extends Fragment {
         recyclerViewPossibleItem.setAdapter(possibleItemAdapter);
         recyclerViewPossibleItem.setLayoutManager(linearLayoutManager);
 
-        TextView textView = (TextView) rootView.findViewById(R.id.tv_fragment_favorites_page);
-        textView.setText("Fragment #" + mName);
         return rootView;
     }
 }

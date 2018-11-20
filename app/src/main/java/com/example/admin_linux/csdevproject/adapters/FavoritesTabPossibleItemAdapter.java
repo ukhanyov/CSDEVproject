@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
-import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoriteFormTemplate;
 import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoritePossibleItem;
 
 import java.util.ArrayList;
@@ -38,8 +38,9 @@ public class FavoritesTabPossibleItemAdapter extends RecyclerView.Adapter<Favori
     @Override
     public void onBindViewHolder(@NonNull ViewHolderPossibleItem holder, int position) {
         if (mList != null) {
-
-
+            FavoritePossibleItem item = mList.get(position);
+            holder.tvName.setText(item.getFavoriteFormTemplateName());
+            holder.tvManufacturer.setText(item.getFavoriteFormTemplateManufacturer());
         } else {
             throw new IllegalArgumentException("Some error with binding data for FavoritesTabPossibleItemAdapter recycler view");
         }
@@ -58,12 +59,14 @@ public class FavoritesTabPossibleItemAdapter extends RecyclerView.Adapter<Favori
 
     class ViewHolderPossibleItem extends RecyclerView.ViewHolder {
 
-        //...
+        TextView tvName;
+        TextView tvManufacturer;
 
         ViewHolderPossibleItem(View itemView){
             super(itemView);
 
-            //...
+            tvName = itemView.findViewById(R.id.list_item_possible_tv_name);
+            tvManufacturer = itemView.findViewById(R.id.list_item_possible_tv_manufacturer);
 
         }
 

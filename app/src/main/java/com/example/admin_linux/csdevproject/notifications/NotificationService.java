@@ -41,6 +41,8 @@ public class NotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+        // TODO : look into double notifications
+
         if (remoteMessage.getData() != null) {
             Log.d(TAG, "getData: " + remoteMessage.getData().toString());
             Log.d(TAG, "getNotification: " + remoteMessage.getNotification());
