@@ -40,7 +40,7 @@ public class FavoritesFragmentPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorites_page, container, false);
 
-        TextView textView = (TextView) rootView;
+        TextView textView = (TextView) rootView.findViewById(R.id.tv_fragment_favorites_page);
         textView.setText("Fragment #" + mName);
         return rootView;
     }
