@@ -30,7 +30,7 @@ public class FragmentFavoritesPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return FavoritesFragmentPage.newInstance(position + 1);
+        return FavoritesFragmentPage.newInstance(favoritesData.getFavoritesTabs().get(position).getTabName(), favoritesData.getFavoritesTabs().get(position));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.admin_linux.csdevproject.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +9,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
+import com.example.admin_linux.csdevproject.data.models.favorites.tabs.FavoritesTabs;
 
 public class FavoritesFragmentPage extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String ARG_NAME = "ARG_NAME";
 
-    private int mPage;
+    private FavoritesTabs mFavoritesTab;
+    private String mName;
 
-    public static FavoritesFragmentPage newInstance(int page) {
+    public static FavoritesFragmentPage newInstance(String name, FavoritesTabs favoritesTab) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
+        args.putParcelable(ARG_PAGE, favoritesTab);
+        args.putString(ARG_NAME, name);
         FavoritesFragmentPage fragment = new FavoritesFragmentPage();
         fragment.setArguments(args);
         return fragment;
@@ -25,15 +30,18 @@ public class FavoritesFragmentPage extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+        if (getArguments() != null) {
+            mFavoritesTab = getArguments().getParcelable(ARG_PAGE);
+            mName = getArguments().getString(ARG_NAME);
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorites_page, container, false);
-        TextView textView = (TextView) view;
-        textView.setText("Fragment #" + mPage);
-        return view;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_favorites_page, container, false);
+
+        TextView textView = (TextView) rootView;
+        textView.setText("Fragment #" + mName);
+        return rootView;
     }
 }
