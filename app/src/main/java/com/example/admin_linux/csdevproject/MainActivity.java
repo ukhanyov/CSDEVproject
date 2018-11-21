@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements
         ChatFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
 
-    // TODO : header above radar
     // TODO : start conversation/chat button
+    // TODO : look into aspect ratio of an image in templateItem
     // Send a message to you -> Start a private chat
     // Replied to a chat with -> View private chat
 

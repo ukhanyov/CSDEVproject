@@ -44,6 +44,10 @@
     <color name="indigo">#303f9f</color>
     <!--ColorPicker-->
 
+    <!--Radar colors-->
+    <color name="radar_header_color">#b4d38e</color>
+    <!--Radar colors-->
+
     <!--Possible items (favorites) colors-->
     <color name="fpi_CP">#ff8000</color>
     <color name="fpi_Seed">#00b22d</color>

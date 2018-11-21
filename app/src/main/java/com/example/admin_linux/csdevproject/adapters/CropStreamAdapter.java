@@ -154,7 +154,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
-        //bindStartReplyViewMessageViews(holder, current.getFeedType());
         bindStartReplyViewMessageViews(holder, current.getConversationChat());
 
     }
@@ -341,6 +340,18 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
+    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChatConversation) {
+        if (isChatConversation) {
+            holder.ibUnderProfile.setVisibility(View.GONE);
+            holder.tvUnderProfile.setVisibility(View.GONE);
+            holder.tvViewMessage.setVisibility(View.INVISIBLE);
+        } else {
+            holder.ibUnderProfile.setVisibility(View.VISIBLE);
+            holder.tvUnderProfile.setVisibility(View.VISIBLE);
+            holder.tvViewMessage.setVisibility(View.INVISIBLE);
+        }
+    }
+
     // Sub root |5|
     private void bindWebView(CropStreamMessage current, CorpStreamViewHolder holder) {
         if (current.getMessageHttp() != null) {
@@ -418,6 +429,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 }
 
                 if (item.getType().equals("WeatherRegionalRadar")) {
+                    View view = new View(mContext);
+                    view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 20));
+                    view.setBackgroundColor(mContext.getColor(R.color.radar_header_color));
+                    linearLayout.addView(view);
                     addWebViewWeatherRegionalRadarToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "WeatherRegionalRadar: " + item.getInnerHtml());
                 }
@@ -578,18 +593,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 return TextDrawable.builder().buildRound(String.valueOf(charName), ColorPicker.pickRandomColor());
             }
         } else return null;
-    }
-
-    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChat) {
-        if (isChat) {
-            holder.ibUnderProfile.setVisibility(View.INVISIBLE);
-            holder.tvUnderProfile.setVisibility(View.INVISIBLE);
-            holder.tvViewMessage.setVisibility(View.INVISIBLE);
-        } else {
-            holder.ibUnderProfile.setVisibility(View.VISIBLE);
-            holder.tvUnderProfile.setVisibility(View.VISIBLE);
-            holder.tvViewMessage.setVisibility(View.INVISIBLE);
-        }
     }
 
     private int dpToPx(int dp) {
