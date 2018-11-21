@@ -16,6 +16,7 @@ public class Constants {
     public static final String CLICK_KEY_CONVERSATION_DETAILS = "conversation_details";
     public static final String CLICK_KEY_START_CHAT = "start_chat";
     public static final String CLICK_KEY_VIEW_MESSAGE = "view_message";
+    public static final String CLICK_KEY_BUTTON_CONNECT = "button_connect";
 
     public static final String INTENT_KEY_PERSON_TO_START_CHAT = "person_to_start_chat";
 

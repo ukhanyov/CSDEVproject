@@ -57,6 +57,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CropStreamFragment extends Fragment {
 
+    private static final String TAG = "CropStreamFragment_test";
+
     public  static boolean isFeedEventFragmentVisible = false;
 
     private MyBroadcastReceiver myBroadcastReceiver;
@@ -84,11 +86,17 @@ public class CropStreamFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_crop_stream, container, false);
         ProgressBar progressBar = rootView.findViewById(R.id.pb_loading_indicator);
         progressBar.setVisibility(View.VISIBLE);
+
+        myBroadcastReceiver = new MyBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(MyIntentService.ACTION_MyIntentService);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        Objects.requireNonNull(getActivity()).registerReceiver(myBroadcastReceiver, intentFilter);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         // List item click stuff
         // -------------------------------------------------------------------------------------------
         CropStreamClickListener listener = (view, conversationId, personId, profileName, personsCorp, personsPictureUrl, messageText, key) -> {
-
-
 
             if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
 
@@ -106,7 +114,7 @@ public class CropStreamFragment extends Fragment {
                     intent.putExtra("transfer_person_id", personId);
                     startActivity(intent);
                 } else {
-                    Log.d("CropStreamFragment", "Error launching ConversationDetailsActivity");
+                    Log.d(TAG, "Error launching ConversationDetailsActivity");
                 }
 
             }
@@ -128,20 +136,16 @@ public class CropStreamFragment extends Fragment {
             }
 
             if(key.equals(Constants.CLICK_KEY_VIEW_MESSAGE)){
-                Toast.makeText(getActivity(), "Hey", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "CLICK_KEY_VIEW_MESSAGE");
+            }
+
+            if(key.equals(Constants.CLICK_KEY_BUTTON_CONNECT)){
+                Log.d(TAG, "CLICK_KEY_BUTTON_CONNECT");
             }
         };
         // -------------------------------------------------------------------------------------------
 
         //register BroadcastReceiver
-        myBroadcastReceiver = new MyBroadcastReceiver();
-        IntentFilter intentFilter = new IntentFilter(MyIntentService.ACTION_MyIntentService);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        Objects.requireNonNull(getActivity()).registerReceiver(myBroadcastReceiver, intentFilter);
-
-        RecyclerView recyclerView = rootView.findViewById(R.id.rv_corp_stream_fragment);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-
         mAdapter = new CropStreamAdapter(cropStreamMessages, listener, rootView.getContext());
         mAdapter.setHasStableIds(true);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
@@ -436,7 +440,7 @@ public class CropStreamFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
-                Log.d("Error: ", t.getMessage());
+                Log.d(TAG, t.getMessage());
                 Toast.makeText(getContext(), "Oh no... Error fetching data!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -826,7 +830,7 @@ public class CropStreamFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<ApiResultOfFeedEventsModel> call, @NonNull Throwable t) {
-                Log.d("Error: ", t.getMessage());
+                Log.d(TAG, t.getMessage());
                 Toast.makeText(getContext(), "Oh no... Error fetching more data!", Toast.LENGTH_SHORT).show();
             }
 
