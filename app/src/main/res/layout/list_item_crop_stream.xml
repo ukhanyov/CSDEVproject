@@ -43,7 +43,7 @@
         android:maxWidth="100dp"
         android:maxLines="1"
         android:singleLine="true"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/list_item_tv_profile_first"
         app:layout_constraintStart_toEndOf="@+id/list_item_tv_profile_first"
         app:layout_constraintTop_toTopOf="parent" />
@@ -119,54 +119,47 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_replied_to_label" />
 
-    <ImageView
-        android:id="@+id/list_item_iv_message_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/content_description_message_picture"
-        android:src="@drawable/ic_search"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_text_message" />
-
     <ImageButton
-        android:background="@color/fui_transparent"
         android:id="@+id/list_item_ib_start_chat"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/fui_transparent"
         android:contentDescription="@string/content_description_reply_button"
-        android:visibility="invisible"
+        android:src="@drawable/ic_chat_bubble_outline_reply_list_item"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/list_item_v_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/list_item_tv_start_shat"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_ll_catalog_entry"
-        android:src="@drawable/ic_chat_bubble_outline_reply_list_item" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_view_message" />
 
     <TextView
         android:id="@+id/list_item_tv_start_shat"
         style="@style/TextViewGeneral"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         android:text="@string/label_start_a_private_chat"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/list_item_ib_start_chat"
+        app:layout_constraintBottom_toTopOf="@+id/list_item_v_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/list_item_ib_start_chat"
-        app:layout_constraintTop_toTopOf="@+id/list_item_ib_start_chat" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_view_message" />
 
     <View
         android:id="@+id/list_item_v_bottom"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_marginTop="8dp"
         android:background="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_ib_start_chat" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <ImageView
@@ -228,31 +221,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_profile_replied_to_label" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/button_outline_transparent"
+        android:text="@string/btn_connect"
+        android:textColor="@color/green"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/list_item_ll_catalog_entry" />
+
     <TextView
         android:id="@+id/list_item_tv_view_message"
         style="@style/TextViewGeneralGreen"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         android:hint="@string/view_message"
         android:text="@string/view_message"
         android:textColor="@color/green"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/list_item_ib_start_chat"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toTopOf="@+id/list_item_ib_start_chat" />
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <WebView
         android:id="@+id/list_item_wv_card_render"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginTop="8dp"
         android:scrollbars="none"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_iv_message_image" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text" />
 
     <View
         android:id="@+id/list_item_v_width"
@@ -267,11 +275,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_wv_card_render" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_text_message" />
 
     <LinearLayout
         android:id="@+id/list_item_ll_catalog_entry"
@@ -282,25 +291,25 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/linear_layout_background"
         android:orientation="vertical"
+        android:scrollbars="none"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/list_item_tv_web_plain_text"
-        android:scrollbars="none">
+        app:layout_constraintTop_toBottomOf="@+id/list_item_wv_card_render">
 
         <LinearLayout
-            android:background="@color/fui_transparent"
             android:id="@+id/list_item_ll_catalog_entry_scroll_view_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/fui_transparent"
             android:scrollbars="none">
 
             <ScrollView
-                android:scrollbars="none"
                 android:id="@+id/list_item_sw_catalog_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="1dp" />
+                android:paddingTop="1dp"
+                android:scrollbars="none" />
         </LinearLayout>
 
         <TextView

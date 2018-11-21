@@ -345,16 +345,16 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.ibUnderProfile.setVisibility(View.VISIBLE);
             holder.tvUnderProfile.setVisibility(View.VISIBLE);
             holder.tvUnderProfile.setText(mContext.getString(R.string.view_private_chat));
-            holder.tvViewMessage.setVisibility(View.INVISIBLE);
+            holder.tvViewMessage.setVisibility(View.GONE);
         } else {
             holder.ibUnderProfile.setVisibility(View.VISIBLE);
             holder.tvUnderProfile.setVisibility(View.VISIBLE);
             holder.tvUnderProfile.setText(mContext.getString(R.string.start_private_chat));
-            holder.tvViewMessage.setVisibility(View.INVISIBLE);
+            holder.tvViewMessage.setVisibility(View.GONE);
         }
         if(!feedSourceinFavorites && cardRenderDataId != 0){
-            holder.ibUnderProfile.setVisibility(View.INVISIBLE);
-            holder.tvUnderProfile.setVisibility(View.INVISIBLE);
+            holder.ibUnderProfile.setVisibility(View.GONE);
+            holder.tvUnderProfile.setVisibility(View.GONE);
             holder.tvUnderProfile.setText(mContext.getString(R.string.view_private_chat));
             holder.tvViewMessage.setVisibility(View.VISIBLE);
         }
@@ -617,7 +617,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         TextView tvInvolvedPersons;
         TextView tvMessageText;
         TextView tvMessageTime;
-        ImageView ivMessagePicture;
         TextView tvTypeOfConversation;
         ImageView ivProfilePictureMashTop;
         ImageView ivProfilePictureMashBottom;
@@ -646,7 +645,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvInvolvedPersons = itemView.findViewById(R.id.list_item_tv_profile_replied_to_target_of_reply);
             tvMessageText = itemView.findViewById(R.id.list_item_tv_text_message);
             tvMessageTime = itemView.findViewById(R.id.list_item_tv_profile_time);
-            ivMessagePicture = itemView.findViewById(R.id.list_item_iv_message_image);
             tvTypeOfConversation = itemView.findViewById(R.id.list_item_tv_profile_replied_to_label);
             ivProfilePictureMashTop = itemView.findViewById(R.id.list_item_iv_profile_picture_mash_top);
             ivProfilePictureMashBottom = itemView.findViewById(R.id.list_item_iv_profile_picture_mash_bottom);

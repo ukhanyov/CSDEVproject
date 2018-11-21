@@ -44,11 +44,7 @@ public class MainActivity extends AppCompatActivity implements
         ChatFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
 
-    // TODO : start conversation/chat button
-    // TODO : look into aspect ratio of an image in templateItem
-    // Send a message to you -> Start a private chat
-    // Replied to a chat with -> View private chat
-
+    // TODO : ask if collapse when fishing for "view message" and having CardRenderDataId and FeedSourceinFavorites = false
 
     // Fancy dataBinding
     ActivityMainBinding mBinding;
