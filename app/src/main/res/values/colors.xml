@@ -44,4 +44,10 @@
     <color name="indigo">#303f9f</color>
     <!--ColorPicker-->
 
+    <!--Possible items (favorites) colors-->
+    <color name="fpi_CP">#ff8000</color>
+    <color name="fpi_Seed">#00b22d</color>
+    <color name="fpi_Fert">#007aff</color>
+    <!--Possible items (favorites) colors-->
+
 </resources>

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin_linux.csdevproject.R;
@@ -39,8 +40,35 @@ public class FavoritesTabPossibleItemAdapter extends RecyclerView.Adapter<Favori
     public void onBindViewHolder(@NonNull ViewHolderPossibleItem holder, int position) {
         if (mList != null) {
             FavoritePossibleItem item = mList.get(position);
+            /*
+            "ItemType" -> "color"
+
+            "CP" -> "fpi_CP" -> (orange)
+            "Seed" -> "fpi_Seed" -> (green)
+            "Fert" -> "fpi_Fert" -> (blue)
+             */
+
             holder.tvName.setText(item.getFavoriteFormTemplateName());
             holder.tvManufacturer.setText(item.getFavoriteFormTemplateManufacturer());
+
+            if(item.getFavoriteFormTemplateItemType() != null && item.getFavoriteFormTemplateItemType().equals("CP")){
+                holder.ivLeftLine.setBackgroundColor(mContext.getColor(R.color.fpi_CP));
+                holder.ivStar.setBackground(mContext.getDrawable(R.drawable.ic_favorites_cp));
+                holder.tvName.setTextColor(mContext.getColor(R.color.fpi_CP));
+            }
+
+            if(item.getFavoriteFormTemplateItemType() != null && item.getFavoriteFormTemplateItemType().equals("Seed")){
+                holder.ivLeftLine.setBackgroundColor(mContext.getColor(R.color.fpi_Seed));
+                holder.ivStar.setBackground(mContext.getDrawable(R.drawable.ic_favorites_seed));
+                holder.tvName.setTextColor(mContext.getColor(R.color.fpi_Seed));
+            }
+
+            if(item.getFavoriteFormTemplateItemType() != null && item.getFavoriteFormTemplateItemType().equals("Fert")){
+                holder.ivLeftLine.setBackgroundColor(mContext.getColor(R.color.fpi_Fert));
+                holder.ivStar.setBackground(mContext.getDrawable(R.drawable.ic_favorites_fert));
+                holder.tvName.setTextColor(mContext.getColor(R.color.fpi_Fert));
+            }
+
         } else {
             throw new IllegalArgumentException("Some error with binding data for FavoritesTabPossibleItemAdapter recycler view");
         }
@@ -59,6 +87,8 @@ public class FavoritesTabPossibleItemAdapter extends RecyclerView.Adapter<Favori
 
     class ViewHolderPossibleItem extends RecyclerView.ViewHolder {
 
+        ImageView ivLeftLine;
+        ImageView ivStar;
         TextView tvName;
         TextView tvManufacturer;
 
@@ -67,6 +97,8 @@ public class FavoritesTabPossibleItemAdapter extends RecyclerView.Adapter<Favori
 
             tvName = itemView.findViewById(R.id.list_item_possible_tv_name);
             tvManufacturer = itemView.findViewById(R.id.list_item_possible_tv_manufacturer);
+            ivLeftLine = itemView.findViewById(R.id.list_item_possible_iv_line_left);
+            ivStar = itemView.findViewById(R.id.list_item_possible_iv_star_right);
         }
     }
 }
