@@ -88,14 +88,15 @@ public class CropStreamFragment extends Fragment {
         // -------------------------------------------------------------------------------------------
         CropStreamClickListener listener = (view, conversationId, personId, profileName, personsCorp, personsPictureUrl, messageText, key) -> {
 
-            SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-
-            String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
-            String mProfileFullName = preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null);
-            String mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
 
 
             if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
+
+                SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+                String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
+                String mProfileFullName = preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null);
+                String mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
+
                 if (bearer != null && mProfileFullName != null && mProfileUrl != null) {
                     Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
                     intent.putExtra("transfer_profile_url", mProfileUrl);
@@ -124,6 +125,10 @@ public class CropStreamFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), StartChatActivity.class);
                 intent.putExtra(Constants.INTENT_KEY_PERSON_TO_START_CHAT, person);
                 startActivity(intent);
+            }
+
+            if(key.equals(Constants.CLICK_KEY_VIEW_MESSAGE)){
+                Toast.makeText(getActivity(), "Hey", Toast.LENGTH_SHORT).show();
             }
         };
         // -------------------------------------------------------------------------------------------

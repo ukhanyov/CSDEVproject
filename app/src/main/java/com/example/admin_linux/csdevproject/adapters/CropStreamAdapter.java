@@ -286,10 +286,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     .transform(new CircleTransform())
                     .into(holder.ivProfilePictureMashTop);
         } else {
-            if(nameTwo != null) {
+            if (nameTwo != null) {
                 holder.ivProfilePictureMashTop.setImageDrawable(makeCircleWithALatter(nameTwo));
                 holder.ivProfilePictureMashTop.setAdjustViewBounds(true);
-            }else {
+            } else {
                 SharedPreferences preferences = mContext.getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
                 Picasso.get().load(preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null)).fit().centerInside()
                         .placeholder(Objects.requireNonNull(mContext.getDrawable(R.drawable.ic_profile_default)))
@@ -352,7 +352,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.tvUnderProfile.setText(mContext.getString(R.string.start_private_chat));
             holder.tvViewMessage.setVisibility(View.GONE);
         }
-        if(!feedSourceinFavorites && cardRenderDataId != 0){
+        if (!feedSourceinFavorites && cardRenderDataId != 0) {
             holder.ibUnderProfile.setVisibility(View.GONE);
             holder.tvUnderProfile.setVisibility(View.GONE);
             holder.tvUnderProfile.setText(mContext.getString(R.string.view_private_chat));
@@ -446,9 +446,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                 }
             }
 
-            if(list.size() == 1){
+            if (list.size() == 1) {
                 resizeSWCatalogEntry(holder);
-            } else{
+            } else {
                 resizeLLWCatalogEntry(holder);
             }
 
@@ -456,8 +456,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.svCatalogEntry.addView(linearLayout);
 
             holder.tvFooterTop.setText(current.getTemplateModelName());
-            if (current.getTemplateModelDescription().contains("*")) holder.tvFooterBot.setText(current.getTemplateModelDescription());
-            else holder.tvFooterBot.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
+            if (current.getTemplateModelDescription().contains("*"))
+                holder.tvFooterBot.setText(current.getTemplateModelDescription());
+            else
+                holder.tvFooterBot.setText(mContext.getString(R.string.footer_description, current.getTemplateModelDescription()));
 
         } else {
             holder.llCatalogEntry.setVisibility(View.GONE);
@@ -490,11 +492,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                     int swW = holder.svCatalogEntry.getWidth();
                     int swH = holder.svCatalogEntry.getHeight();
 
-                    if(swH < swW) {
+                    if (swH < swW) {
                         holder.llCatalogEntrySVWrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                         holder.svCatalogEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    }
-                    else {
+                    } else {
                         holder.llCatalogEntrySVWrapper.getLayoutParams().height = swW;
                         holder.svCatalogEntry.getLayoutParams().height = swW;
                     }
@@ -665,12 +666,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             tvTypeOfConversation.setOnClickListener(this);
             ibUnderProfile.setOnClickListener(this);
             tvUnderProfile.setOnClickListener(this);
+            tvViewMessage.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.list_item_tv_profile_replied_to_label) {
-                if(tvUnderProfile.getText().equals(mContext.getString(R.string.start_private_chat)))
+                if (tvUnderProfile.getText().equals(mContext.getString(R.string.start_private_chat)))
                     mListener.onClick(view,
                             Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
                             Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
@@ -680,28 +682,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                             mList.get(getAdapterPosition()).getMessageText(),
                             Constants.CLICK_KEY_START_CHAT);
 
-                if(tvUnderProfile.getText().equals(mContext.getString(R.string.view_private_chat)))
-                mListener.onClick(view,
-                        Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
-                        Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
-                        mList.get(getAdapterPosition()).getProfileName(),
-                        mList.get(getAdapterPosition()).getPersonsCorp(),
-                        mList.get(getAdapterPosition()).getPersonPictureUrl(),
-                        mList.get(getAdapterPosition()).getMessageText(),
-                        Constants.CLICK_KEY_CONVERSATION_DETAILS);
-
-            } else  if (view.getId() == R.id.list_item_ib_start_chat || view.getId() == R.id.list_item_tv_start_shat) {
-                if(tvUnderProfile.getText().equals(mContext.getString(R.string.start_private_chat)))
-                mListener.onClick(view,
-                        Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
-                        Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
-                        mList.get(getAdapterPosition()).getProfileName(),
-                        mList.get(getAdapterPosition()).getPersonsCorp(),
-                        mList.get(getAdapterPosition()).getPersonPictureUrl(),
-                        mList.get(getAdapterPosition()).getMessageText(),
-                        Constants.CLICK_KEY_START_CHAT);
-
-                if(tvUnderProfile.getText().equals(mContext.getString(R.string.view_private_chat)))
+                if (tvUnderProfile.getText().equals(mContext.getString(R.string.view_private_chat)))
                     mListener.onClick(view,
                             Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
                             Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
@@ -710,6 +691,37 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
                             mList.get(getAdapterPosition()).getPersonPictureUrl(),
                             mList.get(getAdapterPosition()).getMessageText(),
                             Constants.CLICK_KEY_CONVERSATION_DETAILS);
+
+            } else if (view.getId() == R.id.list_item_ib_start_chat || view.getId() == R.id.list_item_tv_start_shat) {
+                if (tvUnderProfile.getText().equals(mContext.getString(R.string.start_private_chat)))
+                    mListener.onClick(view,
+                            Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
+                            Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
+                            mList.get(getAdapterPosition()).getProfileName(),
+                            mList.get(getAdapterPosition()).getPersonsCorp(),
+                            mList.get(getAdapterPosition()).getPersonPictureUrl(),
+                            mList.get(getAdapterPosition()).getMessageText(),
+                            Constants.CLICK_KEY_START_CHAT);
+
+                if (tvUnderProfile.getText().equals(mContext.getString(R.string.view_private_chat)))
+                    mListener.onClick(view,
+                            Integer.valueOf(mList.get(getAdapterPosition()).getConversationId()),
+                            Integer.valueOf(mList.get(getAdapterPosition()).getPersonId()),
+                            mList.get(getAdapterPosition()).getProfileName(),
+                            mList.get(getAdapterPosition()).getPersonsCorp(),
+                            mList.get(getAdapterPosition()).getPersonPictureUrl(),
+                            mList.get(getAdapterPosition()).getMessageText(),
+                            Constants.CLICK_KEY_CONVERSATION_DETAILS);
+            }
+            if(view.getId() == R.id.list_item_tv_view_message){
+                mListener.onClick(view,
+                        0,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        Constants.CLICK_KEY_VIEW_MESSAGE);
             }
         }
     }
