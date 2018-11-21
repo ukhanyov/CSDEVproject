@@ -740,15 +740,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
             }
             if(view.getId() == R.id.list_item_button_connect){
                 mListener.onClick(view,
-                        0,
-                        0,
+                        mList.get(getAdapterPosition()).getOrganizationId(), // pass organizationId
+                        mList.get(getAdapterPosition()).getFeedEventId(), // pass feedEventId
                         null,
                         null,
                         null,
                         null,
                         Constants.CLICK_KEY_BUTTON_CONNECT);
 
-                //mList.get(0).getId
                 ibUnderProfile.setVisibility(View.GONE);
                 tvUnderProfile.setVisibility(View.GONE);
                 btnConnect.setVisibility(View.GONE);

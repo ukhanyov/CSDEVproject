@@ -1,5 +1,8 @@
 package com.example.admin_linux.csdevproject.network.retrofit;
 
+import com.example.admin_linux.csdevproject.network.pojo.activity_card.ApiAddOrganizationToFavorites;
+import com.example.admin_linux.csdevproject.network.pojo.activity_card.ApiAddUserToFavorites;
+import com.example.admin_linux.csdevproject.network.pojo.activity_card.ApiResultOfFeedEventAuthorUserApiResult;
 import com.example.admin_linux.csdevproject.network.pojo.conversation_details.ConversationDetailsReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.favorite_entries.FavoriteEntriesReturnValue;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
@@ -68,4 +71,27 @@ public interface GetDataService {
             @Query("PersonId") int personId
     );
 
+    @FormUrlEncoded
+    @POST("api/v1/ActivityCard/AddOrganizationToFavorites")
+    Call<ApiAddOrganizationToFavorites> postAddOrganizationToFavorites(
+            @Header("Authorization") String BEARER,
+            @Field("PersonId") int personId,
+            @Field("FavoriteOrganizationId") int favoriteOrganizationId,
+            @Field("FavoriteOrganizationIds") int[] favoriteOrganizationIds
+    );
+
+    @FormUrlEncoded
+    @POST("api/v1/ActivityCard/AddUserToFavorites")
+    Call<ApiAddUserToFavorites> postAddUserToFavorites(
+            @Header("Authorization") String BEARER,
+            @Field("PersonId") int personId,
+            @Field("FavoriteUserId") int favoriteUserId
+    );
+
+    //
+    @GET("api/v1/ActivityCard/GetFeedEventAuthorUser")
+    Call<ApiResultOfFeedEventAuthorUserApiResult> getFeedEventAuthorUser(
+            @Header("Authorization") String BEARER,
+            @Query("FeedEventId") int feedEventId
+    );
 }

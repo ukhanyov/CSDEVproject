@@ -140,7 +140,21 @@ public class CropStreamFragment extends Fragment {
             }
 
             if(key.equals(Constants.CLICK_KEY_BUTTON_CONNECT)){
+
+                int organizationId = conversationId;
+                int feedEventId = personId;
+
+                if(organizationId != 0){
+                    // Add to favorites organization
+
+                } else {
+                    // Add to favorites user (need to find it first)
+
+                }
+
                 Log.d(TAG, "CLICK_KEY_BUTTON_CONNECT");
+                Log.d(TAG, "OrganizationId: " + organizationId);
+                Log.d(TAG, "feedEventId: " + feedEventId);
             }
         };
         // -------------------------------------------------------------------------------------------
