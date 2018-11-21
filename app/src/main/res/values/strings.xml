@@ -139,5 +139,7 @@
     <string name="star_on_the_right">Star on the right</string>
     <string name="hint_list_item_possible_manufacturer">Manufacturer</string>
     <string name="hint_list_item_possible_name">Name</string>
+    <string name="view_private_chat">View private chat</string>
+    <string name="start_private_chat">Start a private chat</string>
 
 </resources>
