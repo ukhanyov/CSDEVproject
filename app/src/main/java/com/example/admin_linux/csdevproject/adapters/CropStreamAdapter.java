@@ -748,6 +748,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                         null,
                         Constants.CLICK_KEY_BUTTON_CONNECT);
 
+                //mList.get(0).getId
                 ibUnderProfile.setVisibility(View.GONE);
                 tvUnderProfile.setVisibility(View.GONE);
                 btnConnect.setVisibility(View.GONE);

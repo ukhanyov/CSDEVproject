@@ -13,7 +13,6 @@ public class CropStreamMessage implements Parcelable {
     private String mProfileCorpName;
     private String mMessageText;
     private String mMessageTime;
-    private String mMessagePicture;
     private boolean mConversationFirstMessage;
     private String mInvolvedPersonsNames;
     private String mPersonsCorp;
@@ -37,6 +36,8 @@ public class CropStreamMessage implements Parcelable {
     private String mTemplateModelName;
     private String mTemplateModelDescription;
     private boolean mFeedSourceinFavorites;
+    private int mFeedEventId;
+    private int mOrganizationId;
 
     public CropStreamMessage(
             String profilePicture,
@@ -44,7 +45,6 @@ public class CropStreamMessage implements Parcelable {
             String profileCorpName,
             String messageText,
             String messageTime,
-            String messagePicture,
             boolean conversationFirstMessage,
             String involvedPersonsNames,
             String personsCorp,
@@ -67,14 +67,15 @@ public class CropStreamMessage implements Parcelable {
             List<TemplateItemModelBase> templateItemModelBaseList,
             String templateModelName,
             String templateModelDescription,
-            boolean feedSourceinFavorites) {
+            boolean feedSourceinFavorites,
+            int feedEventId,
+            int organizationId) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
         this.mProfileCorpName = profileCorpName;
         this.mMessageText = messageText;
         this.mMessageTime = messageTime;
-        this.mMessagePicture = messagePicture;
         this.mConversationFirstMessage = conversationFirstMessage;
         this.mInvolvedPersonsNames = involvedPersonsNames;
         this.mPersonsCorp = personsCorp;
@@ -98,6 +99,8 @@ public class CropStreamMessage implements Parcelable {
         this.mTemplateModelName = templateModelName;
         this.mTemplateModelDescription = templateModelDescription;
         this.mFeedSourceinFavorites = feedSourceinFavorites;
+        this.mFeedEventId = feedEventId;
+        this.mOrganizationId = organizationId;
     }
 
     public String getProfilePicture() {
@@ -118,10 +121,6 @@ public class CropStreamMessage implements Parcelable {
 
     public String getMessageTime() {
         return mMessageTime;
-    }
-
-    public String getMessagePicture() {
-        return mMessagePicture;
     }
 
     public boolean getConversationFirstMessage() {
@@ -210,9 +209,17 @@ public class CropStreamMessage implements Parcelable {
         return mFeedSourceinFavorites;
     }
 
+    public int getFeedEventId() {
+        return mFeedEventId;
+    }
+
+    public int getOrganizationId() {
+        return mOrganizationId;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[28];
+        String[] data = new String[29];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -220,29 +227,30 @@ public class CropStreamMessage implements Parcelable {
         this.mProfileCorpName = data[2];
         this.mMessageText = data[3];
         this.mMessageTime = data[4];
-        this.mMessagePicture = data[5];
-        this.mConversationFirstMessage = Boolean.getBoolean(data[6]);
-        this.mInvolvedPersonsNames = data[7];
-        this.mPersonsCorp = data[8];
-        this.mCombineImage = Boolean.getBoolean(data[9]);
-        this.mCombineImageUrlFirst = data[10];
-        this.mCombineImageUrlSecond = data[11];
-        this.mCombineImageNameFirst = data[12];
-        this.mCombineImageNameSecond = data[13];
-        this.mFeedType = data[14];
-        this.mFromOrganization = Boolean.getBoolean(data[15]);
-        this.mConversationId = data[16];
-        this.mPersonId = data[17];
-        this.mConversationChat = Boolean.getBoolean(data[18]);
-        this.mPersonPictureUrl = data[19];
-        this.mCardRenderDataId = Integer.valueOf(data[20]);
-        this.mMessageHttp = data[21];
-        this.mAspectRatio = Double.valueOf(data[22]);
-        this.mCatalogEntryId = Integer.valueOf(data[23]);
-        this.mMessageType = data[24];
-        this.mTemplateModelName = data[25];
-        this.mTemplateModelDescription = data[26];
-        this.mFeedSourceinFavorites = Boolean.getBoolean(data[27]);
+        this.mConversationFirstMessage = Boolean.getBoolean(data[5]);
+        this.mInvolvedPersonsNames = data[6];
+        this.mPersonsCorp = data[7];
+        this.mCombineImage = Boolean.getBoolean(data[8]);
+        this.mCombineImageUrlFirst = data[9];
+        this.mCombineImageUrlSecond = data[10];
+        this.mCombineImageNameFirst = data[11];
+        this.mCombineImageNameSecond = data[12];
+        this.mFeedType = data[13];
+        this.mFromOrganization = Boolean.getBoolean(data[14]);
+        this.mConversationId = data[15];
+        this.mPersonId = data[16];
+        this.mConversationChat = Boolean.getBoolean(data[17]);
+        this.mPersonPictureUrl = data[18];
+        this.mCardRenderDataId = Integer.valueOf(data[19]);
+        this.mMessageHttp = data[20];
+        this.mAspectRatio = Double.valueOf(data[21]);
+        this.mCatalogEntryId = Integer.valueOf(data[22]);
+        this.mMessageType = data[23];
+        this.mTemplateModelName = data[24];
+        this.mTemplateModelDescription = data[25];
+        this.mFeedSourceinFavorites = Boolean.getBoolean(data[26]);
+        this.mFeedEventId = Integer.valueOf(data[27]);
+        this.mOrganizationId = Integer.valueOf(data[28]);
 
         List<TemplateItemModelBase> list = new ArrayList<>();
         in.readTypedList(list, TemplateItemModelBase.CREATOR);
@@ -262,7 +270,6 @@ public class CropStreamMessage implements Parcelable {
                 this.mProfileCorpName,
                 this.mMessageText,
                 this.mMessageTime,
-                this.mMessagePicture,
                 String.valueOf(this.mConversationFirstMessage),
                 this.mInvolvedPersonsNames,
                 this.mPersonsCorp,
@@ -284,7 +291,9 @@ public class CropStreamMessage implements Parcelable {
                 this.mMessageType,
                 this.mTemplateModelName,
                 this.mTemplateModelDescription,
-                String.valueOf(this.mFeedSourceinFavorites)
+                String.valueOf(this.mFeedSourceinFavorites),
+                String.valueOf(this.mFeedEventId),
+                String.valueOf(this.mOrganizationId)
         });
         dest.writeTypedList(this.mTemplateItemModelBaseList);
     }

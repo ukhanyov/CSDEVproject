@@ -284,7 +284,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getOrganization().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     "you",
                                     event.getPerson().getOrganizationName(),
@@ -307,7 +306,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -324,7 +325,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getOrganization().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
@@ -347,7 +347,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -363,7 +365,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getPerson().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     "you",
                                     event.getPerson().getOrganizationName(),
@@ -386,7 +387,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -404,7 +407,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getPerson().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
@@ -427,7 +429,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -573,7 +577,6 @@ public class CropStreamFragment extends Fragment {
                                                            String corpName,
                                                            String textToDisplay,
                                                            String onDate,
-                                                           String messagePicture,
                                                            boolean isFirstMessage,
                                                            String involvedPersons,
                                                            String organizationName,
@@ -596,14 +599,15 @@ public class CropStreamFragment extends Fragment {
                                                            List<TemplateItemModelBase> list,
                                                            String templateName,
                                                            String templateDescription,
-                                                           boolean feedSourceinFavorites) {
+                                                           boolean feedSourceinFavorites,
+                                                           int feedEventId,
+                                                           int organizationId) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
                 corpName,
                 textToDisplay,
                 onDate,
-                messagePicture,
                 isFirstMessage,
                 involvedPersons,
                 organizationName,
@@ -626,7 +630,9 @@ public class CropStreamFragment extends Fragment {
                 list,
                 templateName,
                 templateDescription,
-                feedSourceinFavorites
+                feedSourceinFavorites,
+                feedEventId,
+                organizationId
         );
     }
 
@@ -677,7 +683,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getOrganization().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     "you",
                                     event.getPerson().getOrganizationName(),
@@ -700,7 +705,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -717,7 +724,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getOrganization().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
@@ -740,7 +746,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -756,7 +764,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getPerson().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     "you",
                                     event.getPerson().getOrganizationName(),
@@ -779,7 +786,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -796,7 +805,6 @@ public class CropStreamFragment extends Fragment {
                                     event.getPerson().getOrganizationName(),
                                     event.getComments(),
                                     event.getOnDate(),
-                                    null,
                                     event.isConversationFirstMessage(),
                                     (involvedPeople.size() == 0) ? "you" : involvedPeople.toString().replace("[", "").replace("]", ""),
                                     event.getPerson().getOrganizationName(),
@@ -819,7 +827,9 @@ public class CropStreamFragment extends Fragment {
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
                                     (template != null) ? template.getDescription() : null,
-                                    event.isFeedSourceinFavorites());
+                                    event.isFeedSourceinFavorites(),
+                                    event.getFeedEventId(),
+                                    (event.getOrganization() != null) ? event.getOrganization().getOrganizationId() : 0);
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);

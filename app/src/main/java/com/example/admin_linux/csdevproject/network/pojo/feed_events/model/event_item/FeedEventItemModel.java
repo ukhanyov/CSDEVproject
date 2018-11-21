@@ -19,9 +19,9 @@ public class FeedEventItemModel {
     @Expose
     private FEIMlOrganization organization;
 
-//    @SerializedName("FeedEventId")
-//    @Expose
-//    private int feedEventId;
+    @SerializedName("FeedEventId")
+    @Expose
+    private int feedEventId;
 
 //    @SerializedName("ActivityId")
 //    @Expose
@@ -99,9 +99,9 @@ public class FeedEventItemModel {
         return organization;
     }
 
-//    public int getFeedEventId() {
-//        return feedEventId;
-//    }
+    public int getFeedEventId() {
+        return feedEventId;
+    }
 //
 //    public int getActivityId() {
 //        return activityId;
