@@ -56,7 +56,8 @@ public class FavoritesTabTemplateItemAdapter extends RecyclerView.Adapter<Favori
                 LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 linearLayout.setLayoutParams(paramsLL);
-
+                linearLayout.setVerticalScrollBarEnabled(false);
+                linearLayout.setHorizontalScrollBarEnabled(false);
 
                 List<FavoriteFormTemplateItem> list = formTemplate.getFavoriteFormTemplateItemList();
                 for (FavoriteFormTemplateItem item : list) {

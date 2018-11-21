@@ -385,6 +385,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             LinearLayout.LayoutParams paramsLL = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setLayoutParams(paramsLL);
+            linearLayout.setVerticalScrollBarEnabled(false);
+            linearLayout.setHorizontalScrollBarEnabled(false);
 
             List<TemplateItemModelBase> list = current.getTemplateItemModelBaseList();
             for (TemplateItemModelBase item : list) {
