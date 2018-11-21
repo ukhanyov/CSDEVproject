@@ -169,7 +169,6 @@ public class CropStreamFragment extends Fragment {
             mSwipeRefreshLayout.setRefreshing(true);
             progressBar.setVisibility(View.GONE);
             refreshData();
-            recyclerView.scrollToPosition(0);
         });
         mSwipeRefreshLayout.setColorSchemeResources(
                 R.color.black,
@@ -181,7 +180,6 @@ public class CropStreamFragment extends Fragment {
         mButtonNewMessage.setOnClickListener(v -> {
             mButtonNewMessage.setVisibility(View.GONE);
             refreshData();
-            recyclerView.scrollToPosition(0);
         });
 
         return rootView;
@@ -215,12 +213,13 @@ public class CropStreamFragment extends Fragment {
 
     private void refreshData() {
         mAdapter.removeAllItems();
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemRangeRemoved(0, cropStreamMessages.size());
         cropStreamMessages = null;
 
         SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
         fetchData(preferences.getString(Constants.PREF_PROFILE_BEARER, null),
                 preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0));
+
     }
 
     private void loadNextDataFromApi() {

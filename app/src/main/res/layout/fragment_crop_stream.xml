@@ -40,7 +40,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_corp_stream_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:scrollbarSize="4dp"
                 android:scrollbarStyle="outsideInset"
                 android:scrollbarThumbVertical="@color/green"
