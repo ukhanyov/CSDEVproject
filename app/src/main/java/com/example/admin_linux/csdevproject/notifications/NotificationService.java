@@ -40,9 +40,6 @@ public class NotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        // TODO : look into double notifications
-        // Possible solution play-services-x instead of just play-services
-
         if (remoteMessage.getData() != null) {
             Log.d(TAG, "getData: " + remoteMessage.getData().toString());
             //Log.d(TAG, "getNotification: " + remoteMessage.getNotification());
@@ -91,6 +88,8 @@ public class NotificationService extends FirebaseMessagingService {
         super.onDeletedMessages();
     }
 
+
+
     @Override
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
@@ -100,20 +99,6 @@ public class NotificationService extends FirebaseMessagingService {
         // Instance ID token to your app server.
         sendRegistrationToServer(token);
     }
-
-
-//    private void scheduleJob() {
-//        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-//        Job myJob = dispatcher.newJobBuilder()
-//                .setService(MyJobService.class)
-//                .setTag("my-job-tag")
-//                .build();
-//        dispatcher.schedule(myJob);
-//    }
-//
-//    private void handleNow() {
-//        Log.d(TAG, "Short lived task is done.");
-//    }
 
     private void sendRegistrationToServer(String token) {
         SharedPreferences preferences = getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);

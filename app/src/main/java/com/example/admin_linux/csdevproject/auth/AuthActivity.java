@@ -25,6 +25,7 @@ import java.util.Objects;
 public class AuthActivity extends AppCompatActivity {
 
     ActivityAuthBinding mBinding;
+    private static final String TAG = "AuthActivity_test";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class AuthActivity extends AppCompatActivity {
             // Get token
             FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
-                    Log.w("AuthActivity", "getInstanceId failed", task.getException());
+                    Log.d(TAG, "getInstanceId failed", task.getException());
                     return;
                 }
 
@@ -85,7 +86,7 @@ public class AuthActivity extends AppCompatActivity {
         // Get token
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
-                Log.w("AuthActivity", "getInstanceId failed", task.getException());
+                Log.d(TAG, "getInstanceId failed", task.getException());
                 return;
             }
 
@@ -97,7 +98,6 @@ public class AuthActivity extends AppCompatActivity {
             intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_PHONE_NUMBER, Constants.DEFAULT_PHONE_NUMBER);
             intent.putExtra(Constants.KEY_INTENT_USER_FIREBASE_TOKEN, token);
             startActivity(intent);
-
         });
     }
 }
