@@ -297,7 +297,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -336,7 +337,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -374,7 +376,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -414,7 +417,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -582,7 +586,8 @@ public class CropStreamFragment extends Fragment {
                                                            int catalogEntryId,
                                                            List<TemplateItemModelBase> list,
                                                            String templateName,
-                                                           String templateDescription) {
+                                                           String templateDescription,
+                                                           boolean feedSourceinFavorites) {
         return new CropStreamMessage(
                 pictureUrl,
                 fullName,
@@ -611,7 +616,8 @@ public class CropStreamFragment extends Fragment {
                 catalogEntryId,
                 list,
                 templateName,
-                templateDescription
+                templateDescription,
+                feedSourceinFavorites
         );
     }
 
@@ -684,7 +690,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -723,7 +730,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -761,7 +769,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);
@@ -800,7 +809,8 @@ public class CropStreamFragment extends Fragment {
                                     event.getCatalogEntryId(),
                                     getListOfTemplateItemModelBaseItems(event.getCatalogEntryId(), feedEventsModel.getFeedEventsModel().getCatalogEntries(), feedEventsModel.getFeedEventsModel().getCardRenderItems()),
                                     (template != null) ? template.getName() : null,
-                                    (template != null) ? template.getDescription() : null);
+                                    (template != null) ? template.getDescription() : null,
+                                    event.isFeedSourceinFavorites());
                             cropStreamMessages.add(message);
                             mAdapter.addItem(message);
                             mAdapter.notifyItemInserted(cropStreamMessages.size() - 1);

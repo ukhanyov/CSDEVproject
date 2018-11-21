@@ -36,6 +36,7 @@ public class CropStreamMessage implements Parcelable {
     private List<TemplateItemModelBase> mTemplateItemModelBaseList;
     private String mTemplateModelName;
     private String mTemplateModelDescription;
+    private boolean mFeedSourceinFavorites;
 
     public CropStreamMessage(
             String profilePicture,
@@ -65,7 +66,8 @@ public class CropStreamMessage implements Parcelable {
             int catalogEntryId,
             List<TemplateItemModelBase> templateItemModelBaseList,
             String templateModelName,
-            String templateModelDescription) {
+            String templateModelDescription,
+            boolean feedSourceinFavorites) {
 
         this.mPicture = profilePicture;
         this.mProfileName = profileName;
@@ -95,6 +97,7 @@ public class CropStreamMessage implements Parcelable {
         this.mTemplateItemModelBaseList = templateItemModelBaseList;
         this.mTemplateModelName = templateModelName;
         this.mTemplateModelDescription = templateModelDescription;
+        this.mFeedSourceinFavorites = feedSourceinFavorites;
     }
 
     public String getProfilePicture() {
@@ -203,9 +206,13 @@ public class CropStreamMessage implements Parcelable {
         return mTemplateModelDescription;
     }
 
+    public boolean isFeedSourceinFavorites() {
+        return mFeedSourceinFavorites;
+    }
+
     // Parcelling part
     public CropStreamMessage(Parcel in) {
-        String[] data = new String[27];
+        String[] data = new String[28];
         in.readStringArray(data);
 
         this.mPicture = data[0];
@@ -235,6 +242,7 @@ public class CropStreamMessage implements Parcelable {
         this.mMessageType = data[24];
         this.mTemplateModelName = data[25];
         this.mTemplateModelDescription = data[26];
+        this.mFeedSourceinFavorites = Boolean.getBoolean(data[27]);
 
         List<TemplateItemModelBase> list = new ArrayList<>();
         in.readTypedList(list, TemplateItemModelBase.CREATOR);
@@ -275,7 +283,8 @@ public class CropStreamMessage implements Parcelable {
                 String.valueOf(this.mCatalogEntryId),
                 this.mMessageType,
                 this.mTemplateModelName,
-                this.mTemplateModelDescription
+                this.mTemplateModelDescription,
+                String.valueOf(this.mFeedSourceinFavorites)
         });
         dest.writeTypedList(this.mTemplateItemModelBaseList);
     }

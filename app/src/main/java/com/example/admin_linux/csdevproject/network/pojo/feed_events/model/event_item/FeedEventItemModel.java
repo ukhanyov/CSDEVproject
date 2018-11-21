@@ -83,9 +83,9 @@ public class FeedEventItemModel {
     @Expose
     private int mCardRenderDataId;
 
-//    @SerializedName("FeedSourceinFavorites")
-//    @Expose
-//    private boolean feedSourceinFavorites;
+    @SerializedName("FeedSourceinFavorites")
+    @Expose
+    private boolean feedSourceinFavorites;
 
     @SerializedName("ConversationFirstMessage")
     @Expose
@@ -162,10 +162,10 @@ public class FeedEventItemModel {
     public int getCardRenderDataId() {
         return mCardRenderDataId;
     }
-//
-//    public boolean isFeedSourceinFavorites() {
-//        return feedSourceinFavorites;
-//    }
+
+    public boolean isFeedSourceinFavorites() {
+        return feedSourceinFavorites;
+    }
 
     public boolean isConversationFirstMessage() {
         return conversationFirstMessage;

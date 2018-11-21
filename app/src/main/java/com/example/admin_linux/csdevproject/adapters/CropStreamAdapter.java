@@ -154,7 +154,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         bindMessageOrder(holder, current.getConversationFirstMessage(), current.getConversationChat());
 
         // Bind bottom views (Reply/Start/View Message)
-        bindStartReplyViewMessageViews(holder, current.getConversationChat());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat(), current.isFeedSourceinFavorites(), current.getCardRenderDataId());
 
     }
 
@@ -187,7 +187,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
         // Bind bottom views (Reply/Start/View Message)
         //bindStartReplyViewMessageViews(holder, current.getFeedType());
-        bindStartReplyViewMessageViews(holder, current.getConversationChat());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat(), current.isFeedSourceinFavorites(), current.getCardRenderDataId());
 
     }
 
@@ -217,7 +217,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
         // Bind bottom views (Reply/Start/View Message)
         //bindStartReplyViewMessageViews(holder, current.getFeedType());
-        bindStartReplyViewMessageViews(holder, current.getConversationChat());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat(), current.isFeedSourceinFavorites(), current.getCardRenderDataId());
     }
 
     // root |4|
@@ -246,7 +246,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
 
         // Bind bottom views (Reply/Start/View Message)
         //bindStartReplyViewMessageViews(holder, current.getFeedType());
-        bindStartReplyViewMessageViews(holder, current.getConversationChat());
+        bindStartReplyViewMessageViews(holder, current.getConversationChat(), current.isFeedSourceinFavorites(), current.getCardRenderDataId());
 
     }
 
@@ -340,7 +340,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         }
     }
 
-    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChatConversation) {
+    private void bindStartReplyViewMessageViews(CorpStreamViewHolder holder, boolean isChatConversation, boolean feedSourceinFavorites, int cardRenderDataId) {
         if (isChatConversation) {
             holder.ibUnderProfile.setVisibility(View.VISIBLE);
             holder.tvUnderProfile.setVisibility(View.VISIBLE);
@@ -351,6 +351,12 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
             holder.tvUnderProfile.setVisibility(View.VISIBLE);
             holder.tvUnderProfile.setText(mContext.getString(R.string.start_private_chat));
             holder.tvViewMessage.setVisibility(View.INVISIBLE);
+        }
+        if(!feedSourceinFavorites && cardRenderDataId != 0){
+            holder.ibUnderProfile.setVisibility(View.INVISIBLE);
+            holder.tvUnderProfile.setVisibility(View.INVISIBLE);
+            holder.tvUnderProfile.setText(mContext.getString(R.string.view_private_chat));
+            holder.tvViewMessage.setVisibility(View.VISIBLE);
         }
     }
 
