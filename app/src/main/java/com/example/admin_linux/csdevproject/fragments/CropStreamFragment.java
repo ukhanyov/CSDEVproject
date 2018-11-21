@@ -30,6 +30,9 @@ import com.example.admin_linux.csdevproject.adapters.CropStreamClickListener;
 import com.example.admin_linux.csdevproject.data.models.ConversationPerson;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.data.models.TemplateItemModelBase;
+import com.example.admin_linux.csdevproject.network.pojo.activity_card.ApiAddOrganizationToFavorites;
+import com.example.admin_linux.csdevproject.network.pojo.activity_card.ApiAddUserToFavorites;
+import com.example.admin_linux.csdevproject.network.pojo.activity_card.ApiResultOfFeedEventAuthorUserApiResult;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.ApiResultOfFeedEventsModel;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventCardRenderItems;
 import com.example.admin_linux.csdevproject.network.pojo.feed_events.model.event_item.FeedEventCatalogEntries;
@@ -59,15 +62,12 @@ public class CropStreamFragment extends Fragment {
 
     private static final String TAG = "CropStreamFragment_test";
 
-    public  static boolean isFeedEventFragmentVisible = false;
-
+    public static boolean isFeedEventFragmentVisible = false;
+    CropStreamAdapter mAdapter;
     private MyBroadcastReceiver myBroadcastReceiver;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<CropStreamMessage> cropStreamMessages;
-
     private Button mButtonNewMessage;
-
-    CropStreamAdapter mAdapter;
 
     public CropStreamFragment() {
         // Required empty public constructor
@@ -98,12 +98,13 @@ public class CropStreamFragment extends Fragment {
         // -------------------------------------------------------------------------------------------
         CropStreamClickListener listener = (view, conversationId, personId, profileName, personsCorp, personsPictureUrl, messageText, key) -> {
 
-            if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
+            SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
+            String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
+            String mProfileFullName = preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null);
+            String mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
+            int yourPersonId = preferences.getInt(Constants.PREF_PROFILE_PERSON_ID, 0);
 
-                SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences(Constants.PREF_PROFILE_SETTINGS, MODE_PRIVATE);
-                String bearer = preferences.getString(Constants.PREF_PROFILE_BEARER, null);
-                String mProfileFullName = preferences.getString(Constants.PREF_PROFILE_FULL_NAME, null);
-                String mProfileUrl = preferences.getString(Constants.PREF_PROFILE_IMAGE_URL, null);
+            if (key.equals(Constants.CLICK_KEY_CONVERSATION_DETAILS)) {
 
                 if (bearer != null && mProfileFullName != null && mProfileUrl != null) {
                     Intent intent = new Intent(getActivity(), ConversationDetailsActivity.class);
@@ -135,21 +136,66 @@ public class CropStreamFragment extends Fragment {
                 startActivity(intent);
             }
 
-            if(key.equals(Constants.CLICK_KEY_VIEW_MESSAGE)){
+            if (key.equals(Constants.CLICK_KEY_VIEW_MESSAGE)) {
                 Log.d(TAG, "CLICK_KEY_VIEW_MESSAGE");
             }
 
-            if(key.equals(Constants.CLICK_KEY_BUTTON_CONNECT)){
+            if (key.equals(Constants.CLICK_KEY_BUTTON_CONNECT)) {
 
                 int organizationId = conversationId;
                 int feedEventId = personId;
 
-                if(organizationId != 0){
+                if (organizationId != 0) {
                     // Add to favorites organization
+                    GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+                    Call<ApiAddOrganizationToFavorites> responseCall = service.postAddOrganizationToFavorites(bearer, yourPersonId, organizationId, null);
+                    responseCall.enqueue(new Callback<ApiAddOrganizationToFavorites>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ApiAddOrganizationToFavorites> call, @NonNull Response<ApiAddOrganizationToFavorites> response) {
+                            if (response.body() != null)
+                                Log.d(TAG, "ApiAddOrganizationToFavorites -> onResponse: " + response.body().ApiAddOrganizationToFavoritesResultCode());
+                        }
 
-                } else {
+                        @Override
+                        public void onFailure(@NonNull Call<ApiAddOrganizationToFavorites> call, @NonNull Throwable t) {
+                            Log.d(TAG, "error: " + t.getMessage());
+                        }
+                    });
+
+                } else if (feedEventId != 0) {
                     // Add to favorites user (need to find it first)
+                    GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+                    Call<ApiResultOfFeedEventAuthorUserApiResult> responseCall = service.getFeedEventAuthorUser(bearer, feedEventId);
+                    responseCall.enqueue(new Callback<ApiResultOfFeedEventAuthorUserApiResult>() {
+                        @Override
+                        public void onResponse(@NonNull Call<ApiResultOfFeedEventAuthorUserApiResult> call, @NonNull Response<ApiResultOfFeedEventAuthorUserApiResult> response) {
+                            if (response.body() != null) {
+                                Log.d(TAG, "ApiResultOfFeedEventAuthorUserApiResult -> onResponse: " + response.body().getApiResultOfFeedEventAuthorUserApiResultReturnValue().getFeedEventAuthorUserApiResultUser().geUserModeltUserId());
 
+                                if (response.body().getApiResultOfFeedEventAuthorUserApiResultReturnValue().getFeedEventAuthorUserApiResultUser().geUserModeltUserId() != 0) {
+                                    GetDataService service = RetrofitActivityFeedInstance.getRetrofitInstance().create(GetDataService.class);
+                                    Call<ApiAddUserToFavorites> responseCall = service.postAddUserToFavorites(bearer, yourPersonId, response.body().getApiResultOfFeedEventAuthorUserApiResultReturnValue().getFeedEventAuthorUserApiResultUser().geUserModeltUserId());
+                                    responseCall.enqueue(new Callback<ApiAddUserToFavorites>() {
+                                        @Override
+                                        public void onResponse(@NonNull Call<ApiAddUserToFavorites> call, @NonNull Response<ApiAddUserToFavorites> response) {
+                                            if (response.body() != null)
+                                                Log.d(TAG, "ApiAddUserToFavorites -> onResponse: " + response.body().getApiAddUserToFavoritesResultCode());
+                                        }
+
+                                        @Override
+                                        public void onFailure(@NonNull Call<ApiAddUserToFavorites> call, @NonNull Throwable t) {
+                                            Log.d(TAG, "error: " + t.getMessage());
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<ApiResultOfFeedEventAuthorUserApiResult> call, @NonNull Throwable t) {
+                            Log.d(TAG, "error: " + t.getMessage());
+                        }
+                    });
                 }
 
                 Log.d(TAG, "CLICK_KEY_BUTTON_CONNECT");
