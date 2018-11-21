@@ -1,12 +1,9 @@
 package com.example.admin_linux.csdevproject;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -46,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener,
         ChatFragment.OnFragmentInteractionListener,
         SearchFragment.OnFragmentInteractionListener {
+
+    // TODO : header above radar
+    // TODO : start conversation/chat button
+    // Send a message to you -> Start a private chat
+    // Replied to a chat with -> View private chat
 
 
     // Fancy dataBinding

@@ -134,17 +134,17 @@
         app:layout_constraintTop_toBottomOf="@+id/list_item_tv_text_message" />
 
     <ImageButton
+        android:background="@color/fui_transparent"
         android:id="@+id/list_item_ib_start_chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:background="@color/white"
         android:contentDescription="@string/content_description_reply_button"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
         app:layout_constraintTop_toBottomOf="@+id/list_item_ll_catalog_entry"
-        app:srcCompat="@drawable/ic_chat_bubble_outline_reply_list_item" />
+        android:src="@drawable/ic_chat_bubble_outline_reply_list_item" />
 
     <TextView
         android:id="@+id/list_item_tv_start_shat"

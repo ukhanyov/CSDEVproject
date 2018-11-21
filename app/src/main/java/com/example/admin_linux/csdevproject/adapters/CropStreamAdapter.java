@@ -379,6 +379,10 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Co
         if (current.getTemplateItemModelBaseList() != null) {
             holder.llCatalogEntry.setVisibility(View.VISIBLE);
             holder.llCatalogEntry.requestDisallowInterceptTouchEvent(true);
+            holder.llCatalogEntry.setVerticalScrollBarEnabled(false);
+            holder.llCatalogEntry.setHorizontalScrollBarEnabled(false);
+            holder.llCatalogEntrySVWrapper.setVerticalScrollBarEnabled(false);
+            holder.llCatalogEntrySVWrapper.setHorizontalScrollBarEnabled(false);
             if (holder.svCatalogEntry.getChildCount() > 0) holder.svCatalogEntry.removeAllViews();
 
             LinearLayout linearLayout = new LinearLayout(mContext);
