@@ -24,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
 import com.example.admin_linux.csdevproject.R;
 import com.example.admin_linux.csdevproject.data.models.CropStreamMessage;
 import com.example.admin_linux.csdevproject.data.models.TemplateItemModelBase;
@@ -33,6 +34,11 @@ import com.example.admin_linux.csdevproject.utils.Constants;
 import com.example.admin_linux.csdevproject.utils.DateHelper;
 import com.example.admin_linux.csdevproject.utils.RoundCorners;
 import com.squareup.picasso.Picasso;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -474,12 +480,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                 }
 
                 if (item.getType().equals("WeatherRegionalRadar")) {
-                    View view = new View(mContext);
-                    view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 20));
-                    view.setBackgroundColor(mContext.getColor(R.color.radar_header_color));
-                    linearLayout.addView(view);
+                    //View view = new View(mContext);
+                    //view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 20));
+                    //view.setBackgroundColor(mContext.getColor(R.color.radar_header_color));
+                    //linearLayout.addView(view);
                     addWebViewWeatherRegionalRadarToLinearLayout(linearLayout, list, item);
                     //Log.d("catalog entry", "WeatherRegionalRadar: " + item.getInnerHtml());
+                    resizeSWCatalogEntry(holder);
                 }
             }
 
@@ -545,24 +552,53 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
     private static String changedHeaderHtml(String htmlText) {
         String head = "<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" /></head>";
         String closedTag = "</body></html>";
+        Document document = Jsoup.parse(htmlText);
+        Elements e1 = document.select("div.cardtitle");
+        Elements e2 = document.select("div.img-radar");
+
+        String desc = e1.text();
+        String url = e2.select("img").first().absUrl("src");
+
         return head + htmlText + closedTag;
     }
 
     private void addWebViewWeatherRegionalRadarToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {
-        WebView webView = new WebView(mContext);
-        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//        WebView webView = new WebView(mContext);
+//        webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//
+//        webView.getSettings().setLoadWithOverviewMode(true);
+//        webView.getSettings().setUseWideViewPort(true);
+//        webView.getSettings().setBuiltInZoomControls(true);
+//        webView.getSettings().setDisplayZoomControls(false);
+//
+//        webView.setWebChromeClient(new WebChromeClient());
+//        String changeFontHtml = changedHeaderHtml(item.getInnerHtml());
+//        webView.loadDataWithBaseURL(null, changeFontHtml, "text/html", "UTF-8", null);
+//
+//        webView.setId(list.indexOf(item) + 300);
+//        linearLayout.addView(webView);
 
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setDisplayZoomControls(false);
+        Document document = Jsoup.parse(item.getInnerHtml());
+        Elements e1 = document.select("div.cardtitle");
+        Elements e2 = document.select("div.img-radar");
 
-        webView.setWebChromeClient(new WebChromeClient());
-        String changeFontHtml = changedHeaderHtml(item.getInnerHtml());
-        webView.loadDataWithBaseURL(null, changeFontHtml, "text/html", "UTF-8", null);
+        String desc = e1.text();
+        String url = e2.select("img").first().absUrl("src");
 
-        webView.setId(list.indexOf(item) + 300);
-        linearLayout.addView(webView);
+        TextView textView = new TextView(mContext);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        textView.setText(desc);
+        textView.setTextSize(mContext.getResources().getDimension(R.dimen.radar_header));
+        textView.setTextColor(mContext.getColor(R.color.grey));
+        linearLayout.addView(textView);
+
+        ImageView imageView = new ImageView(mContext);
+
+        Glide.with(mContext)
+                .load(url)
+                //.placeholder(mContext.getDrawable(R.drawable.ic_profile_default))
+                .into(imageView);
+        linearLayout.addView(imageView);
     }
 
     private void addWebViewWeatherDaysOutlookToLinearLayout(LinearLayout linearLayout, List<TemplateItemModelBase> list, TemplateItemModelBase item) {

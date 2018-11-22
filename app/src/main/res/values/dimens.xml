@@ -16,4 +16,8 @@
     <dimen name="field_width_standard">160dp</dimen>
     <!-- Auth stuff -->
 
+    <!--Radar header-->
+    <dimen name="radar_header">8sp</dimen>
+    <!--Radar header-->
+
 </resources>
