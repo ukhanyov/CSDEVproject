@@ -45,7 +45,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
     private List<CropStreamMessage> mList;
     private Context mContext;
     private CropStreamClickListener mListener;
-    private CropStreamViewHolder currentHolder;
 
     public CropStreamAdapter(List<CropStreamMessage> list, CropStreamClickListener listener, Context context) {
         this.mList = new ArrayList<>();
@@ -357,13 +356,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
             holder.tvUnderProfile.setText(mContext.getString(R.string.start_private_chat));
             holder.tvViewMessage.setVisibility(View.GONE);
         }
-        currentHolder = null;
         if (!feedSourceinFavorites && cardRenderDataId != 0) {
             holder.ibUnderProfile.setVisibility(View.GONE);
             holder.tvUnderProfile.setVisibility(View.GONE);
             holder.tvUnderProfile.setText(mContext.getString(R.string.view_private_chat));
             holder.tvViewMessage.setVisibility(View.VISIBLE);
-            currentHolder = holder;
         }
     }
 
@@ -766,11 +763,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                         null,
                         Constants.CLICK_KEY_BUTTON_CONNECT);
 
-                ibUnderProfile.setVisibility(View.GONE);
-                tvUnderProfile.setVisibility(View.GONE);
                 btnConnect.setVisibility(View.GONE);
-                tvViewMessage.setVisibility(View.VISIBLE);
-
             }
         }
     }
