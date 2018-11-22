@@ -109,6 +109,9 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                 }
             }
 
+            // TODO : restructure layout in way, so when there is a view message button, card will be underneath it
+            // TODO : also, need to check if template belongs to the cardRender object? if so - radar will have a header with date
+            // TODO : add a split logic here to hide views, if there is a view message button
             // Sub root |5|
             bindWebView(current, holder);
 
