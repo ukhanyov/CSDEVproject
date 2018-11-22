@@ -94,6 +94,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
             // FFTFormTemplateModel -> FormTemplateItemModelBase(all items) -> ItemType(add views according to this type)
             // universal for all roots
 
+            // Some pre setup
+            holder.btnConnect.setVisibility(View.GONE);
+            holder.wvCardRenderData.setVisibility(View.GONE);
+            holder.tvWebPlainText.setVisibility(View.GONE);
+
             if (current.isFromOrganization()) {
                 if (current.getInvolvedPersonsNames().equals("you")) {
                     bindViewsRootOne(current, holder); // root |1|
@@ -367,47 +372,67 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
     // Sub root |5|
     private void bindWebView(CropStreamMessage current, CropStreamViewHolder holder) {
         if (current.getMessageHttp() != null) {
-            if (current.getMessageType().equals("PlainText")) {
-                holder.tvWebPlainText.setText(current.getMessageHttp()
-                        .replaceAll("<div>", "")
-                        .replaceAll("</div>", "")
-                        .replaceAll("<br/>", "\n")
-                        .replaceAll("&#39;", "\u2019")
-                        .trim());
-                if(!current.isFeedSourceinFavorites() && current.getCardRenderDataId() != 0){
-                    holder.tvWebPlainText.setVisibility(View.GONE);
-                    holder.wvCardRenderData.setVisibility(View.GONE);
-                }else {
+
+            if (!current.isFeedSourceinFavorites() && current.getCardRenderDataId()!= 0){
+                if (current.getMessageType().equals("PlainText")) {
+                    holder.tvWebPlainText.setText(current.getMessageHttp()
+                            .replaceAll("<div>", "")
+                            .replaceAll("</div>", "")
+                            .replaceAll("<br/>", "\n")
+                            .replaceAll("&#39;", "\u2019")
+                            .trim());
+
+                } else {
+                    holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
+                    holder.wvCardRenderData.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            super.onPageFinished(view, url);
+                            holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
+                            //holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
+                            holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+                        }
+                    });
+                }
+            } else {
+                if (current.getMessageType().equals("PlainText")) {
+                    holder.tvWebPlainText.setText(current.getMessageHttp()
+                            .replaceAll("<div>", "")
+                            .replaceAll("</div>", "")
+                            .replaceAll("<br/>", "\n")
+                            .replaceAll("&#39;", "\u2019")
+                            .trim());
                     holder.tvWebPlainText.setVisibility(View.VISIBLE);
                     holder.wvCardRenderData.setVisibility(View.GONE);
-                }
 
-            } else {
-                holder.tvWebPlainText.setVisibility(View.GONE);
-                holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
-                holder.wvCardRenderData.setWebViewClient(new WebViewClient() {
-                    @Override
-                    public void onPageFinished(WebView view, String url) {
-                        super.onPageFinished(view, url);
-                        holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
-                        holder.wvCardRenderData.setVisibility(View.GONE);
-                        holder.wvCardRenderData.setVisibility(View.VISIBLE);
-                        holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
-                        holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-                    }
-                });
-                if(!current.isFeedSourceinFavorites() && current.getCardRenderDataId() != 0){
+                } else {
                     holder.tvWebPlainText.setVisibility(View.GONE);
-                    holder.wvCardRenderData.setVisibility(View.GONE);
-                }else {
+                    holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
+                    holder.wvCardRenderData.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public void onPageFinished(WebView view, String url) {
+                            super.onPageFinished(view, url);
+                            holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
+                            holder.wvCardRenderData.setVisibility(View.GONE);
+                            holder.wvCardRenderData.setVisibility(View.VISIBLE);
+                            holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
+                            holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+                        }
+                    });
                     holder.tvWebPlainText.setVisibility(View.GONE);
                     holder.wvCardRenderData.setVisibility(View.VISIBLE);
                 }
             }
+
         } else {
             holder.wvCardRenderData.setVisibility(View.GONE);
             holder.tvWebPlainText.setVisibility(View.GONE);
         }
+
+//        if(holder.tvViewMessage.getVisibility() == View.VISIBLE){
+//            holder.tvWebPlainText.setVisibility(View.GONE);
+//            holder.wvCardRenderData.setVisibility(View.GONE);
+//        }
     }
 
     // Sub root |6| & |7|
@@ -735,7 +760,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                             mList.get(getAdapterPosition()).getMessageText(),
                             Constants.CLICK_KEY_CONVERSATION_DETAILS);
             }
-            if(view.getId() == R.id.list_item_tv_view_message){
+            if (view.getId() == R.id.list_item_tv_view_message) {
                 mListener.onClick(view,
                         0,
                         0,
@@ -749,11 +774,11 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                 tvUnderProfile.setVisibility(View.VISIBLE);
                 btnConnect.setVisibility(View.VISIBLE);
                 tvViewMessage.setVisibility(View.GONE);
-                if(tvWebPlainText.getText() != null) tvWebPlainText.setVisibility(View.VISIBLE);
-                else wvCardRenderData.setVisibility(View.VISIBLE);
+                if (tvWebPlainText.getText() != null) tvWebPlainText.setVisibility(View.VISIBLE);
+                wvCardRenderData.setVisibility(View.VISIBLE);
 
             }
-            if(view.getId() == R.id.list_item_button_connect){
+            if (view.getId() == R.id.list_item_button_connect) {
                 mListener.onClick(view,
                         mList.get(getAdapterPosition()).getOrganizationId(), // pass organizationId
                         mList.get(getAdapterPosition()).getFeedEventId(), // pass feedEventId
