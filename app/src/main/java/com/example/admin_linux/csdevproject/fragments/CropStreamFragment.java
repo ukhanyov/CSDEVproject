@@ -586,22 +586,24 @@ public class CropStreamFragment extends Fragment {
 
     private List<TemplateItemModelBase> getListOfTemplateItemModelBaseItems(int id, List<FeedEventCatalogEntries> catalogEntries, List<FeedEventCardRenderItems> feedEventCardRenderItems) {
         if (id != 0) {
-            if (catalogEntries != null) {
+            if (feedEventCardRenderItems != null) {
+                for (FeedEventCardRenderItems cardRenderItem : feedEventCardRenderItems) {
+                    if (cardRenderItem.getCatalogEntry() != null && id == cardRenderItem.getCatalogEntry().getCatalogEntryId()) {
+                        List<TemplateItemModelBase> returnList = new ArrayList<>();
+                        if(cardRenderItem.getCatalogEntry().getFormTemplateModel() != null) {
+                            List<CEMFormTemplateItemModelBase> list = cardRenderItem.getCatalogEntry().getFormTemplateModel().getFormTemplateItems();
+                            for (CEMFormTemplateItemModelBase item : list) {
+                                returnList.add(new TemplateItemModelBase(item.getItemType(), item.getLabel(), item.getResourceUrl(), item.getInnerHtml()));
+                            }
+                            return returnList;
+                        }
+                    }
+                }
+            } else if (catalogEntries != null) {
                 for (FeedEventCatalogEntries catalogEntry : catalogEntries) {
                     if (id == catalogEntry.getCatalogEntryId()) {
                         List<TemplateItemModelBase> returnList = new ArrayList<>();
                         List<CEMFormTemplateItemModelBase> list = catalogEntry.getFormTemplateModel().getFormTemplateItems();
-                        for (CEMFormTemplateItemModelBase item : list) {
-                            returnList.add(new TemplateItemModelBase(item.getItemType(), item.getLabel(), item.getResourceUrl(), item.getInnerHtml()));
-                        }
-                        return returnList;
-                    }
-                }
-            } else if (feedEventCardRenderItems != null) {
-                for (FeedEventCardRenderItems cardRenderItem : feedEventCardRenderItems) {
-                    if (id == cardRenderItem.getCatalogEntry().getCatalogEntryId()) {
-                        List<TemplateItemModelBase> returnList = new ArrayList<>();
-                        List<CEMFormTemplateItemModelBase> list = cardRenderItem.getCatalogEntry().getFormTemplateModel().getFormTemplateItems();
                         for (CEMFormTemplateItemModelBase item : list) {
                             returnList.add(new TemplateItemModelBase(item.getItemType(), item.getLabel(), item.getResourceUrl(), item.getInnerHtml()));
                         }

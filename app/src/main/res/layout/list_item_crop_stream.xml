@@ -111,7 +111,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/hint_text_message"
         app:layout_constraintEnd_toEndOf="parent"
@@ -255,7 +255,7 @@
     <WebView
         android:id="@+id/list_item_wv_card_render"
         android:layout_width="0dp"
-        android:layout_height="1dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:scrollbars="none"
         android:visibility="gone"

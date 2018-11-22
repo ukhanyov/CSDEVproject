@@ -113,9 +113,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                 }
             }
 
-            // TODO : restructure layout in way, so when there is a view message button, card will be underneath it
             // TODO : also, need to check if template belongs to the cardRender object? if so - radar will have a header with date
-            // TODO : add a split logic here to hide views, if there is a view message button
             // Sub root |5|
             bindWebView(current, holder);
 
@@ -331,7 +329,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
     }
 
     private void bindMessageText(CropStreamViewHolder holder, String text) {
-        if (text != null) {
+        if (text != null && !text.equals("")) {
             holder.tvMessageText.setVisibility(View.VISIBLE);
             holder.tvMessageText.setText(text);
         } else {
@@ -389,7 +387,7 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                         public void onPageFinished(WebView view, String url) {
                             super.onPageFinished(view, url);
                             holder.wvCardRenderData.getLayoutParams().height = (int) (holder.vWidth.getWidth() / current.getAspectRatio());
-                            //holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
+                            holder.wvCardRenderData.setBackgroundColor(Color.TRANSPARENT);
                             holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
                         }
                     });
@@ -428,11 +426,6 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
             holder.wvCardRenderData.setVisibility(View.GONE);
             holder.tvWebPlainText.setVisibility(View.GONE);
         }
-
-//        if(holder.tvViewMessage.getVisibility() == View.VISIBLE){
-//            holder.tvWebPlainText.setVisibility(View.GONE);
-//            holder.wvCardRenderData.setVisibility(View.GONE);
-//        }
     }
 
     // Sub root |6| & |7|
