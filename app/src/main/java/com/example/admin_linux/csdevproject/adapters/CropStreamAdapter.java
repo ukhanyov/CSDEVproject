@@ -377,8 +377,14 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                         .replaceAll("<br/>", "\n")
                         .replaceAll("&#39;", "\u2019")
                         .trim());
-                holder.tvWebPlainText.setVisibility(View.VISIBLE);
-                holder.wvCardRenderData.setVisibility(View.GONE);
+                if(!current.isFeedSourceinFavorites() && current.getCardRenderDataId() != 0){
+                    holder.tvWebPlainText.setVisibility(View.GONE);
+                    holder.wvCardRenderData.setVisibility(View.GONE);
+                }else {
+                    holder.tvWebPlainText.setVisibility(View.VISIBLE);
+                    holder.wvCardRenderData.setVisibility(View.GONE);
+                }
+
             } else {
                 holder.tvWebPlainText.setVisibility(View.GONE);
                 holder.wvCardRenderData.loadDataWithBaseURL(null, current.getMessageHttp(), "text/html; charset=utf-8", "utf-8", null);
@@ -393,6 +399,13 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                         holder.wvCardRenderData.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
                     }
                 });
+                if(!current.isFeedSourceinFavorites() && current.getCardRenderDataId() != 0){
+                    holder.tvWebPlainText.setVisibility(View.GONE);
+                    holder.wvCardRenderData.setVisibility(View.GONE);
+                }else {
+                    holder.tvWebPlainText.setVisibility(View.GONE);
+                    holder.wvCardRenderData.setVisibility(View.VISIBLE);
+                }
             }
         } else {
             holder.wvCardRenderData.setVisibility(View.GONE);
@@ -739,6 +752,8 @@ public class CropStreamAdapter extends RecyclerView.Adapter<CropStreamAdapter.Cr
                 tvUnderProfile.setVisibility(View.VISIBLE);
                 btnConnect.setVisibility(View.VISIBLE);
                 tvViewMessage.setVisibility(View.GONE);
+                if(tvWebPlainText.getText() != null) tvWebPlainText.setVisibility(View.VISIBLE);
+                else wvCardRenderData.setVisibility(View.VISIBLE);
 
             }
             if(view.getId() == R.id.list_item_button_connect){
